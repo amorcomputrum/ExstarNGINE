@@ -4,8 +4,9 @@
         ],
         "libs":[],
         "Include":[
-                "include/"
+                "include/",
+                "glad/include"
         ],
-        "file":"main.cpp"
+        "file":"main.cpp glad/src/gl.c"
 }
 
