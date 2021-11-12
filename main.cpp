@@ -2,7 +2,7 @@
 
 int main()
 {
-	Window* window = new Window(800,200,"Fuck You");
+	exstar::Window* window = new exstar::Window(800,200,"Fuck You");
 	window->run();
 	return 0;
 }
