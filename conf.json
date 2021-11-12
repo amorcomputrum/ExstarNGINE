@@ -1,0 +1,10 @@
+{
+        "libPrefixes":[
+        ],
+        "libs":[],
+        "Include":[
+        "include/"
+        ],
+        "file":"main.cpp"
+}
+
