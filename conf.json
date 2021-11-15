@@ -4,9 +4,8 @@
         ],
         "libs":[],
         "Include":[
-                "include/Exstar",
-                "ImportedLibraries/",
-
+                "include/",
+                "ImportedLibraries/"
         ],
         "file":"main.cpp gl.c"
 }
