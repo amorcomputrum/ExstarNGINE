@@ -4,9 +4,10 @@
         ],
         "libs":[],
         "Include":[
-                "include/",
-                "glad/include"
+                "include/Exstar",
+                "ImportedLibraries/",
+
         ],
-        "file":"main.cpp glad/src/gl.c"
+        "file":"main.cpp gl.c"
 }
 

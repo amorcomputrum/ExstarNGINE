@@ -9,11 +9,11 @@
 #include <ostream>
 
 //include Exstar Files
-#include <Key.hpp>
-#include <Exceptions.hpp>
+#include <Utils/Key.hpp>
+#include <Utils/Exceptions.hpp>
 #include <Camera.hpp>
-#include <Dimension.hpp>
-#include <ArrayList.hpp>
+#include <Utils/Dimension.hpp>
+#include <Utils/ArrayList.hpp>
 
 namespace exstar{
 	class Window {
