@@ -8,6 +8,14 @@ namespace exstar{
 			this->x = x;
 			this->y = y;
 		}
+		void resize(int width,int height){
+			this->width = width;
+			this->height = height;
+		}
+		void move(int x,int y){
+			this->x+=x;
+			this->y+=y;
+		}
 
 	private:
 		int width,height,x,y;
