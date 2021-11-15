@@ -1,4 +1,5 @@
 #define GLFW_INCLUDE_NONE
+#define STB_IMAGE_IMPLEMENTATION
 //include Libraries
 #include <gl.c>
 #include <GLFW/glfw3.h>
@@ -10,10 +11,11 @@
 #include <ostream>
 
 //include Exstar Files
+#include <Exstar/Utils/Math.hpp>
 #include <Exstar/Utils/Key.hpp>
 #include <Exstar/Utils/Exceptions.hpp>
-#include <Exstar/Camera.hpp>
 #include <Exstar/Utils/Dimension.hpp>
+#include <Exstar/Camera.hpp>
 #include <Exstar/Utils/ArrayList.hpp>
 
 namespace exstar{
@@ -23,6 +25,7 @@ namespace exstar{
 		Window(int width,int height,const char* title){
 			size = Dimension{width,height};
 			this->title = title;
+			initGL();
 		}
 		//-------------Virtual Functions-------------
 		virtual void render(Camera camera){
@@ -35,8 +38,21 @@ namespace exstar{
 		}
 		//-------------Public Functions-------------
 		void run(){
-			initGL();
+			//show window
+			glfwMakeContextCurrent(window);
+			gladLoadGL(glfwGetProcAddress);
+
+			//set interval for buffer
+			glfwSwapInterval(1);
+
+			//allow Forward compatabilit with opengl
+			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+			//create camera
+			camera = new Camera(size.width,size.height,0,0);
+			//begin loop
 			update();
+			//close when loop closes
 			close();
 		}
 		void close(){
@@ -88,19 +104,8 @@ namespace exstar{
 
 			//setCallbacks for window
 			glfwSetKeyCallback(window, key_callback);
-
-			//show window
-			glfwMakeContextCurrent(window);
-			gladLoadGL(glfwGetProcAddress);
-
-			//set interval for buffer
-			glfwSwapInterval(1);
-
-			//allow Forward compatabilit with opengl
-			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
-			//create camera
-			camera = new Camera(size.width,size.height,0,0);
+			//seed random
+			srand(time(NULL));
 		}
 		void update(){
 			while (!glfwWindowShouldClose(window))
