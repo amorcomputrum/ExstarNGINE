@@ -1,5 +1,6 @@
 #define GLFW_INCLUDE_NONE
 //include Libraries
+#include <gl.c>
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 #include <stb_image.h>
@@ -9,11 +10,11 @@
 #include <ostream>
 
 //include Exstar Files
-#include <Key.hpp>
-#include <Exceptions.hpp>
-#include <Camera.hpp>
-#include <Dimension.hpp>
-#include <ArrayList.hpp>
+#include <Exstar/Utils/Key.hpp>
+#include <Exstar/Utils/Exceptions.hpp>
+#include <Exstar/Camera.hpp>
+#include <Exstar/Utils/Dimension.hpp>
+#include <Exstar/Utils/ArrayList.hpp>
 
 namespace exstar{
 	class Window {
