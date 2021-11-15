@@ -9,11 +9,19 @@
 //include C++ libraries
 #include <iostream>
 #include <ostream>
+#include <thread>
+#include <chrono>
+#if __WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
 
 //include Exstar Files
 #include <Exstar/Utils/Math.hpp>
 #include <Exstar/Utils/Key.hpp>
 #include <Exstar/Utils/Exceptions.hpp>
+#include <Exstar/Clock.hpp>
 #include <Exstar/Utils/Dimension.hpp>
 #include <Exstar/Camera.hpp>
 #include <Exstar/Utils/ArrayList.hpp>
@@ -29,6 +37,8 @@ namespace exstar{
 		}
 		//-------------Virtual Functions-------------
 		virtual void render(Camera camera){
+		}
+		virtual void Update(double deltaTime){
 		}
 		virtual void onResize(int w,int h){
 		}
@@ -48,6 +58,9 @@ namespace exstar{
 			//allow Forward compatabilit with opengl
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
+			//create clock
+			clock = new Clock();
+
 			//create camera
 			camera = new Camera(size.width,size.height,0,0);
 			//begin loop
@@ -58,6 +71,9 @@ namespace exstar{
 		void close(){
 			glfwDestroyWindow(window);
 			glfwTerminate();
+		}
+		void setFramerate(int frameRate){
+			this->frameRate = frameRate;
 		}
 		void setIcon(const char* path){
 			GLFWimage images[1];
@@ -75,6 +91,36 @@ namespace exstar{
 			size = Dimension{width,height};
 			glfwSetWindowSize(window,width,height);
 		}
+		void setAdjustCameraOnResize(bool state){
+			adjustCameraOnResize = state;
+		}
+		const char* getTitle(){
+			return title;
+		}
+		bool isKeyPressed(int key){
+			for(int i = 0; i < keysPressed->size;i++){
+				if(key == keysPressed->get(i)){
+					return true;
+				}
+			}
+			return false;
+		}
+		Dimension getSize(){
+			return size;
+		}
+		double DeltaTime(){
+			return this->deltaTime;
+		}
+		int getWidth(){
+			return size.width;
+		}
+		int getHeight(){
+			return size.height;
+		}
+		bool getAdjustCameraOnResize(){
+			return adjustCameraOnResize;
+		}
+
 	private:
 		static ArrayList<int>* keysPressed;
 		ArrayList<int>* keysPressedCopy = new ArrayList<int>();
@@ -82,7 +128,10 @@ namespace exstar{
 		const char* title;
 		GLFWwindow* window;
 		Camera* camera;
-		bool adjustCameraOnResize = false;
+		Clock* clock;
+		double deltaTime = 0.0;
+		int frameRate = 16;
+		bool adjustCameraOnResize = true;
 		//-------------Private Functions-------------
 		void initGL(){
 			//set error callback
@@ -108,17 +157,25 @@ namespace exstar{
 			srand(time(NULL));
 		}
 		void update(){
+			double lastTime = glfwGetTime();
 			while (!glfwWindowShouldClose(window))
 			{
 			    //Just keep on Swimming
+			    clock->start();
 			    //clear frame
 			    glViewport(0, 0, size.width, size.height);
 			    glClear(GL_COLOR_BUFFER_BIT);
+			    Update(this->deltaTime);
 			    render((*camera));
-
 			    //display frame
 				glfwSwapBuffers(window);
 
+				while(glfwGetTime() < lastTime + 1.0/frameRate){
+					usleep(1000);
+				}
+				lastTime+=1.0/frameRate;
+				this->deltaTime = clock->getTime()/1000;
+				
 				//check if resized
 				int w,h;
 				glfwGetFramebufferSize(window, &w, &h);
