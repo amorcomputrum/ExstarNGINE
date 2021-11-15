@@ -1,0 +1,9 @@
+{
+        "libPrefixes":["-lglfw"],
+        "libs":[],
+        "Include":[
+                "include/"
+        ],
+        "file":"main.cpp"
+}
+
