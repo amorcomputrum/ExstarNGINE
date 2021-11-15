@@ -27,12 +27,10 @@ namespace exstar{
 		virtual void render(Camera camera){
 		}
 		virtual void onResize(int w,int h){
-
 		}
 		virtual void keyPressed(int key){
 		}
 		virtual void keyReleased(int key){
-
 		}
 		//-------------Public Functions-------------
 		void run(){
