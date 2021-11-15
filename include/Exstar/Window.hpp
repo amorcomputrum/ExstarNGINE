@@ -1,5 +1,6 @@
 #define GLFW_INCLUDE_NONE
 //include Libraries
+#include <gl.c>
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 #include <stb_image.h>

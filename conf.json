@@ -1,12 +1,9 @@
 {
-        "libPrefixes":[
-                "-lglfw"
-        ],
+        "libPrefixes":["-lglfw"],
         "libs":[],
         "Include":[
-                "include/",
-                "ImportedLibraries/"
+                "include/"
         ],
-        "file":"main.cpp gl.c"
+        "file":"main.cpp"
 }
 
