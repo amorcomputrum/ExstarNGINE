@@ -25,11 +25,12 @@
 #include <Exstar/Utils/Dimension.hpp>
 #include <Exstar/Camera.hpp>
 #include <Exstar/Utils/ArrayList.hpp>
+#include <Exstar/Utils/Point.hpp>
+#include <Exstar/Utils/MouseEvent.hpp>
 
 namespace exstar{
 	class Window {
 	public:
-		
 		Window(int width,int height,const char* title){
 			size = Dimension{width,height};
 			this->title = title;
@@ -45,6 +46,10 @@ namespace exstar{
 		virtual void keyPressed(int key){
 		}
 		virtual void keyReleased(int key){
+		}
+		virtual void mousePressed(MouseEvent* event){
+		}
+		virtual void mouseReleased(MouseEvent* event){
 		}
 		//-------------Public Functions-------------
 		void run(){
@@ -108,8 +113,23 @@ namespace exstar{
 		Dimension getSize(){
 			return size;
 		}
+		Point getMousePos(){
+			double x,y;
+			glfwGetCursorPos(window,&x,&y);
+			return Point{(int)x,(int)y};
+		}
 		double DeltaTime(){
 			return this->deltaTime;
+		}
+		int getMouseX(){
+			double x,y;
+			glfwGetCursorPos(window,&x,&y);
+			return (int)x;
+		}
+		int getMouseY(){
+			double x,y;
+			glfwGetCursorPos(window,&x,&y);
+			return (int)y;
 		}
 		int getWidth(){
 			return size.width;
@@ -124,7 +144,10 @@ namespace exstar{
 	private:
 		static ArrayList<int>* keysPressed;
 		ArrayList<int>* keysPressedCopy = new ArrayList<int>();
+		static ArrayList<MouseEvent*>* mouseEvents;
+		ArrayList<MouseEvent*>* mouseEventsCopy = new ArrayList<MouseEvent*>();
 		Dimension size;
+		Point mousePos = Point{0,0};
 		const char* title;
 		GLFWwindow* window;
 		Camera* camera;
@@ -153,6 +176,7 @@ namespace exstar{
 
 			//setCallbacks for window
 			glfwSetKeyCallback(window, key_callback);
+			glfwSetMouseButtonCallback(window, mouse_callback);
 			//seed random
 			srand(time(NULL));
 		}
@@ -216,6 +240,43 @@ namespace exstar{
 						keysPressedCopy->remove(kpc);
 					}
 				}
+
+				//check if a Mouse pressed
+				for(int mp = 0; mp < mouseEvents->size; mp++){
+					bool found = false;
+					for(int mpc = 0; mpc < mouseEventsCopy->size; mpc++){
+						if(mouseEventsCopy->get(mpc) == mouseEvents->get(mp)){
+							//Mouse was pressed
+							found = true;
+						}
+					}
+					if(!found){
+						//add mouseEvent to copy
+						mouseEventsCopy->add(mouseEvents->get(mp));
+						//call mousePressed event
+						mouseEvents->get(mp)->pos.x+=camera->getX();
+						mouseEvents->get(mp)->pos.y+=camera->getY();
+						mousePressed(mouseEvents->get(mp));
+					}
+				}
+
+				//check if a Mouse released
+				for(int mpc = 0; mpc < mouseEventsCopy->size; mpc++){
+					bool found = false;
+					for(int mp = 0; mp < mouseEvents->size; mp++){
+						if(mouseEventsCopy->get(mpc) == mouseEvents->get(mp)){
+							//mouseEvent exists already
+							found = true;
+						}
+					}
+					if(!found){
+						//call mouseReleased event
+						mouseReleased(mouseEventsCopy->get(mpc));
+						//remove mouseEvent from copy
+						mouseEventsCopy->remove(mpc);
+					}
+				}
+
 				//get all events
 				glfwPollEvents();
 			}
@@ -239,6 +300,33 @@ namespace exstar{
 		static void error_callback(int error, const char* description)
 		{
 		    fprintf(stderr, "EXSTAR GL ERROR: %s\n", description);
+		}
+		static void mouse_callback(GLFWwindow* window,int button,int action,int mods){
+			if(action == GLFW_PRESS){
+				bool found = false;
+				// add to mouseEvents if not already there
+				for(int i = 0; i < mouseEvents->size; i++){
+					if(mouseEvents->get(i)->button == button){
+						found = true;
+						break;
+					}
+				}
+				if(!found){
+					double x,y;
+					glfwGetCursorPos(window,&x,&y);
+					mouseEvents->add(new MouseEvent{button,Point{(int)x,(int)y}});
+				}
+			}
+			// was event a release
+			else if(action == GLFW_RELEASE){
+				//remove from mouseEvents
+				for(int i = 0; i < mouseEvents->size; i++){
+					if(mouseEvents->get(i)->button == button){
+						mouseEvents->remove(i);
+						break;
+					}
+				}
+			}
 		}
 		static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
 			//was event a press
@@ -269,4 +357,6 @@ namespace exstar{
 	};
 	//initialize keysPressed
 	ArrayList<int>* Window::keysPressed = new ArrayList<int>();
+	//initialize MouseEvents
+	ArrayList<MouseEvent*>* Window::mouseEvents = new ArrayList<MouseEvent*>();
 }
