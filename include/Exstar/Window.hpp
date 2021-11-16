@@ -32,7 +32,7 @@ namespace exstar{
 	class Window {
 	public:
 		Window(int width,int height,const char* title){
-			size = Dimension{width,height};
+			size = exstar::Dimension{width,height};
 			this->title = title;
 			initGL();
 		}
@@ -64,10 +64,10 @@ namespace exstar{
 			glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 			//create clock
-			clock = new Clock();
+			clock = new exstar::Clock();
 
 			//create camera
-			camera = new Camera(size.width,size.height,0,0);
+			camera = new exstar::Camera(size.width,size.height,0,0);
 			//begin loop
 			update();
 			//close when loop closes
@@ -93,7 +93,7 @@ namespace exstar{
 			glfwSetWindowSizeLimits(window,minW,minH,maxW,maxH);
 		}
 		void setSize(int width, int height){
-			size = Dimension{width,height};
+			size = exstar::Dimension{width,height};
 			glfwSetWindowSize(window,width,height);
 		}
 		void setAdjustCameraOnResize(bool state){
@@ -110,13 +110,13 @@ namespace exstar{
 			}
 			return false;
 		}
-		Dimension getSize(){
+		exstar::Dimension getSize(){
 			return size;
 		}
-		Point getMousePos(){
+		exstar::Point getMousePos(){
 			double x,y;
 			glfwGetCursorPos(window,&x,&y);
-			return Point{(int)x,(int)y};
+			return exstar::Point{(int)x,(int)y};
 		}
 		double DeltaTime(){
 			return this->deltaTime;
@@ -144,14 +144,14 @@ namespace exstar{
 	private:
 		static ArrayList<int>* keysPressed;
 		ArrayList<int>* keysPressedCopy = new ArrayList<int>();
-		static ArrayList<MouseEvent*>* mouseEvents;
-		ArrayList<MouseEvent*>* mouseEventsCopy = new ArrayList<MouseEvent*>();
-		Dimension size;
-		Point mousePos = Point{0,0};
+		static ArrayList<exstar::MouseEvent*>* mouseEvents;
+		ArrayList<exstar::MouseEvent*>* mouseEventsCopy = new ArrayList<exstar::MouseEvent*>();
+		exstar::Dimension size;
+		exstar::Point mousePos = exstar::Point{0,0};
 		const char* title;
 		GLFWwindow* window;
-		Camera* camera;
-		Clock* clock;
+		exstar::Camera* camera;
+		exstar::Clock* clock;
 		double deltaTime = 0.0;
 		int frameRate = 16;
 		bool adjustCameraOnResize = true;
@@ -185,12 +185,12 @@ namespace exstar{
 			while (!glfwWindowShouldClose(window))
 			{
 			    //Just keep on Swimming
-			    clock->start();
+				clock->start();
 			    //clear frame
-			    glViewport(0, 0, size.width, size.height);
-			    glClear(GL_COLOR_BUFFER_BIT);
-			    Update(this->deltaTime);
-			    render((*camera));
+				glViewport(0, 0, size.width, size.height);
+				glClear(GL_COLOR_BUFFER_BIT);
+				Update(this->deltaTime);
+				render((*camera));
 			    //display frame
 				glfwSwapBuffers(window);
 
@@ -291,7 +291,7 @@ namespace exstar{
 				camera->resize(width,height);
 			}
 			//Update size
-			size = Dimension{width,height};
+			size = exstar::Dimension{width,height};
 			//call onResize event
 			onResize(width,height);
 		}
@@ -299,7 +299,7 @@ namespace exstar{
 		//-------------Static Functions-------------
 		static void error_callback(int error, const char* description)
 		{
-		    fprintf(stderr, "EXSTAR GL ERROR: %s\n", description);
+			fprintf(stderr, "EXSTAR GL ERROR: %s\n", description);
 		}
 		static void mouse_callback(GLFWwindow* window,int button,int action,int mods){
 			if(action == GLFW_PRESS){
@@ -314,7 +314,7 @@ namespace exstar{
 				if(!found){
 					double x,y;
 					glfwGetCursorPos(window,&x,&y);
-					mouseEvents->add(new MouseEvent{button,Point{(int)x,(int)y}});
+					mouseEvents->add(new exstar::MouseEvent{button,exstar::Point{(int)x,(int)y}});
 				}
 			}
 			// was event a release
@@ -356,7 +356,7 @@ namespace exstar{
 		}
 	};
 	//initialize keysPressed
-	ArrayList<int>* Window::keysPressed = new ArrayList<int>();
+	ArrayList<int>* exstar::Window::keysPressed = new ArrayList<int>();
 	//initialize MouseEvents
-	ArrayList<MouseEvent*>* Window::mouseEvents = new ArrayList<MouseEvent*>();
+	ArrayList<exstar::MouseEvent*>* exstar::Window::mouseEvents = new ArrayList<exstar::MouseEvent*>();
 }
