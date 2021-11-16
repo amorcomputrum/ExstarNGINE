@@ -1,6 +1,8 @@
 {
-        "libPrefixes":["-lglfw"],
-        "libs":[],
+        "libPrefixes":["-ltest"],
+        "libs":[
+                "lib/"
+        ],
         "Include":[
                 "include/"
         ],

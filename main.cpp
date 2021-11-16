@@ -1,4 +1,4 @@
-#include <Exstar/Window.hpp>
+#include <Exstar/Window.h>
 
 
 int main()
