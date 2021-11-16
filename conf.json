@@ -1,5 +1,5 @@
 {
-        "libPrefixes":["-ltest"],
+        "libPrefixes":["-lexstar","-lglfw"],
         "libs":[
                 "lib/"
         ],
