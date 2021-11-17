@@ -3,6 +3,7 @@
 #include <gl.c>
 #include "Exstar/Window.h"
 
+//Window.h
 exstar::Window::Window(int width,int height,const char* title){
 	size = exstar::Dimension{width,height};
 	this->title = title;
@@ -116,7 +117,8 @@ int exstar::Window::getHeight(){
 bool exstar::Window::getAdjustCameraOnResize(){
 	return adjustCameraOnResize;
 }
-//PRIVATE
+//PRIVATE 
+//exstar::Window Vars initialize
 exstar::ArrayList<int>* exstar::Window::keysPressed = new exstar::ArrayList<int>();
 exstar::ArrayList<exstar::MouseEvent*>* exstar::Window::mouseEvents = new exstar::ArrayList<exstar::MouseEvent*>();
 
@@ -261,7 +263,7 @@ void exstar::Window::resizeEvent(int width, int height){
 	//call onResize event
 	onResize(width,height);
 }
-
+//Static
 void exstar::Window::error_callback(int error, const char* description){
 	fprintf(stderr, "EXSTAR GL ERROR: %s\n", description);
 }
@@ -318,7 +320,8 @@ void exstar::Window::key_callback(GLFWwindow* window, int key, int scancode, int
 		}
 	}
 }
-
+//Public
+//Clock.h
 exstar::Clock::Clock(){
 	start();
 }
@@ -328,7 +331,7 @@ void exstar::Clock::start(){
 double exstar::Clock::getTime(){
 	return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now()-time).count();
 }
-
+//Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){
 	this->width = width;
 	this->height = height;
@@ -362,6 +365,7 @@ int exstar::Camera::getX(){
 int exstar::Camera::getY(){
 	return y;
 }
+//Utils/ArrayList.h
 template<class T>
 exstar::ArrayList<T>::ArrayList(){
 	size = 0;
@@ -390,12 +394,12 @@ T exstar::ArrayList<T>::get(int g){
 		throw std::invalid_argument("Out of Range");
 	}
 };
-
+//Utils/Exceptions
 exstar::exception::exception(std::string message){
 	std::cerr << message << std::endl;
 }
 
-
+//Utils/Math.h
 double exstar::Distance(double x1,double y1,double x2, double y2){
 	return sqrt(pow(x2-x1,2) + pow(y2-y1,2));
 }
@@ -403,7 +407,7 @@ double exstar::Distance(double x1,double y1,double x2, double y2){
 int exstar::Random(int min,int max){
 	return rand() % (max - min +1)+min;
 }
-
+//Utils/Vector2d.h
 exstar::Vector2d::Vector2d(int x,int y){
 	data[0] = x;
 	data[1] = y;
@@ -456,4 +460,3 @@ int exstar::Vector2d::getX(){
 int exstar::Vector2d::getY(){
 	return data[1];
 }
-
