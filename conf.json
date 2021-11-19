@@ -4,7 +4,6 @@
                 "lib/"
         ],
         "Include":[
-                "include/"
         ],
         "file":"main.cpp"
 }
