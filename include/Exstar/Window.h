@@ -1,8 +1,8 @@
 #define GLFW_INCLUDE_NONE
 //#define STB_IMAGE_IMPLEMENTATION
 //include Libraries
-#include "GLFW/glfw3.h"
-#include "glad/gl.h"
+#include "exstarGLFW/glfw3.h"
+#include "exstarglad/gl.h"
 #include "stb_image.h"
 
 //include C++ libraries
@@ -25,9 +25,11 @@
 #include "Exstar/Utils/Dimension.h"
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Utils/Point.h"
+#include "Exstar/Sprite/Image_Handler.h"
+#include "Sprite/Sprite.h"
 #include "Exstar/Camera.h"
 #include "Exstar/Utils/MouseEvent.h"
-#include "Exstar/Sprite/Image_Handler.h"
+
 
 namespace exstar{
 	class Window {

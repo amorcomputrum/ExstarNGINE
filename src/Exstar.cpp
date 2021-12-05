@@ -9,7 +9,7 @@ exstar::Window::Window(int width,int height,const char* title){
 	this->title = title;
 	initGL();
 }
-void exstar::Window::render(Camera camera){}
+void exstar::Window::render(exstar::Camera camera){}
 void exstar::Window::Update(double deltaTime){}
 void exstar::Window::onResize(int w,int h){}
 void exstar::Window::keyPressed(int key){}
@@ -333,11 +333,11 @@ double exstar::Clock::getTime(){
 }
 //Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){
-	pos = Point{x,y};
-	size = Dimension{width,height};
+	pos = exstar::Point{x,y};
+	size = exstar::Dimension{width,height};
 }
 void exstar::Camera::resize(int width,int height){
-	size = Dimension{width,height};
+	size = exstar::Dimension{width,height};
 }
 void exstar::Camera::move(int x,int y){
 	pos.x+=x;
@@ -347,12 +347,7 @@ void exstar::Camera::set(int x,int y){
 	pos.x += pos.x-x;
 	pos.y += pos.y-y;
 }
-void exstar::Camera::drawSprite(Sprite* sprite){
-	unsigned int texture;
-	glGenTextures(1,&texture);
-	glBindTexture(GL_TEXTURE_2D,texture);
-	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,sprite->getWidth(),sprite->getHeight(),GL_RGBA,GL_UNSIGNED_BYTE,sprite->getImage());
-	glGerateMipmap(GL_TEXTURE_2D);
+void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 }
 exstar::Dimension exstar::Camera::getSize(){
 	return size;
@@ -372,42 +367,47 @@ int exstar::Camera::getY(){
 //Sprite/Image_Handler.h
 int exstar::addImage(const char* file,int w,int h){
 	//load data
-	unsigned char * data = stbi_load(file,&this.w,&this.h,4,STBI_rgb_alpha);
+	int type = 4;
+	unsigned char * data = stbi_load(file,&w,&h,&type,STBI_rgb_alpha);
 	if(data == nullptr){
 		throw exstar::exception("Image is not in RGBA format");
 	}
 	//check if already in images
-	for(int i = 0; i < exstar::images->size; i++){
-		if(exstar::images->get(i) == data){
-			exstar::numUsers->replace(i,exstar::numUsers->get()+1);
+	for(int i = 0; i < exstar::images_size; i++){
+		if(exstar::images[i] == data){
+			exstar::numUsers->replace(i,exstar::numUsers->get(i)+1);
 			return i;
 		}
 	}
-	exstar::images->add(data);
+	exstar::images.push_back(data);
+	exstar::images_size++;
 	exstar::numUsers->add(1);
-	return images->size-1;
+	return exstar::images_size-1;
 }
 
 void exstar::removeImage(int index){
-	exstar::images->replace(index,exstar::images->get(index)-1);
 	if(exstar::numUsers->get(index) <= 0){
-		exstar::images->remove(index);
+		stbi_image_free(exstar::images[index]);
+		exstar::images.erase(exstar::images.begin()+index);
+		exstar::numUsers->remove(index);
 	}
 }
 
-//Sprite.h
-exstar::Sprite(const char* file,int w,int h){
+//Sprite/Sprite.h
+exstar::Sprite::Sprite(const char* file,int w,int h){
 	pos = Point{0,0};
 	size = Dimension{w,h};
-	index = exstar::addImage(file);
+	file = file;
+	fileIndex = exstar::addImage(file,w,h);
 }
-exstar::Sprite(const char* file,int x,int y,int w,int h){
+exstar::Sprite::Sprite(const char* file,int x,int y,int w,int h){
 	pos = Point{x,y};
 	size = Dimension{w,h};
-	index = exstar::addImage(file);
+	file = file;
+	fileIndex = exstar::addImage(file,w,h);
 }
-~exstar::Sprite(){
-	removeImage(index);
+exstar::Sprite::~Sprite(){
+	removeImage(fileIndex);
 }
 int exstar::Sprite::getX(){
 	return pos.x;
@@ -415,7 +415,7 @@ int exstar::Sprite::getX(){
 int exstar::Sprite::getY(){
 	return pos.y;
 }
-Point exstar::Sprite::getPoint(){
+exstar::Point exstar::Sprite::getPoint(){
 	return pos;
 }
 int exstar::Sprite::getWidth(){
@@ -424,11 +424,11 @@ int exstar::Sprite::getWidth(){
 int exstar::Sprite::getHeight(){
 	return size.height;
 }
-Dimension exstar::Sprite::getSize(){
+exstar::Dimension exstar::Sprite::getSize(){
 	return size;
 }
 unsigned char * exstar::Sprite::getImage(){
-	return exstar::images->get(index);
+	return exstar::images[fileIndex];
 }
 
 //Utils/ArrayList.h

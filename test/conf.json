@@ -1,7 +1,7 @@
 {
         "libPrefixes":["-lExstar","-lglfw"],
         "libs":[
-                "lib/"
+                "../lib/"
         ],
         "Include":[
                 "include/"
