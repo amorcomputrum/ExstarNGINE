@@ -391,7 +391,9 @@ int exstar::addImage(const char* file,int w,int h){
 void exstar::removeImage(int index){
 	exstar::images->replace(index,exstar::images->get(index)-1);
 	if(exstar::numUsers->get(index) <= 0){
+		stbi_image_free(exstar::images->get(i));
 		exstar::images->remove(index);
+		exstar::numUsers->remove(index);
 	}
 }
 
