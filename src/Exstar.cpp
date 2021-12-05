@@ -365,6 +365,51 @@ int exstar::Camera::getX(){
 int exstar::Camera::getY(){
 	return y;
 }
+
+int exstar::addImage(const char* file,int w,int h){
+	//load data
+	unsigned char * data = stbi_load(file,&this.w,&this.h,4,STBI_rgb_alpha);
+	if(data == nullptr){
+		throw exstar::exception("Image is not in RGBA format");
+	}
+	//check if already in images
+	for(int i = 0; i < exstar::images->size; i++){
+		if(exstar::images->get(i) == data){
+			exstar::numUsers->replace(i,exstar::numUsers->get()+1);
+			return i;
+		}
+	}
+	exstar::images->add(data);
+	exstar::numUsers->add(1);
+	return images->size-1;
+}
+
+void exstar::removeImage(int index){
+	exstar::images->replace(index,exstar::images->get(index)-1);
+	if(exstar::numUsers->get(index) <= 0){
+		exstar::images->remove(index);
+	}
+}
+
+//Sprite.h
+exstar::Sprite(const char* file,int w,int h){
+	this.x = 0;
+	this.y = 0;
+	this.w = w;
+	this.h = h;
+	index = exstar::addImage(file);
+}
+exstar::Sprite(const char* file,int x,int y,int w,int h){
+	this.x = x;
+	this.y = y;
+	this.w = w;
+	this.h = h;
+	index = exstar::addImage(file);
+}
+~exstar::Sprite(){
+	removeImage(index);
+}
+
 //Utils/ArrayList.h
 template<class T>
 exstar::ArrayList<T>::ArrayList(){
