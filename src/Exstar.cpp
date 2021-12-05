@@ -333,39 +333,43 @@ double exstar::Clock::getTime(){
 }
 //Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){
-	this->width = width;
-	this->height = height;
-	this->x = x;
-	this->y = y;
+	pos = Point{x,y};
+	size = Dimension{width,height};
 }
 void exstar::Camera::resize(int width,int height){
-	this->width = width;
-	this->height = height;
+	size = Dimension{width,height};
 }
 void exstar::Camera::move(int x,int y){
-	this->x+=x;
-	this->y+=y;
+	pos.x+=x;
+	pos.y+=y;
 }
 void exstar::Camera::set(int x,int y){
-	this->x += this->x-x;
-	this->y += this->y-y;
+	pos.x += pos.x-x;
+	pos.y += pos.y-y;
+}
+void exstar::Camera::drawSprite(Sprite* sprite){
+	unsigned int texture;
+	glGenTextures(1,&texture);
+	glBindTexture(GL_TEXTURE_2D,texture);
+	glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,sprite->getWidth(),sprite->getHeight(),GL_RGBA,GL_UNSIGNED_BYTE,sprite->getImage());
+	glGerateMipmap(GL_TEXTURE_2D);
 }
 exstar::Dimension exstar::Camera::getSize(){
-	return Dimension{this->width,this->height};
+	return size;
 }
 int exstar::Camera::getWidth(){
-	return this->width;
+	return size.width;
 }
 int exstar::Camera::getHeight(){
-	return this->height;
+	return size.height;
 }
 int exstar::Camera::getX(){
-	return x;
+	return pos.x;
 }
 int exstar::Camera::getY(){
-	return y;
+	return pos.y;
 }
-
+//Sprite/Image_Handler.h
 int exstar::addImage(const char* file,int w,int h){
 	//load data
 	unsigned char * data = stbi_load(file,&this.w,&this.h,4,STBI_rgb_alpha);
@@ -393,21 +397,38 @@ void exstar::removeImage(int index){
 
 //Sprite.h
 exstar::Sprite(const char* file,int w,int h){
-	this.x = 0;
-	this.y = 0;
-	this.w = w;
-	this.h = h;
+	pos = Point{0,0};
+	size = Dimension{w,h};
 	index = exstar::addImage(file);
 }
 exstar::Sprite(const char* file,int x,int y,int w,int h){
-	this.x = x;
-	this.y = y;
-	this.w = w;
-	this.h = h;
+	pos = Point{x,y};
+	size = Dimension{w,h};
 	index = exstar::addImage(file);
 }
 ~exstar::Sprite(){
 	removeImage(index);
+}
+int exstar::Sprite::getX(){
+	return pos.x;
+}
+int exstar::Sprite::getY(){
+	return pos.y;
+}
+Point exstar::Sprite::getPoint(){
+	return pos;
+}
+int exstar::Sprite::getWidth(){
+	return size.width;
+}
+int exstar::Sprite::getHeight(){
+	return size.height;
+}
+Dimension exstar::Sprite::getSize(){
+	return size;
+}
+unsigned char * exstar::Sprite::getImage(){
+	return exstar::images->get(index);
 }
 
 //Utils/ArrayList.h

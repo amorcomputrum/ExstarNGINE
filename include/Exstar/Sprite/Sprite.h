@@ -11,10 +11,12 @@ namespace exstar{
 		int getWidth();
 		int getHeight();
 		Dimension getSize();
+		unsigned char * getImage();
 	private:
 		int fileIndex;
 		std::string file;
-		int x,y,w,h;
+		Point pos;
+		Dimension size;
 
 	};
 }
