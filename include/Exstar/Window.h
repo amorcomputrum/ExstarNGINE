@@ -27,6 +27,7 @@
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Camera.h"
 #include "Exstar/Utils/MouseEvent.h"
+#include "Exstar/Sprite/Image_Handler.h"
 
 namespace exstar{
 	class Window {

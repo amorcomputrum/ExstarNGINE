@@ -12,7 +12,7 @@ namespace exstar{
 		int getHeight();
 		Dimension getSize();
 	private:
-		unsigned char * image;
+		int fileIndex;
 		std::string file;
 		int x,y,w,h;
 
