@@ -23,9 +23,9 @@
 #include "Exstar/Utils/Exceptions.h"
 #include "Exstar/Clock.h"
 #include "Exstar/Utils/Dimension.h"
-#include "Exstar/Camera.h"
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Utils/Point.h"
+#include "Exstar/Camera.h"
 #include "Exstar/Utils/MouseEvent.h"
 
 namespace exstar{

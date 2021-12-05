@@ -365,6 +365,28 @@ int exstar::Camera::getX(){
 int exstar::Camera::getY(){
 	return y;
 }
+//Sprite.h
+exstar::Sprite(const char* file,int w,int h){
+	this.x = 0;
+	this.y = 0;
+	this.w = w;
+	this.h = h;
+	image = stbi_load(file,&this.w,&this.h,4,STBI_rgb_alpha);
+	if(image == nullptr){
+		throw exstar::exception("Image is not in RGBA format");
+	}
+}
+exstar::Sprite(const char* file,int x,int y,int w,int h){
+	this.x = x;
+	this.y = y;
+	this.w = w;
+	this.h = h;
+	image= stbi_load(file,&this.w,&this.h,4,STBI_rgb_alpha);
+	if(image == nullptr){
+		throw exstar::exception("Image is not in RGBA format");
+	}
+}
+
 //Utils/ArrayList.h
 template<class T>
 exstar::ArrayList<T>::ArrayList(){
