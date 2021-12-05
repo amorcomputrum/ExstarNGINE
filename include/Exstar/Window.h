@@ -25,16 +25,18 @@
 #include "Exstar/Utils/Dimension.h"
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Utils/Point.h"
+#include "Exstar/Sprite/Image_Handler.h"
+#include "Sprite/Sprite.h"
 #include "Exstar/Camera.h"
 #include "Exstar/Utils/MouseEvent.h"
-#include "Exstar/Sprite/Image_Handler.h"
+
 
 namespace exstar{
 	class Window {
 	public:
 		Window(int width,int height,const char* title);
 		//-------------Virtual Functions-------------
-		virtual void render(Camera camera);
+		virtual void render(Camera* camera);
 		virtual void Update(double deltaTime);
 		virtual void onResize(int w,int h);
 		virtual void keyPressed(int key);

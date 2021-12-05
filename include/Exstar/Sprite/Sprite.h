@@ -3,20 +3,20 @@ namespace exstar{
 	{
 	public:
 		Sprite(const char* file,int w,int h);
-		Sprite(const char* file,int x,int y);
+		Sprite(const char* file,int x,int y,int w,int h);
 		~Sprite();
 		int getX();
 		int getY();
-		Point getPoint();
+		exstar::Point getPoint();
 		int getWidth();
 		int getHeight();
-		Dimension getSize();
+		exstar::Dimension getSize();
 		unsigned char * getImage();
 	private:
 		int fileIndex;
-		std::string file;
-		Point pos;
-		Dimension size;
+		const char* file;
+		exstar::Point pos;
+		exstar::Dimension size;
 
 	};
 }
