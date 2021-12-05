@@ -1,8 +1,8 @@
 #define GLFW_INCLUDE_NONE
 //#define STB_IMAGE_IMPLEMENTATION
 //include Libraries
-#include "GLFW/glfw3.h"
-#include "glad/gl.h"
+#include "exstarGLFW/glfw3.h"
+#include "exstarglad/gl.h"
 #include "stb_image.h"
 
 //include C++ libraries
@@ -36,7 +36,7 @@ namespace exstar{
 	public:
 		Window(int width,int height,const char* title);
 		//-------------Virtual Functions-------------
-		virtual void render(Camera* camera);
+		virtual void render(Camera camera);
 		virtual void Update(double deltaTime);
 		virtual void onResize(int w,int h);
 		virtual void keyPressed(int key);

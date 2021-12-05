@@ -9,7 +9,7 @@ exstar::Window::Window(int width,int height,const char* title){
 	this->title = title;
 	initGL();
 }
-void exstar::Window::render(exstar::Camera* camera){}
+void exstar::Window::render(exstar::Camera camera){}
 void exstar::Window::Update(double deltaTime){}
 void exstar::Window::onResize(int w,int h){}
 void exstar::Window::keyPressed(int key){}
@@ -157,7 +157,7 @@ void exstar::Window::update(){
 		glViewport(0, 0, size.width, size.height);
 		glClear(GL_COLOR_BUFFER_BIT);
 		Update(this->deltaTime);
-		render(camera);
+		render((*camera));
 	    //display frame
 		glfwSwapBuffers(window);
 
@@ -348,7 +348,6 @@ void exstar::Camera::set(int x,int y){
 	pos.y += pos.y-y;
 }
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
-
 }
 exstar::Dimension exstar::Camera::getSize(){
 	return size;

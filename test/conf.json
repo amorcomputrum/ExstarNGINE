@@ -1,0 +1,11 @@
+{
+        "libPrefixes":["-lExstar","-lglfw"],
+        "libs":[
+                "../lib/"
+        ],
+        "Include":[
+                "include/"
+        ],
+        "file":"main.cpp"
+}
+
