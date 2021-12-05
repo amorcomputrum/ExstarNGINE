@@ -1,4 +1,4 @@
-#include "Sprite.h"
+#include "Sprite/Sprite.h"
 namespace exstar{
 	class Camera
 	{
@@ -7,7 +7,7 @@ namespace exstar{
 		void resize(int width,int height);
 		void move(int x,int y);
 		void set(int x,int y);
-		void drawSprite();
+		void drawSprite(Sprite* sprite);
 		void drawRect(int x,int y,int w,int h);
 		void drawEllipse(int x,int y,int rw,int rh);
 		void drawShape();
@@ -19,6 +19,7 @@ namespace exstar{
 
 
 	private:
-		int width,height,x,y;
+		Point pos;
+		Dimension size;
 	};
 }
