@@ -69,6 +69,12 @@ void exstar::Window::setSize(int width, int height){
 void exstar::Window::setAdjustCameraOnResize(bool state){
 	adjustCameraOnResize = state;
 }
+void exstar::Window::setBackgroundColor(double r,double g,double b){
+	backgroundColor[0] = r;
+	backgroundColor[1] = g;
+	backgroundColor[2] = b;
+	backgroundColor[3] = 1.0f;
+}
 const char* exstar::Window::getTitle(){
 	return title;
 }
@@ -132,7 +138,7 @@ void exstar::Window::initGL(){
 	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 	//init window
 	window = glfwCreateWindow(size.width,size.height,title,NULL,NULL);
@@ -155,6 +161,7 @@ void exstar::Window::update(){
 		clock->start();
 	    //clear frame
 		glViewport(0, 0, size.width, size.height);
+		glClearColor((float)backgroundColor[0],(float)backgroundColor[1],(float)backgroundColor[2],(float)backgroundColor[3]);
 		glClear(GL_COLOR_BUFFER_BIT);
 		Update(this->deltaTime);
 		render((*camera));
