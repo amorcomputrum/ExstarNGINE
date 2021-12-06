@@ -52,6 +52,7 @@ namespace exstar{
 		void setSizeLimits(int minW,int minH,int maxW,int maxH);
 		void setSize(int width, int height);
 		void setAdjustCameraOnResize(bool state);
+		void setBackgroundColor(double r,double g,double b);
 		const char* getTitle();
 		bool isKeyPressed(int key);
 		exstar::Dimension getSize();
@@ -76,6 +77,7 @@ namespace exstar{
 		GLFWwindow* window;
 		exstar::Camera* camera;
 		exstar::Clock* clock;
+		double backgroundColor[4];
 
 		//-------------Private Functions-------------
 		void initGL();
