@@ -53,6 +53,8 @@ namespace exstar{
 		void setSize(int width, int height);
 		void setAdjustCameraOnResize(bool state);
 		void setBackgroundColor(double r,double g,double b);
+		void moveCamera(int x,int y);
+		void setCamera(int x,int y);
 		const char* getTitle();
 		bool isKeyPressed(int key);
 		exstar::Dimension getSize();
