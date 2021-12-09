@@ -6,12 +6,14 @@ namespace exstar{
 		Sprite(const char* file,int x,int y);
 		~Sprite();
 		void resize(int width,int height);
+		void resize(exstar::Dimension change);
 		int getTextureWidth();
 		int getTextureHeight();
+		exstar::Dimension getTextureSize();
 		int getWidth();
 		int getHeight();
-		int getType();
 		exstar::Dimension getSize();
+		int getType();
 		unsigned char * getImage();
 	private:
 		int fileIndex;

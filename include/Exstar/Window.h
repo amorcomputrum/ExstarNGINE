@@ -38,7 +38,7 @@ namespace exstar{
 		//-------------Virtual Functions-------------
 		virtual void render(Camera camera);
 		virtual void Update(double deltaTime);
-		virtual void onResize(int w,int h);
+		virtual void onResize(exstar::Dimension change);
 		virtual void keyPressed(int key);
 		virtual void keyReleased(int key);
 		virtual void mousePressed(MouseEvent* event);
@@ -51,10 +51,13 @@ namespace exstar{
 		void setTitle(const char* title);
 		void setSizeLimits(int minW,int minH,int maxW,int maxH);
 		void setSize(int width, int height);
+		void setSize(exstar::Dimension size);
 		void setAdjustCameraOnResize(bool state);
 		void setBackgroundColor(double r,double g,double b);
 		void moveCamera(int x,int y);
+		void moveCamera(exstar::Vector2d distance);
 		void setCamera(int x,int y);
+		void setCamera(exstar::Point pos);
 		const char* getTitle();
 		bool isKeyPressed(int key);
 		exstar::Dimension getSize();
