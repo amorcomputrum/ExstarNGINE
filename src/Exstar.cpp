@@ -9,6 +9,7 @@
 exstar::Window::Window(int width,int height,const char* title){
 	size = exstar::Dimension{width,height};
 	this->title = title;
+	camera = new exstar::Camera(size.width,size.height,0,0);
 	initGL();
 }
 void exstar::Window::render(exstar::Camera camera){}
@@ -32,8 +33,6 @@ void exstar::Window::run(){
 	//create clock
 	clock = new exstar::Clock();
 
-	//create camera
-	camera = new exstar::Camera(size.width,size.height,0,0);
 	//begin loop
 	update();
 	//close when loop closes
@@ -76,6 +75,12 @@ void exstar::Window::setBackgroundColor(double r,double g,double b){
 	backgroundColor[1] = g;
 	backgroundColor[2] = b;
 	backgroundColor[3] = 1.0f;
+}
+void exstar::Window::moveCamera(int x,int y){
+	camera->move(x,y);
+}
+void exstar::Window::setCamera(int x,int y){
+	camera->set(x,y);
 }
 const char* exstar::Window::getTitle(){
 	return title;
@@ -342,22 +347,22 @@ double exstar::Clock::getTime(){
 }
 //Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){
-	pos = exstar::Point{x,y};
-	size = exstar::Dimension{width,height};
+	pos = new exstar::Point{x,y};
+	size = new exstar::Dimension{width,height};
 }
 void exstar::Camera::resize(int width,int height){
-	size = exstar::Dimension{width,height};
+	size = new exstar::Dimension{width,height};
 }
 void exstar::Camera::move(int x,int y){
-	pos.x+=x;
-	pos.y+=y;
+	pos->x = pos->x+x;
+	pos->y = pos->y+y;
 }
 void exstar::Camera::set(int x,int y){
-	pos.x += pos.x-x;
-	pos.y += pos.y-y;
+	pos->x += pos->x-x;
+	pos->y += pos->y-y;
 }
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
-			glOrtho(0,size.width,0,size.height,-1,1);
+			glOrtho(0,size->width,0,size->height,-1,1);
 			const char* vertexShaderSource = "#version 330 core\n"
 											"layout (location = 0) in vec3 aPos;\n"
 											"layout (location = 1) in vec3 aColor;\n"
@@ -451,7 +456,7 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	    	glGenerateMipmap(GL_TEXTURE_2D);
 	    }
 	    glm::mat4 projection;
-	    projection = glm::ortho(0.0f,(float)size.width,(float)size.height,0.0f,-1.0f,1.0f);
+	    projection = glm::ortho(pos->x+0.0f,(float)size->width+pos->x,(float)size->height+pos->y,0.0f+pos->y,-1.0f,1.0f);
 	    glm::mat4 ModelMatrix(1.0f);
 	    ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
 	    ModelMatrix = glm::scale(ModelMatrix,glm::vec3(sprite->getWidth(),sprite->getHeight(),1.0f));
@@ -469,19 +474,19 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	    glDeleteBuffers(1, &EBO);
 }
 exstar::Dimension exstar::Camera::getSize(){
-	return size;
+	return *size;
 }
 int exstar::Camera::getWidth(){
-	return size.width;
+	return size->width;
 }
 int exstar::Camera::getHeight(){
-	return size.height;
+	return size->height;
 }
 int exstar::Camera::getX(){
-	return pos.x;
+	return pos->x;
 }
 int exstar::Camera::getY(){
-	return pos.y;
+	return pos->y;
 }
 //Sprite/Image_Handler.h
 int* exstar::addImage(const char* file){

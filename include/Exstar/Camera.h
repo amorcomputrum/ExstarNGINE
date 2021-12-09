@@ -19,7 +19,7 @@ namespace exstar{
 
 
 	private:
-		exstar::Point pos;
-		exstar::Dimension size;
+		exstar::Point* pos;
+		exstar::Dimension* size;
 	};
 }
