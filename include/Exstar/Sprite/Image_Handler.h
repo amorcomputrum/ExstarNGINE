@@ -1,7 +1,6 @@
 namespace exstar{
-	std::vector<unsigned char *> images;
-	int images_size = 0;
+	exstar::ArrayList<unsigned char *>* images = new exstar::ArrayList<unsigned char *>;
 	exstar::ArrayList<int>* numUsers = new exstar::ArrayList<int>;
-	int addImage(const char* file,int w,int h);
+	int* addImage(const char* file);
 	void removeImage(int index);
 }

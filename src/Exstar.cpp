@@ -1,6 +1,8 @@
 #define GLFW_INCLUDE_NONE
-#define STB_IMAGE_IMPLEMENTATION
 #include <gl.c>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "Exstar/Window.h"
 
 //Window.h
@@ -355,6 +357,116 @@ void exstar::Camera::set(int x,int y){
 	pos.y += pos.y-y;
 }
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
+			glOrtho(0,size.width,0,size.height,-1,1);
+			const char* vertexShaderSource = "#version 330 core\n"
+											"layout (location = 0) in vec3 aPos;\n"
+											"layout (location = 1) in vec3 aColor;\n"
+											"layout (location = 2) in vec2 aTexCoord;\n"
+											"out vec3 ourColor;\n"
+											"out vec2 TexCoord;\n"
+											"uniform mat4 ModelMatrix;\n"
+											"uniform mat4 projection;\n"
+											"void main()\n"
+											"{\n"
+											"gl_Position = projection*(ModelMatrix*vec4(aPos,1.0f));\n"
+											"ourColor = aColor;\n"
+											"TexCoord = aTexCoord;\n"
+											"}\0";
+		const char* fragmentShaderSource = "#version 330 core\n"
+											"out vec4 FragColor;\n"
+											"in vec3 ourColor;\n"
+											"in vec2 TexCoord;\n"
+											"uniform sampler2D ourTexture;\n"
+											"void main()\n"
+											"{\n"
+											"	FragColor = texture(ourTexture, TexCoord);\n"
+											"}\0";
+		unsigned int verexShader;
+		verexShader = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(verexShader,1,&vertexShaderSource,NULL);
+		glCompileShader(verexShader);
+		// fragment shader
+		unsigned int fragmentShader;
+		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
+		glCompileShader(fragmentShader);
+
+		unsigned int shaderProgram;
+		shaderProgram = glCreateProgram();
+		glAttachShader(shaderProgram,verexShader);
+		glAttachShader(shaderProgram,fragmentShader);
+		glLinkProgram(shaderProgram);
+		//clear cache
+		glDeleteShader(verexShader);
+		glDeleteShader(fragmentShader);
+		
+		float vertices[] = {
+	        // positions          // colors           // texture coords
+	         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
+	         1.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
+	         0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
+	         0.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left 
+	    };
+		 unsigned int indices[] = {  
+	        0, 1, 3, // first triangle
+	        1, 2, 3  // second triangle
+	    };
+		unsigned int VBO, VAO, EBO;
+	    glGenVertexArrays(1, &VAO);
+	    glGenBuffers(1, &VBO);
+	    glGenBuffers(1, &EBO);
+
+	    glBindVertexArray(VAO);
+
+	    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	    // position attribute
+	    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+	    glEnableVertexAttribArray(0);
+	    // color attribute
+	    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+	    glEnableVertexAttribArray(1);
+	    // texture coord attribute
+	    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+	    glEnableVertexAttribArray(2);
+	    unsigned int texture;
+		glGenTextures(1,&texture);
+		glBindTexture(GL_TEXTURE_2D,texture);
+
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	// set texture wrapping to GL_REPEAT (default wrapping method)
+	    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	    // set texture filtering parameters
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 4);
+	   	if(sprite->getType() == 3){
+	    	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, sprite->getTextureWidth(), sprite->getTextureHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, sprite->getImage());
+	    	glGenerateMipmap(GL_TEXTURE_2D);
+	    }else{
+	    	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, sprite->getTextureWidth(), sprite->getTextureHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE, sprite->getImage());
+	    	glGenerateMipmap(GL_TEXTURE_2D);
+	    }
+	    glm::mat4 projection;
+	    projection = glm::ortho(0.0f,(float)size.width,(float)size.height,0.0f,-1.0f,1.0f);
+	    glm::mat4 ModelMatrix(1.0f);
+	    ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
+	    ModelMatrix = glm::scale(ModelMatrix,glm::vec3(sprite->getWidth(),sprite->getHeight(),1.0f));
+		//tell how to process vertex data
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glUseProgram(shaderProgram);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+		glBindVertexArray(0);
+		glDeleteVertexArrays(1, &VAO);
+	    glDeleteBuffers(1, &VBO);
+	    glDeleteBuffers(1, &EBO);
 }
 exstar::Dimension exstar::Camera::getSize(){
 	return size;
@@ -372,58 +484,71 @@ int exstar::Camera::getY(){
 	return pos.y;
 }
 //Sprite/Image_Handler.h
-int exstar::addImage(const char* file,int w,int h){
+int* exstar::addImage(const char* file){
 	//load data
-	int type = 4;
-	unsigned char * data = stbi_load(file,&w,&h,&type,STBI_rgb_alpha);
-	if(data == nullptr){
+	int w,h,type;
+	unsigned char * data = stbi_load(file,&w,&h,&type,0);
+	if(!data){
 		throw exstar::exception("Image is not in RGBA format");
 	}
 	//check if already in images
-	for(int i = 0; i < exstar::images_size; i++){
-		if(exstar::images[i] == data){
+	for(int i = 0; i < exstar::images->size; i++){
+		if(exstar::images->get(i) == data){
 			exstar::numUsers->replace(i,exstar::numUsers->get(i)+1);
-			return i;
+			static int feedback[4];
+			feedback[0] =  i;
+			feedback[1] = w;
+			feedback[2] = h;
+			feedback[3] = type;
+			return feedback;
 		}
 	}
-	exstar::images.push_back(data);
-	exstar::images_size++;
+	exstar::images->add(data);
+	exstar::images->size;
 	exstar::numUsers->add(1);
-	return exstar::images_size-1;
+	static int feedback[4];
+	feedback[0] =  exstar::images->size-1;
+	feedback[1] = w;
+	feedback[2] = h;
+	feedback[3] = type;
+	return feedback;
 }
 
 void exstar::removeImage(int index){
 	if(exstar::numUsers->get(index) <= 0){
-		stbi_image_free(exstar::images[index]);
-		exstar::images.erase(exstar::images.begin()+index);
+		stbi_image_free(exstar::images->get(index));
+		exstar::images->remove(index);
 		exstar::numUsers->remove(index);
 	}
 }
 
 //Sprite/Sprite.h
-exstar::Sprite::Sprite(const char* file,int w,int h){
-	pos = Point{0,0};
-	size = Dimension{w,h};
+exstar::Sprite::Sprite(const char* file){
 	file = file;
-	fileIndex = exstar::addImage(file,w,h);
+	int* feedback = exstar::addImage(file);
+	fileIndex = feedback[0];
+	size = exstar::Dimension{feedback[1],feedback[2]};
+	textureSize = exstar::Dimension{feedback[1],feedback[2]};
+	type = feedback[3];
 }
+/*
 exstar::Sprite::Sprite(const char* file,int x,int y,int w,int h){
 	pos = Point{x,y};
 	size = Dimension{w,h};
 	file = file;
 	fileIndex = exstar::addImage(file,w,h);
-}
+}*/
 exstar::Sprite::~Sprite(){
 	removeImage(fileIndex);
 }
-int exstar::Sprite::getX(){
-	return pos.x;
+void exstar::Sprite::resize(int width,int height){
+	size = exstar::Dimension{width,height};
 }
-int exstar::Sprite::getY(){
-	return pos.y;
+int exstar::Sprite::getTextureWidth(){
+	return textureSize.width;
 }
-exstar::Point exstar::Sprite::getPoint(){
-	return pos;
+int exstar::Sprite::getTextureHeight(){
+	return textureSize.height;
 }
 int exstar::Sprite::getWidth(){
 	return size.width;
@@ -431,11 +556,14 @@ int exstar::Sprite::getWidth(){
 int exstar::Sprite::getHeight(){
 	return size.height;
 }
+int exstar::Sprite::getType(){
+	return type;
+}
 exstar::Dimension exstar::Sprite::getSize(){
 	return size;
 }
 unsigned char * exstar::Sprite::getImage(){
-	return exstar::images[fileIndex];
+	return exstar::images->get(fileIndex);
 }
 
 //Utils/ArrayList.h
