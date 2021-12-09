@@ -1,7 +1,7 @@
 #define GLFW_INCLUDE_NONE
 #define STB_IMAGE_IMPLEMENTATION
 //include Libraries
-#include "exstarGLFW/glfw3.h"
+#include "GLFW/glfw3.h"
 #include "exstarglad/gl.h"
 #include "stb_image.h"
 
