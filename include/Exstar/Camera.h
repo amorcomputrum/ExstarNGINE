@@ -8,6 +8,7 @@ namespace exstar{
 		void move(int x,int y);
 		void set(int x,int y);
 		void drawSprite(exstar::Sprite* sprite,int x,int y);
+		void drawSprite(exstar::Sprite* sprite,exstar::Point pos);
 		void drawRect(int x,int y,int w,int h);
 		void drawEllipse(int x,int y,int rw,int rh);
 		void drawShape();
