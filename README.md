@@ -12,4 +12,5 @@ This project is being compiled using https://github.com/benajah/GEASY
 # Future plans as of right now
 
 - Implement rendering to screen through exstar
+- Add cmake Compiling for cross-platform
 
