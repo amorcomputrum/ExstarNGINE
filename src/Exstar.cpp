@@ -81,6 +81,12 @@ void exstar::Window::setBackgroundColor(double r,double g,double b){
 	backgroundColor[2] = b;
 	backgroundColor[3] = 1.0f;
 }
+void exstar::Window::setBackgroundColor(exstar::Color color){
+	backgroundColor[0] = color.r;
+	backgroundColor[1] = color.g;
+	backgroundColor[2] = color.b;
+	backgroundColor[3] = color.a;
+}
 void exstar::Window::moveCamera(int x,int y){
 	camera->move(x,y);
 }
@@ -373,49 +379,6 @@ exstar::Color::Color(int r,int g,int b,int a){
 	this->g = g;
 	this->b = b;
 	this->a = a;
-}
-//Shaders/ShaderProgram.h
-exstar::ShaderProgram::ShaderProgram(std::string Folder,std::string Name){
-	std::string vertexShaderSourcePath = Folder + "/" + Name+".vert.shader";
-	std::string fragmentShaderSourcePath = Folder + "/" + Name+".frag.shader";
-	const char* vertexShaderSource = loadSource(vertexShaderSourcePath).c_str(); 
-	const char* fragShaderSource = loadSource(fragmentShaderSourcePath).c_str(); 
-	unsigned int vertexShader,fragmentShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-	glCompileShader(vertexShader);
-	fragmentShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(fragmentShader,1,&fragShaderSource,NULL);
-	glCompileShader(fragmentShader);
-
-	shaderProg = glCreateProgram();
-	glAttachShader(shaderProg,vertexShader);
-	glAttachShader(shaderProg,fragmentShader);
-	glLinkProgram(shaderProg);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-}
-void exstar::ShaderProgram::use(){
-	glUseProgram(shaderProg);
-}
-unsigned int exstar::ShaderProgram::get(){
-	return shaderProg;
-}
-std::string exstar::ShaderProgram::loadSource(std::string path){
-	std::string source;
-	std::string og;
-	try{
-		std::ifstream File(path);
-		while(getline(File,og)){
-			source+=og;
-			source+="\n";
-		}
-		source+="\0";
-		File.close();
-	}catch(int e){
-		throw exstar::exception("Failed to read" + path);
-	}
-	return source;
 }
 //Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){
