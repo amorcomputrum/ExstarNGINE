@@ -10,6 +10,7 @@
 #include "ostream"
 #include "thread"
 #include "chrono"
+#include "fstream"
 #if __WIN32
 #include "Windows.h"
 #else
@@ -28,6 +29,7 @@
 #include "Exstar/Sprite/Image_Handler.h"
 #include "Sprite/Sprite.h"
 #include "Exstar/Utils/Color.h"
+#include "Exstar/Shaders/ShaderProgram.h"
 #include "Exstar/Camera.h"
 #include "Exstar/Utils/MouseEvent.h"
 

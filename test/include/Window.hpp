@@ -10,6 +10,7 @@ public:
 	void render(exstar::Camera camera){
 		camera.setColor(exstar::Color::Green);
 		camera.drawRect(0,0,100,100);
+		camera.drawSprite(sprite,100,100);
 	}
 	void Update(double deltaTime){
 		if(isKeyPressed(exstar::Key::D)){
