@@ -76,16 +76,31 @@ void exstar::Window::setAdjustCameraOnResize(bool state){
 	adjustCameraOnResize = state;
 }
 void exstar::Window::setBackgroundColor(double r,double g,double b){
-	backgroundColor[0] = r;
-	backgroundColor[1] = g;
-	backgroundColor[2] = b;
-	backgroundColor[3] = 1.0f;
+	if((r >= 0 && r <= 255) && (g >= 0 && g <= 255) && (b >= 0 && b <= 255)){
+		backgroundColor[0] = r/255.0;
+		backgroundColor[1] = g/255.0;
+		backgroundColor[2] = b/255.0;
+		backgroundColor[3] = 1.0f;
+	}else{
+		throw exstar::exception("exstar::Window::setBackGroundColor - Out Of Range 0-255");
+	}
+	
+}
+void exstar::Window::setBackgroundColor(double r,double g,double b,double a){
+	if((r >= 0 && r <= 255) && (g >= 0 && g <= 255) && (b >= 0 && b <= 255) && (a >= 0 && a <= 255)){
+		backgroundColor[0] = r/255.0;
+		backgroundColor[1] = g/255.0;
+		backgroundColor[2] = b/255.0;
+		backgroundColor[3] = a/255.0;
+	}else{
+		throw exstar::exception("exstar::Window::setBackGroundColor - Out Of Range 0-255");
+	}
 }
 void exstar::Window::setBackgroundColor(exstar::Color color){
-	backgroundColor[0] = color.r;
-	backgroundColor[1] = color.g;
-	backgroundColor[2] = color.b;
-	backgroundColor[3] = color.a;
+	backgroundColor[0] = exstar::Color::getFloat(color.r);
+	backgroundColor[1] = exstar::Color::getFloat(color.g);
+	backgroundColor[2] = exstar::Color::getFloat(color.b);
+	backgroundColor[3] = exstar::Color::getFloat(color.a);
 }
 void exstar::Window::moveCamera(int x,int y){
 	camera->move(x,y);
@@ -369,16 +384,24 @@ const exstar::Color exstar::Color::Green(0,255,0);
 const exstar::Color exstar::Color::Blue(0,0,255);
 const exstar::Color exstar::Color::White(255,255,255);
 exstar::Color::Color(int r,int g,int b){
-	this->r = r;
-	this->g = g;
-	this->b = b;
-	this->a = 255;
+	if((r >= 0 && r <= 255) && (g >= 0 && g <= 255) && (b >= 0 && b <= 255)){
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = 255;
+	}else{
+		throw exstar::exception("exstar::Color::Color - Out of Range 0-255");
+	}
 }
 exstar::Color::Color(int r,int g,int b,int a){
-	this->r = r;
-	this->g = g;
-	this->b = b;
-	this->a = a;
+	if((r >= 0 && r <= 255) && (g >= 0 && g <= 255) && (b >= 0 && b <= 255) && (a >= 0 && a <= 255)){
+		this->r = r;
+		this->g = g;
+		this->b = b;
+		this->a = a;
+	}else{
+		throw exstar::exception("exstar::Color::Color - Out of Range 0-255");
+	}
 }
 //Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){

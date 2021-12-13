@@ -151,6 +151,15 @@ namespace exstar{
 		/**
 		 * Sets the Background Color of the window
 		 * 
+		 * @param r Red Color 0-255
+		 * @param g Green Color 0-255
+		 * @param b Black Color 0-255
+		 * @param a Alpha Color 0-255
+		*/
+		void setBackgroundColor(double r,double g,double b,double a);
+		/**
+		 * Sets the Background Color of the window
+		 * 
 		 * @param color Color to set the background to
 		*/
 		void setBackgroundColor(exstar::Color color);
