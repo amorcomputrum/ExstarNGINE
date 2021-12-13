@@ -27,6 +27,7 @@
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Sprite/Image_Handler.h"
 #include "Sprite/Sprite.h"
+#include "Exstar/Utils/Color.h"
 #include "Exstar/Camera.h"
 #include "Exstar/Utils/MouseEvent.h"
 

@@ -279,7 +279,7 @@ void exstar::Window::resizeEvent(int width, int height){
 		//get difference in size, then adjust camera pos
 		int diffx = size.width-width;
 		int diffy = size.height-height;
-		camera->move(diffx,diffy);
+		camera->move(diffx/2,diffy/2);
 		camera->resize(width,height);
 	}
 	//Update size
@@ -355,10 +355,29 @@ void exstar::Clock::start(){
 double exstar::Clock::getTime(){
 	return std::chrono::duration<double, std::milli>(std::chrono::high_resolution_clock::now()-time).count();
 }
+//Utils/Color.h
+const exstar::Color exstar::Color::Black(0,0,0);
+const exstar::Color exstar::Color::Red(255,0,0);
+const exstar::Color exstar::Color::Green(0,255,0);
+const exstar::Color exstar::Color::Blue(0,0,255);
+const exstar::Color exstar::Color::White(255,255,255);
+exstar::Color::Color(int r,int g,int b){
+	this->r = r;
+	this->g = g;
+	this->b = b;
+	this->a = 255;
+}
+exstar::Color::Color(int r,int g,int b,int a){
+	this->r = r;
+	this->g = g;
+	this->b = b;
+	this->a = a;
+}
 //Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};
 	size = new exstar::Dimension{width,height};
+	color = new exstar::Color(0,0,0);
 }
 void exstar::Camera::resize(int width,int height){
 	size = new exstar::Dimension{width,height};
@@ -370,6 +389,9 @@ void exstar::Camera::move(int x,int y){
 void exstar::Camera::set(int x,int y){
 	pos->x += pos->x-x;
 	pos->y += pos->y-y;
+}
+void exstar::Camera::setColor(exstar::Color color){
+	this->color = new exstar::Color(color.r,color.g,color.b,color.a);
 }
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	//define Shader Source
@@ -414,8 +436,9 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	glDeleteShader(verexShader);
 	glDeleteShader(fragmentShader);
 	//define params
-	float vertices[] = {1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, 1.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,0.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, 0.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f };
-	unsigned int indices[] = {  0, 1, 3,1, 2, 3};
+	//XYZ,RGB,ST
+	float vertices[] = {1.0f,1.0f,0.0f,1.0f,0.0f,0.0f,1.0f,1.0f,1.0f,0.0f,0.0f,0.0f,1.0f,0.0f,1.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,1.0f,0.0f,0.0f,0.0f,1.0f,0.0f,1.0f,1.0f,0.0f,0.0f,1.0f};
+	unsigned int indices[] = {0,1,3,1,2,3};
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -473,6 +496,100 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 }
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,exstar::Point pos){
 	drawSprite(sprite,pos.x,pos.y);
+}
+void exstar::Camera::drawRect(int x,int y,int w,int h){
+	const char* vertexShaderSource = "#version 330 core\n"
+									"layout (location = 0) in vec3 aPos;\n"
+									"layout (location = 1) in vec4 aColor;\n"
+									"out vec4 ourColor;\n"
+									"uniform mat4 ModelMatrix;\n"
+									"uniform mat4 projection;\n"
+									"void main()\n"
+									"{\n"
+									"	gl_Position = projection*(ModelMatrix*vec4(aPos,1.0f));\n"
+									"	ourColor = aColor;\n"
+									"}\0";
+	const char* fragmentShaderSource = "#version 330 core\n"
+										"out vec4 FragColor;\n"
+										"in vec4 ourColor;\n"
+										"void main()\n"
+										"{\n"
+										"	FragColor = ourColor;\n"
+										"}\0";
+	unsigned int shaderProgram,vertexShader,fragmentShader;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
+	glCompileShader(vertexShader);
+
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
+	glCompileShader(fragmentShader);
+
+	shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram,vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+	float r,g,b,a;
+	r = exstar::Color::getFloat(color->r);
+	g = exstar::Color::getFloat(color->g);
+	b = exstar::Color::getFloat(color->b);
+	a = exstar::Color::getFloat(color->a);
+	float verticies[] = {
+		1.0f,1.0f,0.0f,  r, g, b,a,
+		1.0f,0.0f,0.0f, r, g, b,a,
+		0.0f,0.0f,0.0f, r, g, b,a,
+		0.0f,1.0f,0.0f,  r, g, b,a
+	};
+	unsigned int indices[] = {0,1,3,1,2,3};
+	unsigned int VBO,VAO,EBO;
+	glGenVertexArrays(1,&VAO);
+	glGenBuffers(1,&VBO);
+	glGenBuffers(1,&EBO);
+
+	glBindVertexArray(VAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER,VBO);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(verticies),verticies,GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,7*sizeof(float),(void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,7*sizeof(float),(void*)(3*sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	//Transformations
+	glm::mat4 projection;
+	projection = glm::ortho(pos->x+0.0f,(float)size->width+pos->x,(float)size->height+pos->y,0.0f+pos->y,-1.0f,1.0f);
+	glm::mat4 ModelMatrix(1.0f);
+	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
+	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(w,h,1.0f));
+
+	glUseProgram(shaderProgram);
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
+	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
+	glBindVertexArray(0);
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	glDeleteBuffers(1, &EBO);
+
+	
+
+}
+void exstar::Camera::drawRect(exstar::Point pos, exstar::Dimension size){
+	drawRect(pos.x,pos.y,size.width,size.height);
+}
+void exstar::Camera::drawRect(int x,int y, exstar::Dimension size){
+	drawRect(x,y,size.width,size.height);
+}
+void exstar::Camera::drawRect(exstar::Point pos, int w,int h){
+	drawRect(pos.x,pos.y,w,h);
 }
 exstar::Dimension exstar::Camera::getSize(){
 	return *size;

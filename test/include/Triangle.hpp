@@ -50,8 +50,11 @@ public:
 		// note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
 		glBindBuffer(GL_ARRAY_BUFFER, 0); 
 		glBindVertexArray(0); 
+		glm::mat4 projection;
+		projection = glm::ortho(pos->x,0.0f,(float)size->width+pos->x,(float)size->height+pos->y,-1.0f,1.0);
 		//tell how to process vertex data
 		glUseProgram(shaderProgram);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
 		glBindVertexArray(VAO);
 		glEnableVertexAttribArray(0);
 
@@ -66,12 +69,14 @@ public:
 		
 	}
 private:
-	
+	int r,b,a;
 	const char *vertexShaderSource = "#version 330 core\n"
 										"layout (location = 0) in vec3 aPos;\n"
+										"uniform mat4 ModelMatrix\n"
+										"uniform mat4 projection\n"
 										"void main()\n"
 										"{\n"
-										" gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+										" gl_Position = projection*(ModelMatrix*vec4(aPos.x, aPos.y, aPos.z, 1.0));\n"
 										"}\0";
 	const char *fragmentShaderSource = "#version 330 core\n"
 										"out vec4 FragColor;\n"
