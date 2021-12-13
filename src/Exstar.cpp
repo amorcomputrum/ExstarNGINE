@@ -6,7 +6,7 @@
 #include "Exstar/Window.h"
 
 //Window.h
-exstar::Window::Window(int width,int height,const char* title){
+exstar::Window::Window(int width,int height,std::string title){
 	size = exstar::Dimension{width,height};
 	this->title = title;
 	camera = new exstar::Camera(size.width,size.height,0,0);
@@ -14,7 +14,7 @@ exstar::Window::Window(int width,int height,const char* title){
 }
 void exstar::Window::render(exstar::Camera camera){}
 void exstar::Window::Update(double deltaTime){}
-void exstar::Window::onResize(exstar::Dimension change){}
+void exstar::Window::onResize(exstar::Dimension size){}
 void exstar::Window::keyPressed(int key){}
 void exstar::Window::keyReleased(int key){}
 void exstar::Window::mousePressed(MouseEvent* event){}
@@ -54,8 +54,9 @@ void exstar::Window::setIcon(const char* path){
 	stbi_image_free(images[0].pixels);
 }
 
-void exstar::Window::setTitle(const char* title){
-	glfwSetWindowTitle(window,title);
+void exstar::Window::setTitle(std::string title){
+	this->title = title;
+	glfwSetWindowTitle(window,title.c_str());
 }
 
 void exstar::Window::setSizeLimits(int minW,int minH,int maxW,int maxH){
@@ -92,7 +93,7 @@ void exstar::Window::setCamera(int x,int y){
 void exstar::Window::setCamera(exstar::Point pos){
 	camera->set(pos.x,pos.y);
 }
-const char* exstar::Window::getTitle(){
+std::string exstar::Window::getTitle(){
 	return title;
 }
 bool exstar::Window::isKeyPressed(int key){
@@ -158,7 +159,7 @@ void exstar::Window::initGL(){
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 	//init window
-	window = glfwCreateWindow(size.width,size.height,title,NULL,NULL);
+	window = glfwCreateWindow(size.width,size.height,title.c_str(),NULL,NULL);
 	if(!window){
 		throw exstar::exception("GLFW WindowINIT ERROR: Well that failed too soon");
 	}
