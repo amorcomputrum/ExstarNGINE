@@ -6,7 +6,7 @@
 #include "Exstar/Window.h"
 
 //Window.h
-exstar::Window::Window(int width,int height,const char* title){
+exstar::Window::Window(int width,int height,std::string title){
 	size = exstar::Dimension{width,height};
 	this->title = title;
 	camera = new exstar::Camera(size.width,size.height,0,0);
@@ -14,7 +14,7 @@ exstar::Window::Window(int width,int height,const char* title){
 }
 void exstar::Window::render(exstar::Camera camera){}
 void exstar::Window::Update(double deltaTime){}
-void exstar::Window::onResize(exstar::Dimension change){}
+void exstar::Window::onResize(exstar::Dimension size){}
 void exstar::Window::keyPressed(int key){}
 void exstar::Window::keyReleased(int key){}
 void exstar::Window::mousePressed(MouseEvent* event){}
@@ -54,8 +54,9 @@ void exstar::Window::setIcon(const char* path){
 	stbi_image_free(images[0].pixels);
 }
 
-void exstar::Window::setTitle(const char* title){
-	glfwSetWindowTitle(window,title);
+void exstar::Window::setTitle(std::string title){
+	this->title = title;
+	glfwSetWindowTitle(window,title.c_str());
 }
 
 void exstar::Window::setSizeLimits(int minW,int minH,int maxW,int maxH){
@@ -92,7 +93,7 @@ void exstar::Window::setCamera(int x,int y){
 void exstar::Window::setCamera(exstar::Point pos){
 	camera->set(pos.x,pos.y);
 }
-const char* exstar::Window::getTitle(){
+std::string exstar::Window::getTitle(){
 	return title;
 }
 bool exstar::Window::isKeyPressed(int key){
@@ -158,7 +159,7 @@ void exstar::Window::initGL(){
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
 	//init window
-	window = glfwCreateWindow(size.width,size.height,title,NULL,NULL);
+	window = glfwCreateWindow(size.width,size.height,title.c_str(),NULL,NULL);
 	if(!window){
 		throw exstar::exception("GLFW WindowINIT ERROR: Well that failed too soon");
 	}
@@ -373,6 +374,49 @@ exstar::Color::Color(int r,int g,int b,int a){
 	this->b = b;
 	this->a = a;
 }
+//Shaders/ShaderProgram.h
+exstar::ShaderProgram::ShaderProgram(std::string Folder,std::string Name){
+	std::string vertexShaderSourcePath = Folder + "/" + Name+".vert.shader";
+	std::string fragmentShaderSourcePath = Folder + "/" + Name+".frag.shader";
+	const char* vertexShaderSource = loadSource(vertexShaderSourcePath).c_str(); 
+	const char* fragShaderSource = loadSource(fragmentShaderSourcePath).c_str(); 
+	unsigned int vertexShader,fragmentShader;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
+	glCompileShader(vertexShader);
+	fragmentShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(fragmentShader,1,&fragShaderSource,NULL);
+	glCompileShader(fragmentShader);
+
+	shaderProg = glCreateProgram();
+	glAttachShader(shaderProg,vertexShader);
+	glAttachShader(shaderProg,fragmentShader);
+	glLinkProgram(shaderProg);
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+}
+void exstar::ShaderProgram::use(){
+	glUseProgram(shaderProg);
+}
+unsigned int exstar::ShaderProgram::get(){
+	return shaderProg;
+}
+std::string exstar::ShaderProgram::loadSource(std::string path){
+	std::string source;
+	std::string og;
+	try{
+		std::ifstream File(path);
+		while(getline(File,og)){
+			source+=og;
+			source+="\n";
+		}
+		source+="\0";
+		File.close();
+	}catch(int e){
+		throw exstar::exception("Failed to read" + path);
+	}
+	return source;
+}
 //Camera.h
 exstar::Camera::Camera(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};
@@ -394,7 +438,6 @@ void exstar::Camera::setColor(exstar::Color color){
 	this->color = new exstar::Color(color.r,color.g,color.b,color.a);
 }
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
-	//define Shader Source
 	const char* vertexShaderSource = "#version 330 core\n"
 	"layout (location = 0) in vec3 aPos;\n"
 	"layout (location = 1) in vec3 aColor;\n"
