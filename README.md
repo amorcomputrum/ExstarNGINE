@@ -1,6 +1,6 @@
 # ExstarNGINE (Exstar GameEngine)
 
-Exstar GameEngine is a GameEngine built over OpenGl, kinda like SFML
+Exstar GameEngine is a GameEngine built over OpenGl
 
 # Dependencies
 **Glfw: https://github.com/glfw/glfw**
@@ -10,8 +10,4 @@ Exstar GameEngine is a GameEngine built over OpenGl, kinda like SFML
 
 This project is being compiled using https://github.com/benajah/GEASY
 
-# Future plans as of right now
-
-- Implement rendering to screen through exstar
-- Add cmake Compiling for cross-platform
 
