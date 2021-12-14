@@ -4,6 +4,10 @@
 #include "GLFW/glfw3.h"
 #include "exstarglad/gl.h"
 #include "stb_image.h"
+#include "gl.c"
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 //include C++ libraries
 #include "iostream"
@@ -11,6 +15,7 @@
 #include "thread"
 #include "chrono"
 #include "fstream"
+
 #if __WIN32
 #include "Windows.h"
 #else
