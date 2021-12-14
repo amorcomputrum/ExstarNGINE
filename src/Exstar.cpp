@@ -690,8 +690,8 @@ exstar::Sprite::~Sprite(){
 void exstar::Sprite::resize(int width,int height){
 	size = exstar::Dimension{width,height};
 }
-void exstar::Sprite::resize(exstar::Dimension change){
-	size = change;
+void exstar::Sprite::resize(exstar::Dimension size){
+	this->size = size;
 }
 int exstar::Sprite::getTextureWidth(){
 	return textureSize.width;

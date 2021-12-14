@@ -1,4 +1,7 @@
 namespace exstar{
+	/**
+	 * Every key that is used
+	*/
 	enum Key{
 	UNKNOWN = -1
 
