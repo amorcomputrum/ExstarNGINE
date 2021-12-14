@@ -37,7 +37,7 @@ namespace exstar{
 	class Window {
 	public:
 		/**
-		 * Initialize The Object
+		 * Initialize The Window Object
 		 * 
 		 * @param width The width of the window to display
 		 * @param height The height of the window to display

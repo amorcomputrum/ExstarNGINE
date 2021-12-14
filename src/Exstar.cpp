@@ -12,6 +12,7 @@ exstar::Window::Window(int width,int height,std::string title){
 	camera = new exstar::Camera(size.width,size.height,0,0);
 	initGL();
 }
+
 void exstar::Window::render(exstar::Camera camera){}
 void exstar::Window::Update(double deltaTime){}
 void exstar::Window::onResize(exstar::Dimension size){}
