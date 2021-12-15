@@ -1,20 +1,21 @@
 #define GLFW_INCLUDE_NONE
 #define STB_IMAGE_IMPLEMENTATION
 //include Dependencies
-#include <GLFW/glfw3.h>
+#include "GLFW/glfw3.h"
+
+#include <iostream>
+#include <chrono>
+#if __WIN32
+#include <Windows.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "Exstar/Camera.h"
 #include "Exstar/Utils/MouseEvent.h"
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Clock.h"
 #include "Exstar/Utils/ArrayList.h"
-
-#include <iostream>
-#include <chrono>
-#if __WIN32
-#include "Windows.h"
-#else
-#include "unistd.h"
-#endif
 
 
 namespace exstar{
