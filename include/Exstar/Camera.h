@@ -89,7 +89,7 @@ namespace exstar{
 		 * @param h The height of the rectangle
 		*/
 		void drawRect(exstar::Point pos, int w,int h);
-		//void drawEllipse(int x,int y,int rw,int rh);
+		void drawEllipse(int x,int y,int rw,int rh);
 		//void drawShape();
 
 		/**
