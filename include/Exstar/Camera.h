@@ -89,9 +89,53 @@ namespace exstar{
 		 * @param h The height of the rectangle
 		*/
 		void drawRect(exstar::Point pos, int w,int h);
-		void drawEllipse(int x,int y,int rw,int rh);
-		//void drawShape();
-
+		/**
+		 * Render a Ellipse to the screen
+		 * 
+		 * @param x The x position to render the ellipse at (top-left)
+		 * @param y The y position to render the ellipse at (top-left)
+		 * @param w The width of the ellipse
+		 * @param h The height of the ellipse
+		*/
+		void drawEllipse(int x,int y,int w,int h);
+		/**
+		 * Render a Ellipse to the screen
+		 * 
+		 * @param pos The postion to render the ellipse to (top-left)
+		 * @param size The size of the ellipse to render
+		*/
+		void drawEllipse(exstar::Point pos, exstar::Dimension size);
+		/**
+		 * Render a Ellipse to the screen
+		 * 
+		 * @param x The x position to render the ellipse at (top-left)
+		 * @param y The y position to render the ellipse at (top-left)
+		 * @param size The size of the ellipse to render
+		*/
+		void drawEllipse(int x,int y, exstar::Dimension size);
+		/**
+		 * Render a Ellipse to the screen
+		 * 
+		 * @param pos The postion to render the ellipse to (top-left)
+		 * @param w The width of the ellipse
+		 * @param h The height of the ellipse
+		*/
+		void drawEllipse(exstar::Point pos,int w,int h);
+		/**
+		 * Render a Circle to the screen
+		 * 
+		 * @param x The x position to render the circle at (top-left)
+		 * @param y The y position to render the circle at (top-left)
+		 * @param r The radius of the circle to render
+		*/
+		void drawCircle(int x,int y,int r);
+		/**
+		 * Render a Circle to the screen
+		 * 
+		 * @param pos The postion to render the circle to (top-left)
+		 * @param r The radius of the circle to render
+		*/
+		void drawCircle(exstar::Point pos,int r);
 		/**
 		 * Return the Size of the camera
 		 * 
