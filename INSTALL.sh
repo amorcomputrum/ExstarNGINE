@@ -1,3 +1,3 @@
 #!/bin/bash
-cmake . -DCMAKE_INSTALL_PREFIX:PATH=/usr
+cmake . -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr
 make install
