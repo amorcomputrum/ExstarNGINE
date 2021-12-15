@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(Exstar VERSION 1.0.0)
 
+find_package(glfw3 3.3 REQUIRED)
+
 
 add_library(Exstar SHARED
 	src/gl.c
@@ -17,6 +19,7 @@ add_library(Exstar SHARED
     src/Clock.cpp
     src/Window.cpp
 )
+target_link_libraries(Exstar glfw)
 set_target_properties(Exstar PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(Exstar PROPERTIES SOVERSION 1)
 include_directories(include)
