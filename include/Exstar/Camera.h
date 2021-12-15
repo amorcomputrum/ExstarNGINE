@@ -1,4 +1,6 @@
-
+#include "Exstar/Utils/Point.h"
+#include "Exstar/Utils/Color.h"
+#include "Exstar/Sprite/Sprite.h"
 namespace exstar{
 	class Camera
 	{

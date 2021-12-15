@@ -1,41 +1,20 @@
 #define GLFW_INCLUDE_NONE
 #define STB_IMAGE_IMPLEMENTATION
 //include Dependencies
-#include "GLFW/glfw3.h"
-#include "exstarglad/gl.h"
-#include "stb_image.h"
-#include "gl.c"
-#include "glm/glm.hpp"
-#include "glm/gtc/matrix_transform.hpp"
-#include "glm/gtc/type_ptr.hpp"
+#include <GLFW/glfw3.h>
+#include "Exstar/Camera.h"
+#include "Exstar/Utils/MouseEvent.h"
+#include "Exstar/Utils/Vector2d.h"
+#include "Exstar/Clock.h"
+#include "Exstar/Utils/ArrayList.h"
 
-//include C++ libraries
-#include "iostream"
-#include "ostream"
-#include "thread"
-#include "chrono"
-#include "fstream"
-
+#include <iostream>
+#include <chrono>
 #if __WIN32
 #include "Windows.h"
 #else
 #include "unistd.h"
 #endif
-
-//include Exstar Files
-#include "Exstar/Utils/Vector2d.h"
-#include "Exstar/Utils/Math.h"
-#include "Exstar/Utils/Key.h"
-#include "Exstar/Utils/Exceptions.h"
-#include "Exstar/Clock.h"
-#include "Exstar/Utils/Dimension.h"
-#include "Exstar/Utils/ArrayList.h"
-#include "Exstar/Utils/Point.h"
-#include "Exstar/Sprite/Image_Handler.h"
-#include "Sprite/Sprite.h"
-#include "Exstar/Utils/Color.h"
-#include "Exstar/Camera.h"
-#include "Exstar/Utils/MouseEvent.h"
 
 
 namespace exstar{

@@ -1,4 +1,5 @@
-#include <vector>
+#include "vector"
+#include "ostream"
 namespace exstar{
 	template<class T>
 	class ArrayList

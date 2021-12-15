@@ -1,12 +1,13 @@
+#include "Exstar/Utils/ArrayList.h"
 namespace exstar{
 	/**
 	 * The images data
 	*/
-	exstar::ArrayList<unsigned char *>* images = new exstar::ArrayList<unsigned char *>;
+	extern exstar::ArrayList<unsigned char *>* images;
 	/**
 	 * The amount of Objects that are using each file that is stored in the images ArrayList
 	*/
-	exstar::ArrayList<int>* numUsers = new exstar::ArrayList<int>;
+	extern exstar::ArrayList<int>* numUsers;
 	/**
 	 * Add an image to the images ArrayList
 	 * 
