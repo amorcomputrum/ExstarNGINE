@@ -1,3 +1,4 @@
+#include "Exstar/Utils/Dimension.h"
 namespace exstar{
 	class Sprite
 	{
