@@ -1,7 +1,7 @@
 <p align="center">
-	<img src="Exstar.jpg" alt="Geno" width="80" height="80" style="border-radius: 15px"><span style="vertical-align: middle;font-size: 24px; padding-bottom: 57;font-weight: 500;">Exstar</span>
+	<img src="Exstar.jpg" alt="Geno" width="80" height="80" style="border-radius: 15px"><h1 align="center">Exstar</h1>
 </p>
-<hr noshade>
+
 
 <h3 align="center">Building</h3>
 <h4 align="center" style="font-weight: 400;">
