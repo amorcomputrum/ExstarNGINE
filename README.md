@@ -64,7 +64,7 @@ g++ main.cpp -o app -lExstar -lglfw -Iinclude/
 <pre>
 <code>
 {
-        "libPrefixes":["-lExstar"],
+        "libPrefixes":["-lExstar","-lglfw"],
         "libs":[],
         "Include":[
                 "include/"
