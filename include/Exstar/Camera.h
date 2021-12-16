@@ -142,11 +142,14 @@
 			 * @param r The radius of the circle to render
 			*/
 			void drawCircle(exstar::Point pos,int r);
+
+
 			/**
 			 * Return the Size of the camera
 			 * 
 			 * @return exstar::Dimension of the size of the Camera
 			*/
+
 			exstar::Dimension getSize();
 			/**
 			 * Return the Width of the camera
