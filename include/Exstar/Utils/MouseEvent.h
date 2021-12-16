@@ -1,3 +1,4 @@
+#include "Exstar/Utils/Point.h"
 namespace exstar{
 	/**
 	 * MouseEvent is a struct that stores what button was used and where it happened

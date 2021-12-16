@@ -11,11 +11,13 @@
 #include <unistd.h>
 #endif
 
-#include "Exstar/Camera.h"
+
 #include "Exstar/Utils/MouseEvent.h"
+#include "Exstar/Camera.h"
 #include "Exstar/Utils/Vector2d.h"
+
 #include "Exstar/Clock.h"
-#include "Exstar/Utils/ArrayList.h"
+
 
 
 namespace exstar{
