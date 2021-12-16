@@ -328,6 +328,8 @@ void exstar::Camera::drawCircle(int x,int y,int r){
 void exstar::Camera::drawCircle(exstar::Point pos,int r){
 	drawEllipse(pos.x,pos.y,r*2,r*2);
 }
+
+
 exstar::Dimension exstar::Camera::getSize(){
 	return *size;
 }
