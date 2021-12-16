@@ -12,7 +12,6 @@ add_library(Exstar SHARED
 	src/Utils/Color.cpp
 	src/Utils/Math.cpp
 	src/Utils/Vector2d.cpp
-	src/Camera.cpp
 	src/Clock.cpp
 	src/Window.cpp
 )
@@ -30,7 +29,7 @@ set_target_properties(Exstar PROPERTIES SOVERSION 1)
 include_directories(include)
 
 
-
+install(FILES "src/Camera.cpp" DESTINATION "include/Exstar/")
 install(TARGETS Exstar DESTINATION lib/Exstar)
 install(DIRECTORY "include/" # source directory
         DESTINATION "include" # target directory

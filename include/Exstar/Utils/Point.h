@@ -1,15 +1,19 @@
-namespace exstar{
-	/**
-	 * Point is a postion on a 2d plane
-	*/
-	struct Point{
+#ifndef Point_H
+#define Point_H
+	namespace exstar{
 		/**
-		 * The x position
+		 * Point is a postion on a 2d plane
 		*/
-		int x;
-		/**
-		 * The y position
-		*/
-		int y;
-	};
-}
+		struct Point{
+			/**
+			 * The x position
+			*/
+			double x;
+			/**
+			 * The y position
+			*/
+			double y;
+		};
+
+	}
+#endif
