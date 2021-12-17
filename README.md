@@ -23,7 +23,7 @@
 <p>main.cpp</p>
 <pre>
 <code>
-#include "Window.h"
+#include "Window.hpp"
 int main()
 {
 	Window* window = new Window(800,200,"Test Window");
