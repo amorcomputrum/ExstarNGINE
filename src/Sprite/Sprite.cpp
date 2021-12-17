@@ -5,8 +5,20 @@ exstar::Sprite::Sprite(const char* file){
 	int* feedback = exstar::addImage(file);
 	fileIndex = feedback[0];
 	size = exstar::Dimension{feedback[1],feedback[2]};
+	cutSize = exstar::Dimension{feedback[1],feedback[2]};
 	textureSize = exstar::Dimension{feedback[1],feedback[2]};
 	type = feedback[3];
+	Pos = exstar::Point{0,0};
+}
+exstar::Sprite::Sprite(const char* file,int x,int y,int w,int h){
+	file = file;
+	int* feedback = exstar::addImage(file);
+	fileIndex = feedback[0];
+	size = exstar::Dimension{w,h};
+	cutSize = exstar::Dimension{w,h};
+	textureSize = exstar::Dimension{feedback[1],feedback[2]};
+	type = feedback[3];
+	Pos = exstar::Point{x,y};
 }
 exstar::Sprite::~Sprite(){
 	removeImage(fileIndex);
@@ -34,6 +46,12 @@ int exstar::Sprite::getHeight(){
 }
 exstar::Dimension exstar::Sprite::getSize(){
 	return size;
+}
+exstar::Dimension exstar::Sprite::getCut(){
+	return cutSize;
+}
+exstar::Point exstar::Sprite::getPos(){
+	return Pos;
 }
 int exstar::Sprite::getType(){
 	return type;

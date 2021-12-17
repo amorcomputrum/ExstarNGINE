@@ -8,7 +8,6 @@ add_library(Exstar SHARED
 	src/Utils/ArrayList.cpp
 	src/Sprite/Image_Handler.cpp
 	src/Utils/Exception.cpp
-	src/Sprite/Sprite.cpp
 	src/Utils/Color.cpp
 	src/Utils/Math.cpp
 	src/Utils/Vector2d.cpp
@@ -30,6 +29,7 @@ include_directories(include)
 
 
 install(FILES "src/Camera.cpp" DESTINATION "include/Exstar/")
+install(FILES "src/Sprite/Sprite.cpp" DESTINATION "include/Exstar/Sprite/")
 install(TARGETS Exstar DESTINATION lib/Exstar)
 install(DIRECTORY "include/" # source directory
         DESTINATION "include" # target directory

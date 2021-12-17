@@ -69,7 +69,15 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	glDeleteShader(fragmentShader);
 	//define params
 	//XYZ,RGB,ST
-	float vertices[] = {1.0f,1.0f,0.0f,1.0f,0.0f,0.0f,1.0f,1.0f,1.0f,0.0f,0.0f,0.0f,1.0f,0.0f,1.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,1.0f,0.0f,0.0f,0.0f,1.0f,0.0f,1.0f,1.0f,0.0f,0.0f,1.0f};
+	float lx,ty,rx,by;
+	lx = sprite->getPos().x/sprite->getTextureSize().width;
+	ty = sprite->getPos().y/sprite->getTextureSize().height;
+	rx = (sprite->getPos().x+sprite->getCut().width)/sprite->getTextureSize().width;
+	by = (sprite->getPos().y+sprite->getCut().height)/sprite->getTextureSize().height;
+	float vertices[] = {1.0f,1.0f,0.0f,1.0f,0.0f,0.0f,rx,by,//top-right
+						1.0f,0.0f,0.0f,0.0f,1.0f,0.0f,rx,ty,//bottom-right
+						0.0f,0.0f,0.0f,0.0f,0.0f,1.0f,lx,ty,//bottom-left
+						0.0f,1.0f,0.0f,1.0f,1.0f,0.0f,lx,by};//top-left
 	unsigned int indices[] = {0,1,3,1,2,3};
 	unsigned int VBO, VAO, EBO;
 	glGenVertexArrays(1, &VAO);
