@@ -397,7 +397,7 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 }
-void exstar::Camera::drawSprite(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h){
+void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h){
 	drawShape(shape,pos.x,pos.y,w,h);
 }
 void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,exstar::Dimension size){
