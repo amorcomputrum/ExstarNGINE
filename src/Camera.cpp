@@ -7,6 +7,7 @@
 #include "Exstar/Utils/Exception.h"
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Camera.h"
+
 exstar::Camera::Camera(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};
 	size = new exstar::Dimension{width,height};
@@ -83,15 +84,11 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
-
 	glBindVertexArray(VAO);
-
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
     // position attribute
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
@@ -160,16 +157,13 @@ void exstar::Camera::drawRect(int x,int y,int w,int h){
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
 	glCompileShader(vertexShader);
-
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
 	glCompileShader(fragmentShader);
-
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram,vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
-
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	float r,g,b,a;
@@ -188,27 +182,21 @@ void exstar::Camera::drawRect(int x,int y,int w,int h){
 	glGenVertexArrays(1,&VAO);
 	glGenBuffers(1,&VBO);
 	glGenBuffers(1,&EBO);
-
 	glBindVertexArray(VAO);
-
 	glBindBuffer(GL_ARRAY_BUFFER,VBO);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
-
 	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,7*sizeof(float),(void*)0);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(1,4,GL_FLOAT,GL_FALSE,7*sizeof(float),(void*)(3*sizeof(float)));
 	glEnableVertexAttribArray(1);
-
 	//Transformations
 	glm::mat4 projection;
 	projection = glm::ortho((int)pos->x+0.0f,(float)size->width+(int)pos->x,(float)size->height+(int)pos->y,0.0f+(int)pos->y,-1.0f,1.0f);
 	glm::mat4 ModelMatrix(1.0f);
 	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
 	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(w,h,1.0f));
-
 	glUseProgram(shaderProgram);
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
@@ -218,9 +206,6 @@ void exstar::Camera::drawRect(int x,int y,int w,int h){
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
-
-	
-
 }
 void exstar::Camera::drawRect(exstar::Point pos, exstar::Dimension size){
 	drawRect(pos.x,pos.y,size.width,size.height);
@@ -251,16 +236,13 @@ void exstar::Camera::drawEllipse(int x,int y,int w,int h){
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
 	glCompileShader(vertexShader);
-
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
 	glCompileShader(fragmentShader);
-
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram,vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
 	glLinkProgram(shaderProgram);
-
 	glUseProgram(shaderProgram);
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
@@ -292,25 +274,19 @@ void exstar::Camera::drawEllipse(int x,int y,int w,int h){
 	glGenVertexArrays(1,&VAO);
 	glGenBuffers(1,&VBO);
 	glGenBuffers(1,&EBO);
-
 	glBindVertexArray(VAO);
-
 	glBindBuffer(GL_ARRAY_BUFFER,VBO);
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
-
 	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);
 	glEnableVertexAttribArray(0);
-
 	//Transformations
 	glm::mat4 projection;
 	projection = glm::ortho((int)pos->x+0.0f,(float)size->width+(int)pos->x,(float)size->height+(int)pos->y,0.0f+(int)pos->y,-1.0f,1.0f);
 	glm::mat4 ModelMatrix(1.0f);
 	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
 	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(w,h,1.0f));
-
 	glUseProgram(shaderProgram);
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
@@ -337,7 +313,6 @@ void exstar::Camera::drawCircle(int x,int y,int r){
 void exstar::Camera::drawCircle(exstar::Point pos,int r){
 	drawEllipse(pos.x,pos.y,r*2,r*2);
 }
-
 void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h){
 	const char* vertexShaderSource = "#version 330 core\n"
 									"layout (location = 0) in vec2 aPos;\n"
@@ -377,30 +352,22 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
 	geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 	glShaderSource(geometryShader,1,&geometryShaderSource,NULL);
-
 	glCompileShader(vertexShader);
 	glCompileShader(fragmentShader);
 	glCompileShader(geometryShader);
-
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram,vertexShader);
 	glAttachShader(shaderProgram,fragmentShader);
 	glAttachShader(shaderProgram,geometryShader);
 	glLinkProgram(shaderProgram);
-
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	glDeleteShader(geometryShader);
-
 	float r,g,b,a;
 	r = exstar::Color::getFloat(color->r);
 	g = exstar::Color::getFloat(color->g);
 	b = exstar::Color::getFloat(color->b);
 	a = exstar::Color::getFloat(color->a);
-	/*
-	float points[] = {
-		1.0f,1.0f,r, g, b,
-	};*/
 	float points[] = {
      0.0f,  0.0f, 0.0f, 1.0f, 0.0f, // top-right
 	};  
@@ -415,14 +382,12 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
     glBindVertexArray(0);
-
     //Transformations
 	glm::mat4 projection;
 	projection = glm::ortho((int)pos->x+0.0f,(float)size->width+(int)pos->x,(float)size->height+(int)pos->y,0.0f+(int)pos->y,-1.0f,1.0f);
 	glm::mat4 ModelMatrix(1.0f);
 	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
 	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(w,h,1.0f));
-
     glUseProgram(shaderProgram);
     glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
 	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
@@ -432,7 +397,6 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 }
-
 void exstar::Camera::drawSprite(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h){
 	drawShape(shape,pos.x,pos.y,w,h);
 }
@@ -442,8 +406,6 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::P
 void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size){
 	drawShape(shape,x,y,size.width,size.height);
 }
-
-
 exstar::Dimension exstar::Camera::getSize(){
 	return *size;
 }
