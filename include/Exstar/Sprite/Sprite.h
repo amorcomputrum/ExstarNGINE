@@ -12,9 +12,15 @@
 			 * @param file The location of the sprite to load
 			*/
 			Sprite(const char* file);
-
-
-			
+			/**
+			 * Initialize the Sprite
+			 * 
+			 * @param file The location of the sprite to load
+			 * @param x The x location of the sprite to render(This is for rendering only part of a sprite from the file)
+			 * @param y The y location of the sprite to render(This is for rendering only part of a sprite from the file)
+			 * @param w The width of the area to render from the file
+			 * @param h The height of the area to render from the file
+			*/
 			Sprite(const char* file,int x,int y,int w,int h);
 			/**
 			 * Destruct the Inialized Sprite
@@ -70,16 +76,24 @@
 			*/
 			exstar::Dimension getSize();
 			/**
+			 * Return the dimensions of the area to render from file
+			 * 
+			 * @return dimensions of the area to render from file
+			*/
+			exstar::Dimension getCut();
+			/**
+			 * The location to render from the file
+			 * 
+			 * @returns The x,y of the area to render
+			*/
+			exstar::Point getPos();
+			/**
 			 * Return the type of the image
 			 * 
 			 * @return int value of the images type
 			 * 3=RGB
 			 * 4=RGBA
 			*/
-
-			exstar::Dimension getCut();
-			exstar::Point getPos();
-
 			int getType();
 			/**
 			 * Return the Image data
