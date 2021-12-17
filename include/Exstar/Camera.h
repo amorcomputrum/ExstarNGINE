@@ -142,13 +142,47 @@
 			 * @param r The radius of the circle to render
 			*/
 			void drawCircle(exstar::Point pos,int r);
+			/**
+			 * Render a Custom Shape
+			 * 
+			 * @param shape The Verticies to render onto the defined canvas
+			 * @param x The left x location of the canvas to draw on
+			 * @param y The top y location of the canvas to draw on
+			 * @param w The width of the canvas to draw on
+			 * @param h The height of the canvas to draw on
+			*/
 			void drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h);
+			/**
+			 * Render a Custom Shape
+			 * 
+			 * @param shape The Verticies to render onto the defined canvas
+			 * @param pos The top-left location of the canvas
+			 * @param w The width of the canvas to draw on
+			 * @param h The height of the canvas to draw on
+			*/
+			void drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h);
+			/**
+			 * Render a Custom Shape
+			 * 
+			 * @param shape The Verticies to render onto the defined canvas
+			 * @param pos The top-left location of the canvas
+			 * @param size The size of the canvas to draw on
+			*/
+			void drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,exstar::Dimension size);
+			/**
+			 * Render a Custom Shape
+			 * 
+			 * @param shape The Verticies to render onto the defined canvas
+			 * @param x The left x location of the canvas to draw on
+			 * @param y The top y location of the canvas to draw on
+			 * @param size The size of the canvas to draw on
+			*/
+			void drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size);
 			/**
 			 * Return the Size of the camera
 			 * 
 			 * @return exstar::Dimension of the size of the Camera
 			*/
-
 			exstar::Dimension getSize();
 			/**
 			 * Return the Width of the camera
