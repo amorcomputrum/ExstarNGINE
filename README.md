@@ -6,7 +6,7 @@
 <h3 align="center">Building</h3>
 <h4 align="center" style="font-weight: 400;">
 	When building on linux run "sh INSTALL.sh"<br><br>
-	When on another OS use "cmake install ." and then "make install"
+	When on another OS use cmake to compile
 	<br>
 	<br>
 </h4>
