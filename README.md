@@ -47,7 +47,7 @@ public:
 	void render(exstar::Camera camera){
 		//Set the Fill Color
 		camera.setColor(exstar::Color::Blue);
-		//Render Rectange at 0,0 with a width of 50 and height of 100
+		//Render Rectangle at 0,0 with a width of 50 and height of 100
 		camera.drawRect(0,0,50,100);
 	}
 
