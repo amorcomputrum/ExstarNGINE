@@ -4,6 +4,7 @@
 	#include "Exstar/Utils/Point.h"
 	#include "Exstar/Utils/Color.h"
 	#include "Exstar/Sprite/Sprite.h"
+	#include "Exstar/Utils/Vector2d.h"
 	#include "Exstar/Utils/ArrayList.h"
 	namespace exstar{
 		class Camera

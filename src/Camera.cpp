@@ -434,9 +434,7 @@ void exstar::Camera::drawLine(int x1,int y1,int x2,int y2){
 	glUseProgram(shaderProgram);
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	float vertices[] = {((float)x1/size->width*2.0 -1.0),-((float)y1/size->height*2.0-1.0),(float)x2/size->width*2.0 -1.0,-((float)y2/size->height*2.0-1.0)};
-	std::cout << vertices[0] << "," << vertices[1] << std::endl;
-	std::cout << vertices[2] << "," << vertices[3] << std::endl << std::endl;
+	float vertices[] = {((float)(x1-pos->x)/size->width*2.0 -1.0),-((float)(y1-pos->y)/size->height*2.0-1.0),(float)(x2-pos->x)/size->width*2.0 -1.0,-((float)(y2-pos->y)/size->height*2.0-1.0)};
 	unsigned int VBO, VAO;
 	glGenVertexArrays(1,&VAO);
 	glGenBuffers(1,&VBO);
