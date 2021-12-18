@@ -406,6 +406,60 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::P
 void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size){
 	drawShape(shape,x,y,size.width,size.height);
 }
+void exstar::Camera::drawLine(int x1,int y1,int x2,int y2){
+	const char* vertexShaderSource = "#version 330 core\n"
+									"layout (location = 0) in vec2 aPos;\n"
+									"void main()\n"
+									"{\n"
+									"	gl_Position = vec4(aPos.x,aPos.y,0.0f,1.0f);\n"
+									"}\0";
+	float r,g,b,a;
+	r = exstar::Color::getFloat(color->r);
+	g = exstar::Color::getFloat(color->g);
+	b = exstar::Color::getFloat(color->b);
+	a = exstar::Color::getFloat(color->a);
+	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
+	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
+	unsigned int shaderProgram,vertexShader,fragmentShader;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
+	glCompileShader(vertexShader);
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
+	glCompileShader(fragmentShader);
+	shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram,vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+	glLinkProgram(shaderProgram);
+	glUseProgram(shaderProgram);
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+	float vertices[] = {((float)x1/size->width*2.0 -1.0),-((float)y1/size->height*2.0-1.0),(float)x2/size->width*2.0 -1.0,-((float)y2/size->height*2.0-1.0)};
+	std::cout << vertices[0] << "," << vertices[1] << std::endl;
+	std::cout << vertices[2] << "," << vertices[3] << std::endl << std::endl;
+	unsigned int VBO, VAO;
+	glGenVertexArrays(1,&VAO);
+	glGenBuffers(1,&VBO);
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER,VBO);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
+	glBindVertexArray(0);
+	glUseProgram(shaderProgram);
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_LINES,0,2);
+	glBindVertexArray(0);
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+
+}
+void exstar::Camera::drawLine(exstar::Point pos1,exstar::Point pos2){
+	drawLine(pos1.x,pos1.y,pos2.x,pos2.y);
+}
+void exstar::Camera::drawLine(exstar::Point pos1,exstar::Vector2d offset){
+	drawLine(pos1.x,pos1.y,offset.getX(),offset.getY());
+}
 exstar::Dimension exstar::Camera::getSize(){
 	return *size;
 }
