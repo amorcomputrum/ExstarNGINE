@@ -341,7 +341,7 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 		}else if(shape->get(i).y >h || shape->get(i).y < 0){
 			throw exstar::exception("exstar::Camera::drawShape - y position is out of range 0-" + std::to_string(h));
 		}
-		geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string(((shape->get(i).x)/size->width*2))+","+std::to_string((((shape->get(i).y-h))/(-size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
+		geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(i).x)/size->width*2))+","+std::to_string((((((float)shape->get(i).y)-h))/(-size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
 	}
 	geometryShaderSourceRef+="\tEndPrimitive();\n}\nvoid main() {\n\tbuild_shape(gl_in[0].gl_Position);\n}";
 	const char* geometryShaderSource = geometryShaderSourceRef.c_str();
