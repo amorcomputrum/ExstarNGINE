@@ -1,6 +1,6 @@
-#include "Exstar/stb_image.h"
+#include "Exstar/Graphics/Sprite/stb_image.h"
 #include "Exstar/Utils/Exception.h"
-#include "Exstar/Sprite/Image_Handler.h"
+#include "Exstar/Graphics/Sprite/Image_Handler.h"
 
 //Define Variables
 exstar::ArrayList<unsigned char *>* exstar::images = new exstar::ArrayList<unsigned char *>();

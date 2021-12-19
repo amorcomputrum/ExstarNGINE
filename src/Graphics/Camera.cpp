@@ -6,7 +6,7 @@
 #include <iostream>
 #include "Exstar/Utils/Exception.h"
 #include "Exstar/Utils/ArrayList.h"
-#include "Exstar/Camera.h"
+#include "Exstar/Graphics/Camera.h"
 
 exstar::Camera::Camera(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};

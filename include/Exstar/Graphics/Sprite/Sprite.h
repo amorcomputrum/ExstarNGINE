@@ -136,5 +136,5 @@
 
 		};
 	};
-	#include "Exstar/Sprite/Sprite.cpp"
+	#include "Exstar/Graphics/Sprite/Sprite.cpp"
 #endif

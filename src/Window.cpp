@@ -1,8 +1,8 @@
 #define GLFW_INCLUDE_NONE
 #include "Exstar/exstarglad/gl.h"
-#include "Exstar/stb_image.h"
+#include "Exstar/Graphics/Sprite/stb_image.h"
 #include "Exstar/Utils/Exception.h"
-#include "Exstar/Utils/Color.h"
+#include "Exstar/Graphics/Color.h"
 #include "Exstar/Window.h"
 
 exstar::Window::Window(int width,int height,std::string title){

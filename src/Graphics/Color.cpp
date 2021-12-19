@@ -1,5 +1,5 @@
 #include "Exstar/Utils/Exception.h"
-#include "Exstar/Utils/Color.h"
+#include "Exstar/Graphics/Color.h"
 
 //Define Variables
 const exstar::Color exstar::Color::Black(0,0,0);

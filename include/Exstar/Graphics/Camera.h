@@ -1,8 +1,8 @@
 #ifndef Camera_H
 #define Camera_H
 	#include "Exstar/Utils/Point.h"
-	#include "Exstar/Utils/Color.h"
-	#include "Exstar/Sprite/Sprite.h"
+	#include "Exstar/Graphics/Color.h"
+	#include "Exstar/Graphics/Sprite/Sprite.h"
 	#include "Exstar/Utils/Vector2d.h"
 	#include "Exstar/Utils/ArrayList.h"
 	namespace exstar{
@@ -258,5 +258,5 @@
 			exstar::Color* color;
 		};
 	};
-	#include "Exstar/Camera.cpp"
+	#include "Exstar/Graphics/Camera.cpp"
 #endif
