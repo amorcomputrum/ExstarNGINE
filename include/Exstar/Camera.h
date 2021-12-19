@@ -1,4 +1,3 @@
-
 #ifndef Camera_H
 #define Camera_H
 	#include "Exstar/Utils/Point.h"
@@ -199,6 +198,19 @@
 			 * @param offset The offset from the pos1 location
 			*/
 			void drawLine(exstar::Point pos1,exstar::Vector2d offset);
+			/**
+			 * Render a Pixel
+			 * 
+			 * @param x The x location of the pixel
+			 * @param y The y location of the pixel
+			*/
+			void drawPixel(int x,int y);
+			/**
+			 * Render a Pixel
+			 * 
+			 * @param pos The position of the pixel
+			*/
+			void drawPixel(exstar::Point pos);
 			/**
 			 * Return the Size of the camera
 			 * 
