@@ -4,14 +4,13 @@
 #include "Exstar/Utils/Exception.h"
 #include "Exstar/Window.h"
 
-//Window.h
 exstar::Window::Window(int width,int height,std::string title){
 	size = exstar::Dimension{width,height};
 	this->title = title;
 	camera = new exstar::Camera(size.width,size.height,0,0);
 	initGL();
 }
-
+//Virtual Functions
 void exstar::Window::render(exstar::Camera camera){}
 void exstar::Window::Update(double deltaTime){}
 void exstar::Window::onResize(exstar::Dimension size){}
@@ -23,22 +22,17 @@ void exstar::Window::run(){
 	//show window
 	glfwMakeContextCurrent(window);
 	gladLoadGL(glfwGetProcAddress);
-
 	//set interval for buffer
 	glfwSwapInterval(1);
-
 	//allow Forward compatability with opengl
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-
 	//create clock
 	clock = new exstar::Clock();
-
 	//begin loop
 	update();
 	//close when loop closes
 	close();
 }
-
 void exstar::Window::close(){
 	glfwDestroyWindow(window);
 	glfwTerminate();
@@ -46,23 +40,19 @@ void exstar::Window::close(){
 void exstar::Window::setFramerate(int frameRate){
 	this->frameRate = frameRate;
 }
-
 void exstar::Window::setIcon(const char* path){
 	GLFWimage images[1];
 	images[0].pixels = stbi_load(path, &images[0].width, &images[0].height, 0, 4);
 	glfwSetWindowIcon(window, 1, images); 
 	stbi_image_free(images[0].pixels);
 }
-
 void exstar::Window::setTitle(std::string title){
 	this->title = title;
 	glfwSetWindowTitle(window,title.c_str());
 }
-
 void exstar::Window::setSizeLimits(int minW,int minH,int maxW,int maxH){
 	glfwSetWindowSizeLimits(window,minW,minH,maxW,maxH);
 }
-
 void exstar::Window::setSize(int width, int height){
 	size = exstar::Dimension{width,height};
 	glfwSetWindowSize(window,width,height);
@@ -71,7 +61,6 @@ void exstar::Window::setSize(exstar::Dimension size){
 	this->size = size;
 	glfwSetWindowSize(window,size.width,size.height);
 }
-
 void exstar::Window::setAdjustCameraOnResize(bool state){
 	adjustCameraOnResize = state;
 }
@@ -84,7 +73,6 @@ void exstar::Window::setBackgroundColor(double r,double g,double b){
 	}else{
 		throw exstar::exception("exstar::Window::setBackGroundColor - Out Of Range 0-255");
 	}
-	
 }
 void exstar::Window::setBackgroundColor(double r,double g,double b,double a){
 	if((r >= 0 && r <= 255) && (g >= 0 && g <= 255) && (b >= 0 && b <= 255) && (a >= 0 && a <= 255)){
@@ -128,37 +116,30 @@ bool exstar::Window::isKeyPressed(int key){
 exstar::Dimension exstar::Window::getSize(){
 	return size;
 }
-
 exstar::Point exstar::Window::getMousePos(){
 	double x,y;
 	glfwGetCursorPos(window,&x,&y);
 	return exstar::Point{(int)x,(int)y};
 }
-
 double exstar::Window::DeltaTime(){
 	return this->deltaTime;
 }
-
 int exstar::Window::getMouseX(){
 	double x,y;
 	glfwGetCursorPos(window,&x,&y);
 	return (int)x;
 }
-
 int exstar::Window::getMouseY(){
 	double x,y;
 	glfwGetCursorPos(window,&x,&y);
 	return (int)y;
 }
-
 int exstar::Window::getWidth(){
 	return size.width;
 }
-
 int exstar::Window::getHeight(){
 	return size.height;
 }
-
 bool exstar::Window::getAdjustCameraOnResize(){
 	return adjustCameraOnResize;
 }
@@ -170,21 +151,17 @@ exstar::ArrayList<exstar::MouseEvent*>* exstar::Window::mouseEvents = new exstar
 void exstar::Window::initGL(){
 	//set error callback
 	glfwSetErrorCallback(error_callback);
-
 	//init glfw
 	if(!glfwInit()){
 		throw exstar::exception("GLFW INIT ERROR: Well that failed quickly");
 	}
-
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-
 	//init window
 	window = glfwCreateWindow(size.width,size.height,title.c_str(),NULL,NULL);
 	if(!window){
 		throw exstar::exception("GLFW WindowINIT ERROR: Well that failed too soon");
 	}
-
 	//setCallbacks for window
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetMouseButtonCallback(window, mouse_callback);
@@ -206,20 +183,21 @@ void exstar::Window::update(){
 		render((*camera));
 	    //display frame
 		glfwSwapBuffers(window);
-
 		while(glfwGetTime() < lastTime + 1.0/frameRate){
-			usleep(1000);
+			#ifdef _WIN32 || _WIN64
+				sleep(1000);
+			#else
+				usleep(1000);
+			#endif
 		}
 		lastTime+=1.0/frameRate;
 		this->deltaTime = clock->getTime()/1000;
-		
 		//check if resized
 		int w,h;
 		glfwGetFramebufferSize(window, &w, &h);
 		if(w != size.width || h != size.height){
 			resizeEvent(w,h);
 		}
-
 		//check if a key pressed
 		for(int kp = 0; kp < keysPressed->size; kp++){
 			bool found = false;
@@ -236,7 +214,6 @@ void exstar::Window::update(){
 				keyPressed(keysPressed->get(kp));
 			}
 		}
-
 		//check if a key released
 		for(int kpc = 0; kpc < keysPressedCopy->size; kpc++){
 			bool found = false;
@@ -253,7 +230,6 @@ void exstar::Window::update(){
 				keysPressedCopy->remove(kpc);
 			}
 		}
-
 		//check if a Mouse pressed
 		for(int mp = 0; mp < mouseEvents->size; mp++){
 			bool found = false;
@@ -272,7 +248,6 @@ void exstar::Window::update(){
 				mousePressed(mouseEvents->get(mp));
 			}
 		}
-
 		//check if a Mouse released
 		for(int mpc = 0; mpc < mouseEventsCopy->size; mpc++){
 			bool found = false;
@@ -289,13 +264,11 @@ void exstar::Window::update(){
 				mouseEventsCopy->remove(mpc);
 			}
 		}
-
 		//get all events
 		glfwPollEvents();
 	}
 	//Stop Swimming
 }
-
 void exstar::Window::resizeEvent(int width, int height){
 	if(adjustCameraOnResize){
 		//get difference in size, then adjust camera pos

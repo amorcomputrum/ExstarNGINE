@@ -1,5 +1,6 @@
 #include "Exstar/Sprite/Image_Handler.h"
 #include "Exstar/Sprite/Sprite.h"
+
 exstar::Sprite::Sprite(const char* file){
 	file = file;
 	int* feedback = exstar::addImage(file);
