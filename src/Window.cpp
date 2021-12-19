@@ -2,6 +2,7 @@
 #include "Exstar/exstarglad/gl.h"
 #include "Exstar/stb_image.h"
 #include "Exstar/Utils/Exception.h"
+#include "Exstar/Utils/Color.h"
 #include "Exstar/Window.h"
 
 exstar::Window::Window(int width,int height,std::string title){
@@ -167,6 +168,8 @@ void exstar::Window::initGL(){
 	glfwSetMouseButtonCallback(window, mouse_callback);
 	//seed random
 	srand(time(NULL));
+	//Set WindowBackground Color
+	setBackgroundColor(exstar::Color::Black);
 }
 
 void exstar::Window::update(){
