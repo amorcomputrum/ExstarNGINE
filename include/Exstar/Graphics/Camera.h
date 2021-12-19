@@ -1,9 +1,8 @@
-
 #ifndef Camera_H
 #define Camera_H
 	#include "Exstar/Utils/Point.h"
-	#include "Exstar/Utils/Color.h"
-	#include "Exstar/Sprite/Sprite.h"
+	#include "Exstar/Graphics/Color.h"
+	#include "Exstar/Graphics/Sprite/Sprite.h"
 	#include "Exstar/Utils/Vector2d.h"
 	#include "Exstar/Utils/ArrayList.h"
 	namespace exstar{
@@ -200,6 +199,19 @@
 			*/
 			void drawLine(exstar::Point pos1,exstar::Vector2d offset);
 			/**
+			 * Render a Pixel
+			 * 
+			 * @param x The x location of the pixel
+			 * @param y The y location of the pixel
+			*/
+			void drawPixel(int x,int y);
+			/**
+			 * Render a Pixel
+			 * 
+			 * @param pos The position of the pixel
+			*/
+			void drawPixel(exstar::Point pos);
+			/**
 			 * Return the Size of the camera
 			 * 
 			 * @return exstar::Dimension of the size of the Camera
@@ -246,5 +258,5 @@
 			exstar::Color* color;
 		};
 	};
-	#include "Exstar/Camera.cpp"
+	#include "Exstar/Graphics/Camera.cpp"
 #endif

@@ -5,20 +5,17 @@
 
 #include <iostream>
 #include <chrono>
-#if __WIN32
-#include <Windows.h>
+#if __WIN32 || _WIN64
+	#include <Windows.h>
 #else
-#include <unistd.h>
+	#include <unistd.h>
 #endif
 
-
-#include "Exstar/Utils/MouseEvent.h"
-#include "Exstar/Camera.h"
+#include "Exstar/MouseEvent.h"
+#include "Exstar/Graphics/Camera.h"
 #include "Exstar/Utils/Vector2d.h"
-#include "Exstar/Utils/Key.h"
+#include "Exstar/Key.h"
 #include "Exstar/Clock.h"
-
-
 
 namespace exstar{
 	class Window {

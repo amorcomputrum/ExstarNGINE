@@ -7,7 +7,7 @@ namespace exstar{
 	/**
 	 * The amount of Objects that are using each file that is stored in the images ArrayList
 	*/
-	extern exstar::ArrayList<int>* numUsers;
+	extern exstar::ArrayList<int>* numUses;
 	/**
 	 * Add an image to the images ArrayList
 	 * 

@@ -1,5 +1,6 @@
 #include "Exstar/Utils/Math.h"
 #include "Exstar/Utils/Vector2d.h"
+
 exstar::Vector2d::Vector2d(int x,int y){
 	data[0] = x;
 	data[1] = y;
@@ -8,7 +9,7 @@ float exstar::Vector2d::dot(exstar::Vector2d v){
 	return (getX()*v.getY()) + (v.getX() * getY());
 }
 float exstar::Vector2d::magnitude(){
-	return std::sqrt((data[0]*data[0])+(data[1]*data[1]));
+	return std::sqrt((data[0]*data[0]) + (data[1]*data[1]));
 }
 void exstar::Vector2d::add(exstar::Vector2d vec){
 	data[0] += vec.getX();

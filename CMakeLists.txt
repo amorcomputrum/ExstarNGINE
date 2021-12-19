@@ -5,9 +5,9 @@ project(Exstar VERSION 1.0.0)
 #Add Source Code
 add_library(Exstar SHARED
 	src/gl.c
-	src/Sprite/Image_Handler.cpp
+	src/Graphics/Sprite/Image_Handler.cpp
 	src/Utils/Exception.cpp
-	src/Utils/Color.cpp
+	src/Graphics/Color.cpp
 	src/Utils/Math.cpp
 	src/Utils/Vector2d.cpp
 	src/Clock.cpp
@@ -29,8 +29,8 @@ set_target_properties(Exstar PROPERTIES SOVERSION 1)
 include_directories(include)
 
 #move included cpp files
-install(FILES "src/Camera.cpp" DESTINATION "include/Exstar/")
-install(FILES "src/Sprite/Sprite.cpp" DESTINATION "include/Exstar/Sprite/")
+install(FILES "src/Graphics/Camera.cpp" DESTINATION "include/Exstar/Graphics/")
+install(FILES "src/Graphics/Sprite/Sprite.cpp" DESTINATION "include/Exstar/Graphics/Sprite/")
 install(FILES "src/Utils/ArrayList.cpp" DESTINATION "include/Exstar/Utils/")
 #move Headers and SO
 install(TARGETS Exstar DESTINATION lib/Exstar)

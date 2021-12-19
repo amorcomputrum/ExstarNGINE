@@ -1,4 +1,5 @@
 #include "Exstar/Utils/ArrayList.h"
+
 template<class T>
 exstar::ArrayList<T>::ArrayList(){
 	size = 0;
