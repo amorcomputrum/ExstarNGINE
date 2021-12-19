@@ -19,7 +19,7 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 #Compile and Install glfw
-add_subdirectory(Dependencies)
+add_subdirectory(Dependencies/glfw)
 target_link_libraries(Exstar glfw)
 target_compile_options(Exstar PUBLIC "-lglfw")
 target_link_libraries(Exstar "-lglfw")
