@@ -18,7 +18,6 @@ double exstar::Vector2d::getX(){
 double exstar::Vector2d::getY(){
 	return y;
 }
-
 exstar::Vector2d exstar::Vector2d::operator+(exstar::Vector2d param){
 	return exstar::Vector2d(x+param.x,y+param.y);
 }
@@ -43,8 +42,6 @@ exstar::Vector2d exstar::Vector2d::operator*(exstar::Vector2d param){
 exstar::Vector2d exstar::Vector2d::operator*(double param){
 	return exstar::Vector2d(x*param,y*param);
 }
-
-
 float exstar::Vector2d::dot(exstar::Vector2d vec1,exstar::Vector2d vec2){
 	return (vec1.x*vec2.x) + (vec2.y * vec1.y);
 }
