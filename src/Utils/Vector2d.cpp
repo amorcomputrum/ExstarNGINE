@@ -2,54 +2,36 @@
 #include "Exstar/Utils/Vector2d.h"
 
 exstar::Vector2d::Vector2d(int x,int y){
-	data[0] = x;
-	data[1] = y;
-}
-float exstar::Vector2d::dot(exstar::Vector2d v){
-	return (getX()*v.getY()) + (v.getX() * getY());
+	this->x = x;
+	this->y = y;
 }
 float exstar::Vector2d::magnitude(){
-	return std::sqrt((data[0]*data[0]) + (data[1]*data[1]));
-}
-void exstar::Vector2d::add(exstar::Vector2d vec){
-	data[0] += vec.getX();
-	data[1] += vec.getY();
-}
-void exstar::Vector2d::add(int x,int y){
-	data[0] += x;
-	data[1] += y;
-}
-void exstar::Vector2d::min(exstar::Vector2d vec){
-	data[0] -= vec.getX();
-	data[1] -= vec.getY();
-}
-void exstar::Vector2d::min(int x,int y){
-	data[0] -= x;
-	data[1] -= y;
-}
-void exstar::Vector2d::mul(exstar::Vector2d vec){
-	data[0] *= vec.getX();
-	data[1] *= vec.getY();
-}
-void exstar::Vector2d::mul(int x,int y){
-	data[0] *= x;
-	data[1] *= y;
-}
-void exstar::Vector2d::div(exstar::Vector2d vec){
-	data[0] /= vec.getX();
-	data[1] /= vec.getY();
-}
-void exstar::Vector2d::div(int x,int y){
-	data[0] /= x;
-	data[1] /= y;
+	return std::sqrt((x*x) + (y*y));
 }
 void exstar::Vector2d::set(int x,int y){
-	data[0] = x;
-	data[1] = y;
+	this->x = x;
+	this->y = y;
 }
 int exstar::Vector2d::getX(){
-	return data[0];
+	return x;
 }
 int exstar::Vector2d::getY(){
-	return data[1];
+	return y;
+}
+
+exstar::Vector2d exstar::Vector2d::operator+(exstar::Vector2d param){
+	return exstar::Vector2d(x+param.x,y+param.y);
+}
+exstar::Vector2d exstar::Vector2d::operator-(exstar::Vector2d param){
+	return exstar::Vector2d(x-param.x,y-param.y);
+}
+exstar::Vector2d exstar::Vector2d::operator/(exstar::Vector2d param){
+	return exstar::Vector2d(x/param.x,y/param.y);
+}
+exstar::Vector2d exstar::Vector2d::operator*(exstar::Vector2d param){
+	return exstar::Vector2d(x*param.x,y*param.y);
+}
+
+float exstar::Vector2d::dot(exstar::Vector2d vec1,exstar::Vector2d vec2){
+	return (vec1.x*vec2.y) + (vec2.x * vec1.y);
 }

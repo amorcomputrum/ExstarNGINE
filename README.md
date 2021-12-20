@@ -1,5 +1,5 @@
 <p align="center">
-	<img src="Exstar.png" alt="Geno" width="80" height="80" style="border-radius: 15px"><h1 align="center">Exstar</h1><p align="center">https://discord.gg/WacprUHpUF</p>
+	<img src="Exstar.png" alt="Geno" width="80" height="80" style="border-radius: 15px"><h1 align="center">Exstar</h1><p align="center"><a href="https://discord.gg/WacprUHpUF" style="text-decoration: none;color: rgb(150,150,255);">Discord</a></p>
 </p>
 
 
