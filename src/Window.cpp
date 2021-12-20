@@ -95,7 +95,7 @@ void exstar::Window::moveCamera(int x,int y){
 	camera->move(x,y);
 }
 void exstar::Window::moveCamera(exstar::Vector2d distance){
-	camera->move(distance.getX(),distance.getY());
+	camera->move(distance.x,distance.y);
 }
 void exstar::Window::setCamera(int x,int y){
 	camera->set(x,y);
