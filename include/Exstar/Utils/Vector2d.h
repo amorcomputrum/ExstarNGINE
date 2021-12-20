@@ -108,6 +108,14 @@
 			 * @returns float of the DotProduct
 			*/
 			static float dot(exstar::Vector2d vec1,exstar::Vector2d vec2);
+			/**
+			 * Returns The Normalized Vector
+			 * 
+			 * @param vec The Vector to Normalize
+			 * 
+			 * @returns Normalized Vector
+			*/
+			static exstar::Vector2d normalize(exstar::Vector2d vec);
 		};
 	}
 #endif
