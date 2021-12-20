@@ -1,5 +1,6 @@
 #include <cmath>
 #include <stdlib.h>
+#include "Exstar/Utils/Vector2d.h"
 namespace exstar{
 	/**
 	 * EULER's number as in e
@@ -16,6 +17,15 @@ namespace exstar{
 	 * @return The distance between the 2 objects
 	*/
 	double Distance(double x1,double y1,double x2, double y2);
+	/**
+	 * Calculates the distance between 2 objects on a 2d plane
+	 * 
+	 * @param pos1 The first object's position
+	 * @param pos2 The second object's position
+	 * 
+	 * @return The distance between the 2 objects
+	*/
+	double Distance(exstar::Vector2d pos1,exstar::Vector2d pos2);
 	/**
 	 * Returns a Random int in a range
 	 * 
