@@ -567,7 +567,7 @@ void exstar::Camera::drawPixel(int x,int y){
 	glDeleteShader(fragmentShader);
 	float vertices[] = {
 		(float)(x-pos->x)/size->width*2.0 -1.0,//x
-		-((float)(y-pos->y)/size->height*2.0-1.0)//y
+		-((float)((y-1)-pos->y)/size->height*2.0-1.0)//y
 		};
 	unsigned int VBO, VAO;
 	//Prepare Buffers
