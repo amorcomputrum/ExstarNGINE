@@ -45,3 +45,6 @@ exstar::Vector2d exstar::Vector2d::operator*(double param){
 float exstar::Vector2d::dot(exstar::Vector2d vec1,exstar::Vector2d vec2){
 	return (vec1.x*vec2.x) + (vec2.y * vec1.y);
 }
+exstar::Vector2d exstar::Vector2d::normalize(exstar::Vector2d vec){
+	return exstar::Vector2d(vec.x/abs(vec.magnitude()),vec.y/abs(vec.magnitude()));
+}
