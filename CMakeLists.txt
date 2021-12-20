@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-project(Exstar VERSION 1.0.0)
+#Verstion Official.Alpha.Beta
+project(Exstar VERSION 0.0.1)
 #Add Source Code
 add_library(Exstar SHARED
 	src/gl.c
