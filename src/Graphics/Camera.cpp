@@ -17,12 +17,12 @@ void exstar::Camera::resize(int width,int height){
 	size = new exstar::Dimension{width,height};
 }
 void exstar::Camera::move(int x,int y){
-	pos->x = pos->x+x;
-	pos->y = pos->y+y;
+	pos->x = pos->x + x;
+	pos->y = pos->y + y;
 }
 void exstar::Camera::set(int x,int y){
-	pos->x += pos->x-x;
-	pos->y += pos->y-y;
+	pos->x += pos->x - x;
+	pos->y += pos->y - y;
 }
 void exstar::Camera::setColor(exstar::Color color){
 	this->color = new exstar::Color(color.r,color.g,color.b,color.a);
@@ -499,10 +499,10 @@ void exstar::Camera::drawLine(int x1,int y1,int x2,int y2){
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	float vertices[] = {
-		(float)(x1-pos->x)/size->width*2.0 -1.0,//x1
-		-((float)(y1-pos->y)/size->height*2.0-1.0),//y1
-		(float)(x2-pos->x)/size->width*2.0 -1.0,//x2
-		-((float)(y2-pos->y)/size->height*2.0-1.0)//y2
+		(float)(x1 - pos->x)/size->width*2.0 - 1.0,//x1
+		-((float)(y1 - pos->y)/size->height*2.0 - 1.0),//y1
+		(float)(x2 - pos->x)/size->width*2.0 - 1.0,//x2
+		-((float)(y2 - pos->y)/size->height*2.0 - 1.0)//y2
 		};
 	unsigned int VBO, VAO;
 	//Prepare Buffers
@@ -566,8 +566,8 @@ void exstar::Camera::drawPixel(int x,int y){
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	float vertices[] = {
-		(float)(x-pos->x)/size->width*2.0 -1.0,//x
-		-((float)((y-1)-pos->y)/size->height*2.0-1.0)//y
+		(float)(x - pos->x)/size->width*2.0 - 1.0,//x
+		-((float)((y - 1) - pos->y)/size->height*2.0 - 1.0)//y
 		};
 	unsigned int VBO, VAO;
 	//Prepare Buffers
