@@ -48,6 +48,12 @@ exstar::Vector2d exstar::Vector2d::operator*(double param){
 float exstar::Vector2d::dot(exstar::Vector2d vec1,exstar::Vector2d vec2){
 	return (vec1.x*vec2.x) + (vec2.y*vec1.y);
 }
+float exstar::Vector2d::cross(exstar::Vector2d vec1,exstar::Vector2d vec2){
+	return (a.x * b.y) - (a.y - b.x);
+}
+exstar::Vector2d exstar::Vector2d::cross(exstar::Vector2d vec,float s){
+	return exstar::Vector2d(s*vec.y,-s*vec.x);
+}
 exstar::Vector2d exstar::Vector2d::normalize(exstar::Vector2d vec){
 	return (vec * (1/vec.magnitude()));
 }

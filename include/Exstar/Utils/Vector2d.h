@@ -114,6 +114,24 @@
 			*/
 			static float dot(exstar::Vector2d vec1,exstar::Vector2d vec2);
 			/**
+			 * Returns the scalar of 2 vectors
+			 * 
+			 * @param vec1 The first vector
+			 * @param vec2 The second vector
+			 * 
+			 * @returns Returns the scalar of 2 vectors
+			*/
+			static float cross(exstar::Vector2d vec1,exstar::Vector2d vec2);
+			/**
+			 * Returns the Vector of a vector and scalar
+			 * 
+			 * @param vec1 The first vector
+			 * @param vec2 The second vector
+			 * 
+			 * @returns Returns the Vector of a vector and scalar
+			*/
+			static exstar::Vector2d cross(exstar::Vector2d vec1,float s);
+			/**
 			 * Returns The Normalized Vector
 			 * 
 			 * @param vec The Vector to Normalize
