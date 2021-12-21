@@ -8,6 +8,9 @@ exstar::Vector2d::Vector2d(double x,double y){
 float exstar::Vector2d::magnitude(){
 	return std::sqrt((x*x) + (y*y));
 }
+float exstar::Vector2d::sqrMagnitude(){
+	return ((x*x) + (y*y));
+}
 void exstar::Vector2d::set(double x,double y){
 	this->x = x;
 	this->y = y;

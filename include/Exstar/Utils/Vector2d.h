@@ -16,6 +16,11 @@
 			 * @return The value of C (a^2 + b^2 = C^2)
 			*/
 			float magnitude();
+			/** 
+			 * Returns the square of the magnitude of the Vector
+			 * @return The value of C (a^2 + b^2 = C^2)
+			*/
+			float sqrMagnitude();
 			/**
 			 * Set the Values of the 2dVector
 			 * 
