@@ -4,16 +4,14 @@ cmake_minimum_required(VERSION 3.10)
 #Verstion Official.Alpha.Beta
 project(Exstar VERSION 0.0.1)
 #Add Source Code
-add_library(Exstar SHARED
-	src/gl.c
-	src/Graphics/Sprite/Image_Handler.cpp
-	src/Utils/Exception.cpp
-	src/Graphics/Color.cpp
-	src/Utils/Math.cpp
-	src/Utils/Vector2d.cpp
-	src/Clock.cpp
-	src/Window.cpp
-)
+file(GLOB SOURCES src/*.cpp
+		src/Physics/*.cpp
+		src/Graphics/*.cpp
+		src/Utils/*.cpp)
+#include Headers
+include_directories(include)
+
+add_library(Exstar SHARED ${SOURCES})
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
@@ -26,13 +24,16 @@ target_compile_options(Exstar PUBLIC "-lglfw")
 target_link_libraries(Exstar "-lglfw")
 set_target_properties(Exstar PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(Exstar PROPERTIES SOVERSION 1)
-#include Headers
-include_directories(include)
+
 
 #move included cpp files
 install(FILES "src/Graphics/Camera.cpp" DESTINATION "include/Exstar/Graphics/")
 install(FILES "src/Graphics/Sprite/Sprite.cpp" DESTINATION "include/Exstar/Graphics/Sprite/")
 install(FILES "src/Utils/ArrayList.cpp" DESTINATION "include/Exstar/Utils/")
+install(FILES "src/Physics/Shape.cpp" DESTINATION "include/Exstar/Physics/")
+install(FILES "src/Physics/Body.cpp" DESTINATION "include/Exstar/Physics/")
+install(FILES "src/Utils/Vector2d.cpp" DESTINATION "include/Exstar/Utils/")
+install(FILES "src/Physics/World.cpp" DESTINATION "include/Exstar/Physics/")
 #move Headers and SO
 install(TARGETS Exstar DESTINATION lib/Exstar)
 install(DIRECTORY "include/" # source directory

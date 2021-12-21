@@ -28,5 +28,5 @@ namespace exstar{
 		 * @param param 2x2 to multiply by
 		*/
 		exstar::Matrix2 operator*(exstar::Matrix2 param);
-	}
+	};
 }
