@@ -356,6 +356,9 @@ void exstar::Camera::drawCircle(int x,int y,int r){
 void exstar::Camera::drawCircle(exstar::Point pos,int r){
 	drawEllipse(pos.x,pos.y,r*2,r*2);
 }
+void exstar::Camera::drawCircle(exstar::Vector2d pos,int r){
+	drawEllipse(pos.x,pos.y,r*2,r*2);
+}
 //-----------------------------DRAW SHAPE-----------------------------
 void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h){
 	const char* vertexShaderSource = "#version 330 core\n"

@@ -6,6 +6,10 @@
 			double x,y;
 			/**
 			 * Initialize The 2dVector
+			*/
+			Vector2d();
+			/**
+			 * Initialize The 2dVector
 			 * 
 			 * @param x Sets the value of x
 			 * @param y Sets the value of y
@@ -16,6 +20,11 @@
 			 * @return The value of C (a^2 + b^2 = C^2)
 			*/
 			float magnitude();
+			/** 
+			 * Returns the square of the magnitude of the Vector
+			 * @return The value of C (a^2 + b^2 = C^2)
+			*/
+			float sqrMagnitude();
 			/**
 			 * Set the Values of the 2dVector
 			 * 
@@ -51,6 +60,18 @@
 			 * @returns Result of addition
 			 */
 			exstar::Vector2d operator+(double param);
+			/**
+			 * Adds a Vector2d and saves
+			 * 
+			 * @param param The Vector to add
+			 */
+			exstar::Vector2d& operator+=(const exstar::Vector2d& param);
+			/**
+			 * Adds a Vector2d and saves
+			 * 
+			 * @param param The Vector to add
+			 */
+			exstar::Vector2d& operator+=(const double& param);
 			/**
 			 * Subtracts a Vector2d
 			 * 
@@ -109,6 +130,24 @@
 			*/
 			static float dot(exstar::Vector2d vec1,exstar::Vector2d vec2);
 			/**
+			 * Returns the scalar of 2 vectors
+			 * 
+			 * @param vec1 The first vector
+			 * @param vec2 The second vector
+			 * 
+			 * @returns Returns the scalar of 2 vectors
+			*/
+			static float cross(exstar::Vector2d vec1,exstar::Vector2d vec2);
+			/**
+			 * Returns the Vector of a vector and scalar
+			 * 
+			 * @param vec1 The first vector
+			 * @param vec2 The second vector
+			 * 
+			 * @returns Returns the Vector of a vector and scalar
+			*/
+			static exstar::Vector2d cross(exstar::Vector2d vec1,float s);
+			/**
 			 * Returns The Normalized Vector
 			 * 
 			 * @param vec The Vector to Normalize
@@ -118,4 +157,5 @@
 			static exstar::Vector2d normalize(exstar::Vector2d vec);
 		};
 	}
+	#include "Exstar/Utils/Vector2d.cpp"
 #endif

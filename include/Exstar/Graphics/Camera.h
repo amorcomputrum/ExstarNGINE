@@ -143,6 +143,13 @@
 			*/
 			void drawCircle(exstar::Point pos,int r);
 			/**
+			 * Render a Circle to the screen
+			 * 
+			 * @param pos The postion to render the circle to (top-left)
+			 * @param r The radius of the circle to render
+			*/
+			void drawCircle(exstar::Vector2d pos,int r);
+			/**
 			 * Render a Custom Shape
 			 * 
 			 * @param shape The Verticies to render onto the defined canvas

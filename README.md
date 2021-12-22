@@ -17,6 +17,13 @@
 	<a href="https://github.com/benajah/GEASY/releases/tag/Release" style="text-decoration: none; color: black;"><span style="font-weight: bold;">Geasy:</a> </span> Set in configuration file  "libPrefixes":["-lExstar","-lglfw"]<br><br>
 </p>
 <hr noshade>
+<h3 align="center">Coming Soon</h3>
+<p align="center">
+	Exstar will contain 2 physics engines<br>
+	One of them will be made by Exstar, this will be a simple general use engine<br>
+	The other will be an implementation of Box2D, this will be an advanced engine
+</p>
+<hr noshade>
 <h3 align="center">
 	Example
 </h3>
