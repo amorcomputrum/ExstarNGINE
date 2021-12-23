@@ -325,7 +325,7 @@ void exstar::Camera::drawEllipse(int x,int y,int w,int h){
 	glm::mat4 projection;
 	projection = glm::ortho((int)pos->x + 0.0f,(float)size->width + (int)pos->x,(float)size->height + (int)pos->y,0.0f + (int)pos->y,-1.0f,1.0f);
 	glm::mat4 ModelMatrix(1.0f);
-	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
+	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x-w/2,y-h/2,0.0f));
 	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(w,h,1.0f));
 	glUseProgram(shaderProgram);
 	//Set Uniforms
