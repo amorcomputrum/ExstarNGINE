@@ -8,7 +8,10 @@ namespace exstar{
 			Circle,Polygon
 		};
 		ID id;
-		ArrayList<exstar::Vector2d>* vertices;
-		int w,h,r;
+		ArrayList<exstar::Vector2d*>* vertices;
+		//ArrayList<exstar::Vector2d>* normals;
+		int r;
+		void rotate(double radians);
+		//void calculateNormals();
 	};
 }
