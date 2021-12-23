@@ -45,6 +45,14 @@ exstar::Vector2d exstar::Vector2d::operator-(exstar::Vector2d param){
 exstar::Vector2d exstar::Vector2d::operator-(double param){
 	return exstar::Vector2d(x - param,y - param);
 }
+exstar::Vector2d& exstar::Vector2d::operator-=(const exstar::Vector2d& param){
+	set(x - param.x,y - param.y);
+	return *this;
+}
+exstar::Vector2d& exstar::Vector2d::operator-=(const double& param){
+	set(x - param,y - param);
+	return *this;
+}
 exstar::Vector2d exstar::Vector2d::operator/(exstar::Vector2d param){
 	return exstar::Vector2d(x/param.x,y/param.y);
 }
