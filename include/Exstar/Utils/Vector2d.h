@@ -61,13 +61,13 @@
 			 */
 			exstar::Vector2d operator+(double param);
 			/**
-			 * Adds a Vector2d and saves
+			 * Adds a Vector2d to current Vector
 			 * 
 			 * @param param The Vector to add
 			 */
 			exstar::Vector2d& operator+=(const exstar::Vector2d& param);
 			/**
-			 * Adds a Vector2d and saves
+			 * Adds a Vector2d to current Vector
 			 * 
 			 * @param param The Vector to add
 			 */
@@ -88,6 +88,18 @@
 			 * @returns Result of subtraction
 			 */
 			exstar::Vector2d operator-(double param);
+			/**
+			 * Subtracts a Vector2d to current Vector
+			 * 
+			 * @param param The Vector to subtract
+			 */
+			exstar::Vector2d& operator-=(const exstar::Vector2d& param);
+			/**
+			 * Subtracts a Vector2d to current Vector
+			 * 
+			 * @param param The Vector to subtract
+			 */
+			exstar::Vector2d& operator-=(const double& param);
 			/**
 			 * Divides a Vector2d
 			 * 
