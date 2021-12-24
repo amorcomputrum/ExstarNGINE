@@ -374,13 +374,15 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 									 "    vs_out.color = aColor;\n"
 									 "    gl_Position = projection*(ModelMatrix*vec4(aPos.x,aPos.y,0.0,1.0));\n"
 									 "}\0";
-	const char* fragmentShaderSource = "#version 330 core\n"
-									   "out vec4 FragColor;\n"
-									   "in vec3 fColor;\n"
-									   "void main()\n"
-									   "{\n"
-									   "    FragColor = vec4(fColor, 1.0);\n"
-									   "}\0";
+	float r,g,b,a;
+	r = exstar::Color::getFloat(color->r);
+	g = exstar::Color::getFloat(color->g);
+	b = exstar::Color::getFloat(color->b);
+	a = exstar::Color::getFloat(color->a);
+	//Create and Convert FragmentShaderSource to proper format
+	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
+	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
+
 	//Create and Convert GeometryShaderSource to proper format
 	std::string geometryShaderSourceRef = "#version 330 core\nlayout (points) in;\nlayout (triangle_strip, max_vertices = " +  std::to_string(shape->size) + ") out;\nin VS_OUT {\n\tvec3 color;\n} gs_in[];\nout vec3 fColor;\nvoid build_shape(vec4 position)\n{\n\tfColor = gs_in[0].color;\n";
 	for(int i = 0; i<shape->size;i++){
@@ -389,7 +391,7 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 		}else if(shape->get(i).y >h || shape->get(i).y < 0){
 			throw exstar::exception("exstar::Camera::drawShape - y position is out of range 0-" + std::to_string(h));
 		}
-		geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(i).x)/size->width*2))+","+std::to_string((((((float)shape->get(i).y)-h))/(-size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
+		geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(i).x)/size->width*2))+","+std::to_string((((((float)shape->get(i).y)-h))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
 	}
 	geometryShaderSourceRef+="\tEndPrimitive();\n}\nvoid main() {\n\tbuild_shape(gl_in[0].gl_Position);\n}";
 	const char* geometryShaderSource = geometryShaderSourceRef.c_str();
@@ -416,12 +418,6 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 	glDeleteShader(geometryShader);
-	//Pass Camera's color
-	float r,g,b,a;
-	r = exstar::Color::getFloat(color->r);
-	g = exstar::Color::getFloat(color->g);
-	b = exstar::Color::getFloat(color->b);
-	a = exstar::Color::getFloat(color->a);
 	float points[] = {
     	0.0f,  0.0f, 0.0f, 1.0f, 0.0f, // top-right
 		};  

@@ -32,6 +32,15 @@
 			 * @param y The y value to set the vector to
 			*/
 			void set(double x,double y);
+
+			/**
+			 * Set the Values of the 2dVector
+			 * 
+			 * @param x The x value to set the vector to
+			 * @param y The y value to set the vector to
+			*/
+			void set(exstar::Vector2d vec);
+
 			/**
 			 * Return the X value of the vector
 			 * 

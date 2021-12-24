@@ -19,6 +19,10 @@ void exstar::Vector2d::set(double x,double y){
 	this->x = x;
 	this->y = y;
 }
+void exstar::Vector2d::set(exstar::Vector2d vec){
+	this->x = vec.x;
+	this->y = vec.y;
+}
 double exstar::Vector2d::getX(){
 	return x;
 }
