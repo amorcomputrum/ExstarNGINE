@@ -9,9 +9,9 @@ namespace exstar{
 		};
 		ID id;
 		ArrayList<exstar::Vector2d*>* vertices;
-		//ArrayList<exstar::Vector2d>* normals;
+		ArrayList<exstar::Vector2d>* normals;
 		int r;
 		void rotate(double radians);
-		//void calculateNormals();
+		void calculateNormals();
 	};
 }
