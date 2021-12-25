@@ -11,6 +11,7 @@ namespace exstar{
 		ArrayList<exstar::Vector2d*>* vertices;
 		ArrayList<exstar::Vector2d>* normals;
 		int r;
+		int w,h;
 		void rotate(double radians);
 		void calculateNormals();
 	};
