@@ -34,6 +34,7 @@ install(FILES "src/Utils/Vector2d.cpp" DESTINATION "include/Exstar/Utils/")
 install(FILES "src/Physics/Body.cpp" DESTINATION "include/Exstar/Physics/")
 install(FILES "src/Physics/EngineCollision.cpp" DESTINATION "include/Exstar/Physics/")
 install(FILES "src/Physics/Engine.cpp" DESTINATION "include/Exstar/Physics/")
+install(FILES "src/Physics/DetectCollision.cpp" DESTINATION "include/Exstar/Physics/")
 #move Headers and SO
 install(TARGETS Exstar DESTINATION lib/Exstar)
 install(DIRECTORY "include/" # source directory

@@ -63,7 +63,7 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	}
 	return false;
 }
-bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){
+bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){//from here
 	exstar::Body* A = collision->A;
 	exstar::Body* B = collision->B;
 	float minInDist = -FLT_MAX;
@@ -83,7 +83,6 @@ bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){
 		exstar::Vector2d edge = next - current;
 
 		axis = exstar::Vector2d(-edge.y,edge.x);
-
 		float aMax = -FLT_MAX;
 		float aMin = FLT_MAX;
 		float bMax = -FLT_MAX;
@@ -103,9 +102,12 @@ bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){
 				if(proj > bMax) bMax = proj;
 			}
 		}
-		if(aMax < bMin || aMin > bMax){
-			intersect = false;		
-		}else{
+		if(IntervalDistance(exstar::Vector2d(aMin,aMax),exstar::Vector2d(bMin,bMax)) > 0){
+			intersect = false;
+		}
+
+//to here is flawed
+		else{
 			invDist = abs(IntervalDistance(exstar::Vector2d(aMin,aMax),exstar::Vector2d(bMin,bMax)));
 		}
 	}
@@ -114,11 +116,10 @@ bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){
 				minInDist = invDist;
 				transAxis = axis;
 
-				exstar::Vector2d d = *A->position - *B->position;
+				exstar::Vector2d d = *B->position - *A->position;
 				if(exstar::Vector2d::dot(d,transAxis) < 0){
 					transAxis = transAxis*-1;
 				}
-
 			}
 			exstar::Vector2d d = *B->position - *A->position;
 			collision->normal->set(exstar::Vector2d::normalize(d));

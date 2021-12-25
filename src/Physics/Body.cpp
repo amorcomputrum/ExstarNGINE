@@ -13,6 +13,7 @@ exstar::Body::Body(exstar::Vector2d* position,float restitution,int mass,exstar:
 	if(shape->id == exstar::Shape::ID::Polygon){
 		for(int i = 0; i < shape->vertices->size;i++){
 			*shape->vertices->get(i) -= *position;
+			*shape->vertices->get(i) *= exstar::Vector2d(1,-1);
 		}
 	}
 	this->shape = shape;
@@ -31,6 +32,7 @@ exstar::Body::Body(exstar::Vector2d* position,exstar::Vector2d* velocity,float r
 	if(shape->id == exstar::Shape::ID::Polygon){
 		for(int i = 0; i < shape->vertices->size;i++){
 			*shape->vertices->get(i) -= *position;
+			*shape->vertices->get(i) *= exstar::Vector2d(1,-1);
 		}
 	}
 	this->shape = shape;

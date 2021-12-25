@@ -10,6 +10,7 @@
 			static bool CirclevsPolygon(exstar::PCollision* collision);
 			static bool PolygonvsPolygon(exstar::PCollision* collision);
 			static float IntervalDistance(exstar::Vector2d a,exstar::Vector2d b);
+			static void Projection(exstar::Vector2d axis, exstar::ArrayList<exstar::Vector2d*>* verts,float* min,float* max);
 		};
 	}
 	#include "Exstar/Physics/EngineCollision.cpp"

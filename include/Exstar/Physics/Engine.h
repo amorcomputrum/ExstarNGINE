@@ -9,7 +9,7 @@
 			Engine();
 			void Update(double deltaTime);
 			static void Impulse(exstar::PCollision* collision);
-			void PositionalCorrection(exstar::PCollision* collision);
+			static void PositionalCorrection(exstar::PCollision* collision);
 		};
 	}
 	#include "Exstar/Physics/Engine.cpp"

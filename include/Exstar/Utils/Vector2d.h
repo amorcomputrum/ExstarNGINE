@@ -26,6 +26,10 @@
 			*/
 			float sqrMagnitude();
 			/**
+			 * Normalize vector
+			*/
+			void normalize();
+			/**
 			 * Set the Values of the 2dVector
 			 * 
 			 * @param x The x value to set the vector to
@@ -141,6 +145,22 @@
 			 * @returns Result of multiplication
 			 */
 			exstar::Vector2d operator*(double param);
+			/**
+			 * Multiplys a Vector2d to current
+			 * 
+			 * @param param The Vector to multiply by
+			 * 
+			 * @returns Result of multiplication
+			 */
+			exstar::Vector2d& operator*=(const exstar::Vector2d& param);
+			/**
+			 * Multiplys a Vector2d to current
+			 * 
+			 * @param param The value to multiply by
+			 * 
+			 * @returns Result of multiplication
+			 */
+			exstar::Vector2d& operator*=(const double& param);
 			/**
 			 * Returns the DotProduct of the 2 vectors
 			 * 
