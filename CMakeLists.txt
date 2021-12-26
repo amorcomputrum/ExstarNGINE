@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
 # set the project name
-#Verstion Official.Alpha.Beta
+#Version Official.Alpha.Beta
 project(Exstar VERSION 0.0.1)
 #Add Source Code
 file(GLOB SOURCES src/*.cpp
@@ -35,6 +35,10 @@ install(FILES "src/Physics/Body.cpp" DESTINATION "include/Exstar/Physics/")
 install(FILES "src/Physics/EngineCollision.cpp" DESTINATION "include/Exstar/Physics/")
 install(FILES "src/Physics/Engine.cpp" DESTINATION "include/Exstar/Physics/")
 install(FILES "src/Physics/DetectCollision.cpp" DESTINATION "include/Exstar/Physics/")
+install(FILES "src/Physics/TestCollider.cpp" DESTINATION "include/Exstar/Physics/")
+install(FILES "src/Physics/Circle.cpp" DESTINATION "include/Exstar/Physics/")
+install(FILES "src/Physics/Box.cpp" DESTINATION "include/Exstar/Physics/")
+install(FILES "src/Physics/ConvexPolygon.cpp" DESTINATION "include/Exstar/Physics/")
 #move Headers and SO
 install(TARGETS Exstar DESTINATION lib/Exstar)
 install(DIRECTORY "include/" # source directory

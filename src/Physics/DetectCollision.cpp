@@ -2,7 +2,10 @@
 #include "Exstar/Utils/Math.h"
 
 bool exstar::DetectCollision::PointvsCircle(int px,int py,int cx,int cy,int cr){
-	return pow(cr,2) > px,py,cx,cy;
+  float distX = px-cx;
+  float distY = py - cy;
+  float distance = (distX*distX) + (distY*distY);
+	return distance <= cr*cr;
 }
 bool exstar::DetectCollision::CirclevsCircle(int r1,int x1,int y1,int r2,int x2,int y2){
 	return pow(r1+r2,2) > x1,y1,x2,y2;

@@ -1,39 +1,82 @@
+#include <float.h>
+
 #include "Exstar/Physics/Body.h"
 
-exstar::Body::Body(exstar::Vector2d* position,float restitution,int mass,exstar::Shape* shape){
-	this->position =  position;
-	this->velocity = new Vector2d(0.0,0.0);
+exstar::Body::Body(exstar::Vector2d position,float restitution,int mass,exstar::Shape* shape,std::string id){
+	this->position =  new exstar::Vector2d(position.x,position.y);
+	this->velocity = new exstar::Vector2d(0.0,0.0);
 	this->restitution = restitution;
 	this->mass = mass;
+	this->id = id;
 	if(mass == 0){
-		inv_mass = 0;
+		inv_mass = 0.0;
 	}else{
 		inv_mass = 1.0/mass;
 	}
-	if(shape->id == exstar::Shape::ID::Polygon){
-		for(int i = 0; i < shape->vertices->size;i++){
-			*shape->vertices->get(i) -= *position;
-			*shape->vertices->get(i) *= exstar::Vector2d(1,-1);
-		}
+	switch(shape->id){
+		case exstar::Shape::ID::AABB:
+			shape->vertices->add(new Vector2d(0,0));
+			shape->vertices->add(new Vector2d(shape->w,0));
+			shape->vertices->add(new Vector2d(shape->w,shape->h));
+			shape->vertices->add(new Vector2d(0,shape->h));
+			break;
 	}
 	this->shape = shape;
-
+	this->testCollider = updateCollider();
 }
-exstar::Body::Body(exstar::Vector2d* position,exstar::Vector2d* velocity,float restitution,int mass,exstar::Shape* shape){
-	this->position =  position;
-	this->velocity = velocity;
+exstar::Body::Body(exstar::Vector2d position,exstar::Vector2d velocity,float restitution,int mass,exstar::Shape* shape,std::string id){
+	this->position =  new exstar::Vector2d(position.x,position.y);
+	this->velocity = new exstar::Vector2d(velocity.x,velocity.y);
 	this->restitution = restitution;
 	this->mass = mass;
+	this->id = id;
 	if(mass == 0){
-		inv_mass = 0;
+		inv_mass = 0.0;
 	}else{
 		inv_mass = 1.0/mass;
 	}
-	if(shape->id == exstar::Shape::ID::Polygon){
-		for(int i = 0; i < shape->vertices->size;i++){
-			*shape->vertices->get(i) -= *position;
-			*shape->vertices->get(i) *= exstar::Vector2d(1,-1);
-		}
+	switch(shape->id){
+		case exstar::Shape::ID::AABB:
+			shape->vertices->add(new Vector2d(0,0));
+			shape->vertices->add(new Vector2d(shape->w,0));
+			shape->vertices->add(new Vector2d(shape->w,shape->h));
+			shape->vertices->add(new Vector2d(0,shape->h));
+			break;
 	}
 	this->shape = shape;
+	this->testCollider = updateCollider();
+}
+
+void exstar::Body::Update(double deltaTime){
+	*position += *velocity*deltaTime;
+	this->testCollider = updateCollider();
+}
+
+exstar::TestCollider* exstar::Body::updateCollider(){
+	switch(shape->id){
+		case exstar::Shape::ID::AABB:
+			return new exstar::TestCollider(shape->w,shape->h,position->x,position->y);
+			break;
+		case exstar::Shape::ID::Circle:
+			return new exstar::TestCollider(shape->r*2.0,shape->r*2.0,(position->x-shape->r),(position->y-shape->r));
+			break;
+		case exstar::Shape::ID::Polygon:
+			exstar::Vector2d min = exstar::Vector2d(FLT_MAX,FLT_MAX);
+			exstar::Vector2d max = exstar::Vector2d(-FLT_MAX,-FLT_MAX);
+			for(int i = 0;i < shape->vertices->size;i++){
+				exstar::Vector2d point = *shape->vertices->get(i)+*position;
+				if(point.x < min.x){
+					min.x = point.x;
+				}else if(point.x > max.x){
+					max.x = point.x;
+				}
+				if(point.y < min.y){
+					min.y = point.y;
+				}else if(point.y > max.y){
+					max.y = point.y;
+				}
+			}
+			return new exstar::TestCollider(max.x-min.x,max.y-min.y,min.x,min.y);
+			break;
+	}
 }
