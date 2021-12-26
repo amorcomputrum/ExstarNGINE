@@ -5,12 +5,12 @@ namespace exstar{
 	class Shape{
 	public:
 		enum ID{
-			Circle,Polygon
+			AABB,Circle,Polygon
 		};
 		ID id;
 		ArrayList<exstar::Vector2d*>* vertices;
 		ArrayList<exstar::Vector2d>* normals;
-		int r;
+		float r;
 		int w,h;
 		void rotate(double radians);
 		void calculateNormals();

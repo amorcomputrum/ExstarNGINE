@@ -5,8 +5,9 @@
 	namespace exstar{
 		class Engine{
 		public:
-			ArrayList<exstar::Body>* bodies = new ArrayList<exstar::Body>;
+			ArrayList<exstar::Body*>* bodies = new ArrayList<exstar::Body*>;
 			Engine();
+			void add(exstar::Body* body);
 			void Update(double deltaTime);
 			static void Impulse(exstar::PCollision* collision);
 			static void PositionalCorrection(exstar::PCollision* collision);

@@ -384,16 +384,26 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
 
 	//Create and Convert GeometryShaderSource to proper format
-	std::string geometryShaderSourceRef = "#version 330 core\nlayout (points) in;\nlayout (triangle_strip, max_vertices = " +  std::to_string(shape->size) + ") out;\nin VS_OUT {\n\tvec3 color;\n} gs_in[];\nout vec3 fColor;\nvoid build_shape(vec4 position)\n{\n\tfColor = gs_in[0].color;\n";
-	for(int i = 0; i<shape->size;i++){
-		if(shape->get(i).x >w || shape->get(i).x < 0){
-			throw exstar::exception("exstar::Camera::drawShape - x position is out of range 0-" + std::to_string(w));
-		}else if(shape->get(i).y >h || shape->get(i).y < 0){
-			throw exstar::exception("exstar::Camera::drawShape - y position is out of range 0-" + std::to_string(h));
+	std::string geometryShaderSourceRef = "#version 330 core\nlayout (points) in;\nlayout (triangle_strip, max_vertices = " +  std::to_string(shape->size+1) + ") out;\nin VS_OUT {\n\tvec3 color;\n} gs_in[];\nout vec3 fColor;\nvoid build_shape(vec4 position)\n{\n\tfColor = gs_in[0].color;\n";
+	for(int i = 0; i<=shape->size;i++){
+		if(i < shape->size){
+			if(shape->get(i).x >w || shape->get(i).x < 0){
+				throw exstar::exception("exstar::Camera::drawShape - x position is out of range 0-" + std::to_string(w));
+			}else if(shape->get(i).y >h || shape->get(i).y < 0){
+				throw exstar::exception("exstar::Camera::drawShape - y position is out of range 0-" + std::to_string(h));
+			}
+			geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(i).x)/size->width*2))+","+std::to_string((((((float)-shape->get(i).y)))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
+		}else{
+			if(shape->get(0).x >w || shape->get(0).x < 0){
+				throw exstar::exception("exstar::Camera::drawShape - x position is out of range 0-" + std::to_string(w));
+			}else if(shape->get(0).y >h || shape->get(0).y < 0){
+				throw exstar::exception("exstar::Camera::drawShape - y position is out of range 0-" + std::to_string(h));
+			}
+			geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(0).x)/size->width*2))+","+std::to_string((((((float)-shape->get(0).y)))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
 		}
-		geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(i).x)/size->width*2))+","+std::to_string((((((float)shape->get(i).y)-h))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
 	}
 	geometryShaderSourceRef+="\tEndPrimitive();\n}\nvoid main() {\n\tbuild_shape(gl_in[0].gl_Position);\n}";
+	
 	const char* geometryShaderSource = geometryShaderSourceRef.c_str();
 	unsigned int vertexShader,fragmentShader,geometryShader,shaderProgram;
 	//Create and Compile VertexShader

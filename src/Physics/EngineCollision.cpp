@@ -74,7 +74,7 @@ bool exstar::EngineCollision::AABBvsCircle(exstar::PCollision* collision){
 			if(closest.y > 0){
 				closest.y = y_extent;
 			}else{
-				closest = -y_extent;
+				closest.y = -y_extent;
 			}
 		}
 		exstar::Vector2d normal = n - closest;
@@ -100,20 +100,21 @@ bool exstar::EngineCollision::AABBvsCircle(exstar::PCollision* collision){
 bool exstar::EngineCollision::CirclevsCircle(exstar::PCollision* collision){
 	int r1 = collision->A->shape->r;
 	int r2 = collision->B->shape->r;
-	int r = r1+r2;
-	r *= r;
-	if(r < pow(collision->A->position->x + collision->B->position->x,2) + pow(collision->A->position->y + collision->B->position->y,2)){
-		collision->normal->set(*collision->B->position - *collision->A->position);
-		if(collision->normal->magnitude() != 0){
-			collision->penetration = r - collision->normal->magnitude();
-			collision->normal->set(*collision->normal/collision->normal->magnitude());
-		}else{
-			collision->penetration = r1;
-			collision->normal->set(exstar::Vector2d(1,0));
-		}
-		return true;
+	exstar::Vector2d n = *collision->B->position - *collision->A->position;
+
+	float r = r1 + r2;
+
+	if(n.sqrMagnitude() >= r*r) return false;
+
+	float d = n.magnitude();
+
+	if(d != 0){
+		collision->penetration = r;
+		collision->normal->set(n/d);
+	}else{
+		collision->penetration = r-d;
+		collision->normal->set(1,0);
 	}
-	return false;
 }
 bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	exstar::Body* A;
@@ -135,22 +136,27 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 			}
 			int next = i+1;
 			if(next == B->shape->vertices->size) next = 0;
-			exstar::Vector2d* vc = B->shape->vertices->get(i);
-			exstar::Vector2d* vn = B->shape->vertices->get(i+1);
-			detected = exstar::DetectCollision::LinevsCircle(vc->x,vc->y,vn->x,vn->y,A->position->x,A->position->y,A->shape->r);
+			exstar::Vector2d vc = *B->shape->vertices->get(i)+*B->position;
+			exstar::Vector2d vn;
+			if(i+1 < B->shape->vertices->size){
+				vn = *B->shape->vertices->get(i+1)+*B->position;
+			}else{
+				vn = *B->shape->vertices->get(0)+*B->position;
+			}
+			detected = exstar::DetectCollision::LinevsCircle(vc.x,vc.y,vn.x,vn.y,A->position->x,A->position->y,A->shape->r);
 			if(detected) break;
-			if (((vc->y >= A->position->y && vn->y < A->position->y) || (vc->y < A->position->y && vn->y >= A->position->y)) &&
-         (A->position->x < (vn->x-vc->x)*(A->position->y-vc->y) / (vn->y-vc->y)+vc->x)) {
+			if (((vc.y >= A->position->y && vn.y < A->position->y) || (vc.y < A->position->y && vn.y >= A->position->y)) &&
+         (A->position->x < (vn.x-vc.x)*(A->position->y-vc.y) / (vn.y-vc.y)+vc.x)) {
             inside = !inside;
     }
 	}
 	if(detected || inside){
 		if(inside){
-			collision->normal->set((*A->position - closest) * -1);
+			collision->normal->set(exstar::Vector2d::normalize((*A->position - closest) * -1));
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
 		}else{
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
-			collision->normal->set(*A->position-closest);
+			collision->normal->set(exstar::Vector2d::normalize(*A->position-closest));
 		}
 		return true;
 	}
@@ -161,16 +167,27 @@ bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){//
 	exstar::Body* B = collision->B;
 	exstar::Vector2d axis;
 	bool intersect = true;
-	for (int i = 0; i <  A->shape->vertices->size; ++i){
-		exstar::Vector2d current = *A->shape->vertices->get(i)+*A->position;
+	for (int i = 0; i <  A->shape->vertices->size+B->shape->vertices->size; ++i){
+		exstar::Vector2d current;
 		exstar::Vector2d next;
-		if(i+1 < A->shape->vertices->size){
-			next = *A->shape->vertices->get(i+1)+*A->position;
+		if(i < A->shape->vertices->size){
+			current = *A->shape->vertices->get(i)+*A->position;
+			if(i+1 < A->shape->vertices->size){
+				next = *A->shape->vertices->get(i+1)+*A->position;
+			}else{
+				next = *A->shape->vertices->get(0)+*A->position;
+			}
 		}else{
-			next = *A->shape->vertices->get(0)+*A->position;
+			current = *B->shape->vertices->get(i-A->shape->vertices->size)+*B->position;
+			if((i-A->shape->vertices->size)+1 < B->shape->vertices->size){
+				next = *B->shape->vertices->get((i-A->shape->vertices->size)+1)+*B->position;
+			}else{
+				next = *B->shape->vertices->get(0)+*B->position;
+			}
 		}
 		exstar::Vector2d edge = next - current;
 		axis = exstar::Vector2d(-edge.y,edge.x);
+		
 		float aMax = -FLT_MAX;
 		float aMin = FLT_MAX;
 		float bMax = -FLT_MAX;

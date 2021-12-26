@@ -158,6 +158,15 @@
 			 * @param w The width of the canvas to draw on
 			 * @param h The height of the canvas to draw on
 			*/
+			/**
+			 * Render a Custom Shape
+			 * 
+			 * @param shape The Verticies to render onto the defined canvas
+			 * @param x The left x location of the canvas to draw on
+			 * @param y The top y location of the canvas to draw on
+			 * @param w The width of the canvas to draw on
+			 * @param h The height of the canvas to draw on
+			*/
 			void drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h);
 			/**
 			 * Render a Custom Shape

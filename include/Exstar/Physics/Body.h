@@ -13,10 +13,12 @@
 			exstar::TestCollider testCollider;
 			exstar::Vector2d* position;
 			exstar::Vector2d* velocity;
+			std::string id;
 			Body();
-			Body(exstar::Vector2d* position,float restitution,int mass,exstar::Shape* shape);
-			Body(exstar::Vector2d* position,exstar::Vector2d* velocity,float restitution,int mass,exstar::Shape* shape);
+			Body(exstar::Vector2d* position,float restitution,int mass,exstar::Shape* shape,std::string id);
+			Body(exstar::Vector2d* position,exstar::Vector2d* velocity,float restitution,int mass,exstar::Shape* shape,std::string id);
 			void Update(double deltaTime);
+			void updateCollider();
 		};
 		#include "Exstar/Physics/Body.cpp"
 	}

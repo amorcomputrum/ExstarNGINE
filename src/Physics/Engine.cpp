@@ -1,5 +1,10 @@
 #include "Exstar/Physics/Engine.h"
+#include "Exstar/Physics/EngineCollision.h"
 #include "Exstar/Utils/Math.h"
+
+void exstar::Engine::add(exstar::Body* body){
+	bodies->add(body);
+}
 
 void exstar::Engine::Impulse(exstar::PCollision* collision){
 	exstar::Body* A = collision->A;
