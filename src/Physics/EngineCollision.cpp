@@ -101,7 +101,6 @@ bool exstar::EngineCollision::CirclevsCircle(exstar::PCollision* collision){
 	int r1 = collision->A->shape->r;
 	int r2 = collision->B->shape->r;
 	exstar::Vector2d n = *collision->B->position - *collision->A->position;
-
 	float r = r1 + r2;
 
 	if(n.sqrMagnitude() >= r*r) return false;

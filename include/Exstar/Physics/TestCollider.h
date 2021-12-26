@@ -1,7 +1,13 @@
-#include "Exstar/Utils/Vector2d.h"
-namespace exstar{
-	struct TestCollider{
-		int w,h;
-		static bool CheckCollision(exstar::Vector2d* pos1,exstar::TestCollider t1,exstar::Vector2d* pos2,exstar::TestCollider t2);
-	};
-}
+#ifndef EXSTAR_TESTCOLLIDER_H
+#define EXSTAR_TESTCOLLIDER_H
+	#include "Exstar/Utils/Vector2d.h"
+	namespace exstar{
+		class TestCollider{
+		public:
+			float w,h,x,y;
+			TestCollider(float w,float h,float x,float y);
+			static bool CheckCollision(exstar::TestCollider* t1,exstar::TestCollider* t2);
+		};
+	}
+	#include "Exstar/Physics/TestCollider.cpp"
+#endif
