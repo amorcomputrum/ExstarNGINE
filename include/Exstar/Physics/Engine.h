@@ -6,6 +6,7 @@
 		class Engine{
 		public:
 			ArrayList<exstar::Body*>* bodies = new ArrayList<exstar::Body*>();
+			exstar::PCollision collision;
 			Engine();
 			void add(exstar::Body* body);
 			exstar::Body* getById(std::string id);

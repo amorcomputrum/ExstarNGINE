@@ -22,17 +22,17 @@ bool exstar::EngineCollision::AABBvsAABB(exstar::PCollision* collision){
 		float y_overlap = a_extent + b_extent - abs(n.y);
 		if(x_overlap>y_overlap){
 			if(n.x < 0){
-				collision->normal->set(-1,0);
+				collision->normal.set(-1,0);
 			}else{
-				collision->normal->set(0,0);
+				collision->normal.set(0,0);
 			}
 			collision->penetration = x_overlap;
 			return true;
 		}else{
 			if(n.y < 0){
-				collision->normal->set(0,-1);
+				collision->normal.set(0,-1);
 			}else{
-				collision->normal->set(0,1);
+				collision->normal.set(0,1);
 			}
 			collision->penetration = y_overlap;
 			return true;
@@ -87,10 +87,10 @@ bool exstar::EngineCollision::AABBvsCircle(exstar::PCollision* collision){
 
 		d = sqrt(d);
 		if(inside){
-			collision->normal->set(n*-1);
+			collision->normal.set(n*-1);
 			collision->penetration = r-d;
 		}else{
-			collision->normal->set(n);
+			collision->normal.set(n);
 			collision->penetration = r-d;
 		}
 		return true;
@@ -109,10 +109,10 @@ bool exstar::EngineCollision::CirclevsCircle(exstar::PCollision* collision){
 
 	if(d != 0){
 		collision->penetration = r;
-		collision->normal->set(n/d);
+		collision->normal.set(n/d);
 	}else{
 		collision->penetration = r-d;
-		collision->normal->set(1,0);
+		collision->normal.set(1,0);
 	}
 }
 bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
@@ -151,11 +151,11 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	}
 	if(detected || inside){
 		if(inside){
-			collision->normal->set(exstar::Vector2d::normalize((*A->position - closest) * -1));
+			collision->normal.set(exstar::Vector2d::normalize((*A->position - closest) * -1));
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
 		}else{
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
-			collision->normal->set(exstar::Vector2d::normalize(*A->position-closest));
+			collision->normal.set(exstar::Vector2d::normalize(*A->position-closest));
 		}
 		return true;
 	}
@@ -210,7 +210,7 @@ bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){//
 	}
 	if(intersect){	
 			exstar::Vector2d d = *B->position - *A->position;
-			collision->normal->set(exstar::Vector2d::normalize(d));
+			collision->normal.set(exstar::Vector2d::normalize(d));
 			collision->penetration = d.magnitude();
 			return true;
 	}

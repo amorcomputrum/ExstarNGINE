@@ -23,6 +23,7 @@
 			static const exstar::Color Green;
 			static const exstar::Color Blue;
 			static const exstar::Color White;
+			Color(){};
 			/**
 			 * Initialize Color
 			 * 

@@ -1,5 +1,8 @@
 #include "Exstar/Physics/TestCollider.h"
 #include <iostream>
+
+exstar::TestCollider::TestCollider(){}
+
 exstar::TestCollider::TestCollider(float w,float h,float x,float y){
 	this->w = w;
 	this->h = h;

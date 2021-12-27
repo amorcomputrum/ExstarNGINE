@@ -11,21 +11,23 @@
 exstar::Camera::Camera(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};
 	size = new exstar::Dimension{width,height};
-	color = new exstar::Color(0,0,0);
+	color = exstar::Color(0,0,0);
 }
 void exstar::Camera::resize(int width,int height){
-	size = new exstar::Dimension{width,height};
+	size->width = width;
+	size->height = height;
 }
 void exstar::Camera::move(int x,int y){
 	pos->x = pos->x + x;
 	pos->y = pos->y + y;
 }
 void exstar::Camera::set(int x,int y){
-	pos->x += pos->x - x;
-	pos->y += pos->y - y;
+	pos->x -= pos->x - x;
+	pos->y -= pos->y - y;
+	
 }
 void exstar::Camera::setColor(exstar::Color color){
-	this->color = new exstar::Color(color.r,color.g,color.b,color.a);
+	this->color = exstar::Color(color.r,color.g,color.b,color.a);
 }
 //-----------------------------DRAW SPRITE-----------------------------
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
@@ -185,10 +187,10 @@ void exstar::Camera::drawRect(int x,int y,int w,int h){
 	glDeleteShader(fragmentShader);
 	//Pass Camera's color
 	float r,g,b,a;
-	r = exstar::Color::getFloat(color->r);
-	g = exstar::Color::getFloat(color->g);
-	b = exstar::Color::getFloat(color->b);
-	a = exstar::Color::getFloat(color->a);
+	r = exstar::Color::getFloat(color.r);
+	g = exstar::Color::getFloat(color.g);
+	b = exstar::Color::getFloat(color.b);
+	a = exstar::Color::getFloat(color.a);
 
 	float vertices[] = {
 		1.0f,1.0f,0.0f,  r, g, b,a,
@@ -232,6 +234,7 @@ void exstar::Camera::drawRect(int x,int y,int w,int h){
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
+	glDeleteProgram(shaderProgram);
 }
 void exstar::Camera::drawRect(exstar::Point pos, exstar::Dimension size){
 	drawRect(pos.x,pos.y,size.width,size.height);
@@ -254,10 +257,10 @@ void exstar::Camera::drawEllipse(int x,int y,int w,int h){
 									 "}\0";
 	//Pass Camera's color
 	float r,g,b,a;
-	r = exstar::Color::getFloat(color->r);
-	g = exstar::Color::getFloat(color->g);
-	b = exstar::Color::getFloat(color->b);
-	a = exstar::Color::getFloat(color->a);
+	r = exstar::Color::getFloat(color.r);
+	g = exstar::Color::getFloat(color.g);
+	b = exstar::Color::getFloat(color.b);
+	a = exstar::Color::getFloat(color.a);
 	//Create and Convert FragmentShaderSource to proper format
 	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
 	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
@@ -338,6 +341,7 @@ void exstar::Camera::drawEllipse(int x,int y,int w,int h){
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
+	glDeleteProgram(shaderProgram);
 }
 void exstar::Camera::drawEllipse(exstar::Point pos, exstar::Dimension size){
 	drawEllipse(pos.x,pos.y,size.width,size.height);
@@ -375,10 +379,10 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 									 "    gl_Position = projection*(ModelMatrix*vec4(aPos.x,aPos.y,0.0,1.0));\n"
 									 "}\0";
 	float r,g,b,a;
-	r = exstar::Color::getFloat(color->r);
-	g = exstar::Color::getFloat(color->g);
-	b = exstar::Color::getFloat(color->b);
-	a = exstar::Color::getFloat(color->a);
+	r = exstar::Color::getFloat(color.r);
+	g = exstar::Color::getFloat(color.g);
+	b = exstar::Color::getFloat(color.b);
+	a = exstar::Color::getFloat(color.a);
 	//Create and Convert FragmentShaderSource to proper format
 	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
 	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
@@ -462,6 +466,7 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
     //Delete Buffers
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+	glDeleteProgram(shaderProgram);
 }
 void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h){
 	drawShape(shape,pos.x,pos.y,w,h);
@@ -482,10 +487,10 @@ void exstar::Camera::drawLine(int x1,int y1,int x2,int y2){
 									 "}\0";
 	//Pass Camera's color
 	float r,g,b,a;
-	r = exstar::Color::getFloat(color->r);
-	g = exstar::Color::getFloat(color->g);
-	b = exstar::Color::getFloat(color->b);
-	a = exstar::Color::getFloat(color->a);
+	r = exstar::Color::getFloat(color.r);
+	g = exstar::Color::getFloat(color.g);
+	b = exstar::Color::getFloat(color.b);
+	a = exstar::Color::getFloat(color.a);
 	//Create and Convert FragmentShaderSource to proper format
 	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
 	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
@@ -532,6 +537,7 @@ void exstar::Camera::drawLine(int x1,int y1,int x2,int y2){
 	//Delete Buffers
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+	glDeleteProgram(shaderProgram);
 }
 void exstar::Camera::drawLine(exstar::Point pos1,exstar::Point pos2){
 	drawLine(pos1.x,pos1.y,pos2.x,pos2.y);
@@ -549,10 +555,10 @@ void exstar::Camera::drawPixel(int x,int y){
 									 "}\0";
 	//Pass Camera's color
 	float r,g,b,a;
-	r = exstar::Color::getFloat(color->r);
-	g = exstar::Color::getFloat(color->g);
-	b = exstar::Color::getFloat(color->b);
-	a = exstar::Color::getFloat(color->a);
+	r = exstar::Color::getFloat(color.r);
+	g = exstar::Color::getFloat(color.g);
+	b = exstar::Color::getFloat(color.b);
+	a = exstar::Color::getFloat(color.a);
 	//Create and Convert FragmentShaderSource to proper format
 	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
 	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
@@ -597,6 +603,7 @@ void exstar::Camera::drawPixel(int x,int y){
 	//Delete Buffers
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
+	glDeleteProgram(shaderProgram);
 }
 void exstar::Camera::drawPixel(exstar::Point pos){
 	drawPixel(pos.x,pos.y);
