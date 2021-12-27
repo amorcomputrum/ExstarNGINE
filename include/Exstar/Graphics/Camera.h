@@ -271,7 +271,7 @@
 			/**
 			 * The Color to use when rendering primative shapes
 			*/
-			exstar::Color* color;
+			exstar::Color color;
 		};
 	};
 	#include "Exstar/Graphics/Camera.cpp"

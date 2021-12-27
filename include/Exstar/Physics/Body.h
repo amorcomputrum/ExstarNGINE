@@ -13,7 +13,7 @@
 			float restitution;
 			int mass;
 			float inv_mass;
-			exstar::TestCollider* testCollider;
+			exstar::TestCollider testCollider;
 			exstar::Vector2d* position;
 			exstar::Vector2d* velocity;
 			std::string id;
@@ -21,7 +21,7 @@
 			Body(exstar::Vector2d position,float restitution,int mass,exstar::Shape* shape,std::string id);
 			Body(exstar::Vector2d position,exstar::Vector2d velocity,float restitution,int mass,exstar::Shape* shape,std::string id);
 			void Update(double deltaTime);
-			exstar::TestCollider* updateCollider();
+			void updateCollider();
 		};
 		#include "Exstar/Physics/Body.cpp"
 	}

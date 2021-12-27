@@ -5,6 +5,7 @@
 		class TestCollider{
 		public:
 			float w,h,x,y;
+			TestCollider();
 			TestCollider(float w,float h,float x,float y);
 			static bool CheckCollision(exstar::TestCollider* t1,exstar::TestCollider* t2);
 		};

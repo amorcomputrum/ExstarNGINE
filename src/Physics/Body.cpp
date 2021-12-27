@@ -22,7 +22,7 @@ exstar::Body::Body(exstar::Vector2d position,float restitution,int mass,exstar::
 			break;
 	}
 	this->shape = shape;
-	this->testCollider = updateCollider();
+	updateCollider();
 }
 exstar::Body::Body(exstar::Vector2d position,exstar::Vector2d velocity,float restitution,int mass,exstar::Shape* shape,std::string id){
 	this->position =  new exstar::Vector2d(position.x,position.y);
@@ -44,21 +44,21 @@ exstar::Body::Body(exstar::Vector2d position,exstar::Vector2d velocity,float res
 			break;
 	}
 	this->shape = shape;
-	this->testCollider = updateCollider();
+	updateCollider();
 }
 
 void exstar::Body::Update(double deltaTime){
 	*position += *velocity*deltaTime;
-	this->testCollider = updateCollider();
+	updateCollider();
 }
 
-exstar::TestCollider* exstar::Body::updateCollider(){
+void exstar::Body::updateCollider(){
 	switch(shape->id){
 		case exstar::Shape::ID::AABB:
-			return new exstar::TestCollider(shape->w,shape->h,position->x,position->y);
+			this->testCollider = exstar::TestCollider(shape->w,shape->h,position->x,position->y);
 			break;
 		case exstar::Shape::ID::Circle:
-			return new exstar::TestCollider(shape->r*2.0,shape->r*2.0,(position->x-shape->r),(position->y-shape->r));
+			this->testCollider = exstar::TestCollider(shape->r*2.0,shape->r*2.0,(position->x-shape->r),(position->y-shape->r));
 			break;
 		case exstar::Shape::ID::Polygon:
 			exstar::Vector2d min = exstar::Vector2d(FLT_MAX,FLT_MAX);
@@ -76,7 +76,7 @@ exstar::TestCollider* exstar::Body::updateCollider(){
 					max.y = point.y;
 				}
 			}
-			return new exstar::TestCollider(max.x-min.x,max.y-min.y,min.x,min.y);
+			this->testCollider = exstar::TestCollider(max.x-min.x,max.y-min.y,min.x,min.y);
 			break;
 	}
 }

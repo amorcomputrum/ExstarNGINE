@@ -22,9 +22,9 @@ void exstar::Engine::Update(double deltaTime){
 		//Check Broadphase Collision
 		for(int b = 0;b < bodies->size;b++){
 			exstar::Body* looking = bodies->get(b);
-			if(exstar::TestCollider::CheckCollision(current->testCollider,looking->testCollider)){
+			if(exstar::TestCollider::CheckCollision(&current->testCollider,&looking->testCollider)){
 				//Possible Collision
-				exstar::PCollision collision = exstar::PCollision{current,looking};
+				collision = exstar::PCollision{current,looking};
 				switch(current->shape->id){
 					case exstar::Shape::ID::AABB:
 						switch(looking->shape->id){
@@ -106,7 +106,7 @@ void exstar::Engine::Impulse(exstar::PCollision* collision){
 	exstar::Body* A = collision->A;
 	exstar::Body* B = collision->B;
 	float penetration = collision->penetration;
-	exstar::Vector2d normal = exstar::Vector2d((float)collision->normal->x,(float)collision->normal->y);
+	exstar::Vector2d normal = exstar::Vector2d((float)collision->normal.x,(float)collision->normal.y);
 	exstar::Vector2d rv = *B->velocity - *A->velocity;
 
 	float velAlongNormal = exstar::Vector2d::dot(rv,normal);
@@ -137,11 +137,11 @@ void exstar::Engine::PositionalCorrection(exstar::PCollision* collision){
 	exstar::Body* A = collision->A;
 	exstar::Body* B = collision->B;
 	float penetration = collision->penetration;
-	exstar::Vector2d* normal = collision->normal;
+	exstar::Vector2d normal = exstar::Vector2d((float)collision->normal.x,(float)collision->normal.y);
 
 	const float percent = 0.025;
 	const float slop = 0.01;
-	exstar::Vector2d correction = (*normal*(std::max(penetration - slop,0.0f) / (A->inv_mass + B->inv_mass)))*percent;
+	exstar::Vector2d correction = (normal*(std::max(penetration - slop,0.0f) / (A->inv_mass + B->inv_mass)))*percent;
 	if(A->inv_mass != 0){
 		*A->position -= correction*A->inv_mass;
 	}

@@ -6,7 +6,7 @@
 			exstar::Body* A;
 			exstar::Body* B;
 			float penetration = 0;
-			exstar::Vector2d* normal = new exstar::Vector2d();
+			exstar::Vector2d normal = exstar::Vector2d();
 		};
 	}
 #endif
