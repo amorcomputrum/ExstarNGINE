@@ -21,8 +21,9 @@ void exstar::Camera::move(int x,int y){
 	pos->y = pos->y + y;
 }
 void exstar::Camera::set(int x,int y){
-	pos->x += pos->x - x;
-	pos->y += pos->y - y;
+	pos->x -= pos->x - x;
+	pos->y -= pos->y - y;
+	
 }
 void exstar::Camera::setColor(exstar::Color color){
 	this->color = new exstar::Color(color.r,color.g,color.b,color.a);
