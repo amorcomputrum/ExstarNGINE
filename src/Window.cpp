@@ -37,6 +37,7 @@ void exstar::Window::run(){
 void exstar::Window::close(){
 	glfwDestroyWindow(window);
 	glfwTerminate();
+	exit(1);
 }
 void exstar::Window::setFramerate(int frameRate){
 	this->frameRate = frameRate;
