@@ -129,6 +129,7 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	bool inside = false;
 	bool detected = false;
 	exstar::Vector2d closest = *B->shape->vertices->get(0) + *B->position;
+	exstar::Vector2d n;
 	for(int i = 0; i < B->shape->vertices->size;i++){
 			exstar::Vector2d point = *B->shape->vertices->get(i) + *B->position;
 			if((pow(A->position->x-closest.x,2) + pow(A->position->y-closest.y,2)) > (pow(A->position->x-point.x,2) + pow(A->position->y-point.y,2))){
@@ -144,6 +145,11 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 				vn = *B->shape->vertices->get(0)+*B->position;
 			}
 			detected = exstar::DetectCollision::LinevsCircle(vc.x,vc.y,vn.x,vn.y,A->position->x,A->position->y,A->shape->r);
+			if(detected){
+				exstar::Vector2d face = vn - vc;
+				face = exstar::Vector2d(face.y,-face.x);
+				n = face;
+			}
 			if(detected) break;
 			if (((vc.y >= A->position->y && vn.y < A->position->y) || (vc.y < A->position->y && vn.y >= A->position->y)) &&
          (A->position->x < (vn.x-vc.x)*(A->position->y-vc.y) / (vn.y-vc.y)+vc.x)) {
@@ -152,11 +158,11 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	}
 	if(detected || inside){
 		if(inside){
-			collision->normal.set(exstar::Vector2d::normalize((*A->position - closest) * -1));
+			collision->normal.set(exstar::Vector2d::normalize(n)*-1);
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
 		}else{
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
-			collision->normal.set(exstar::Vector2d::normalize(*A->position-closest));
+			collision->normal.set(exstar::Vector2d::normalize(n));
 		}
 		return true;
 	}
