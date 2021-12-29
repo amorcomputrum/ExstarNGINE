@@ -143,7 +143,7 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	glDeleteVertexArrays(1,&VAO);
 	glDeleteBuffers(1,&VBO);
 	glDeleteBuffers(1,&EBO);
-        glDeleteProgram(shaderProgram);
+	glDeleteProgram(shaderProgram);
 }
 void exstar::Camera::drawSprite(exstar::Sprite* sprite,exstar::Point pos){
 	drawSprite(sprite,pos.x,pos.y);
