@@ -82,6 +82,7 @@ void exstar::Engine::Update(double deltaTime){
 								case exstar::Shape::ID::Circle:
 									//PolygonvsCircle
 									if(exstar::EngineCollision::CirclevsPolygon(&collision)){
+										collision.normal *= -1;
 										HandleCollision(&collision);
 									}
 									break;
