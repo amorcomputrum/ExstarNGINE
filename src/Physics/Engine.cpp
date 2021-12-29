@@ -53,6 +53,7 @@ void exstar::Engine::Update(double deltaTime){
 								case exstar::Shape::ID::AABB:
 									//CirclevsAABB
 									if(exstar::EngineCollision::AABBvsCircle(&collision)){
+										collision.normal *= -1;
 										HandleCollision(&collision);
 									}
 									break;

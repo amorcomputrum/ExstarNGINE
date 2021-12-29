@@ -52,18 +52,19 @@ bool exstar::EngineCollision::AABBvsCircle(exstar::PCollision* collision){
 		B = collision->B;
 	}
 
-	exstar::Vector2d n = *B->position - *A->position;
+	exstar::Vector2d n = *B->position - (*A->position+exstar::Vector2d(A->shape->w/2.0,A->shape->h/2.0));
 	exstar::Vector2d closest = n;
 
-	float x_extent = ((A->position->x + A->shape->w) - A->position->x)/2;
-	float y_extent = ((A->position->y + A->shape->h) - A->position->y)/2;
+	double x_extent = A->shape->w/2.0;
+	double y_extent = A->shape->h/2.0;
 
-	closest.x = std::clamp(-x_extent,x_extent,(float)closest.x);
-	closest.y = std::clamp(-y_extent,y_extent,(float)closest.y);
+	closest.x = std::clamp(closest.x,-x_extent,x_extent);
+	closest.y = std::clamp(closest.y,-y_extent,y_extent);
+
 	bool inside = false;
+
 	if(n.x == closest.x && n.y == closest.y){
 		inside = true;
-
 		if(abs(n.x) > abs(n.y)){
 			if(closest.x > 0){
 				closest.x = x_extent;
@@ -77,24 +78,24 @@ bool exstar::EngineCollision::AABBvsCircle(exstar::PCollision* collision){
 				closest.y = -y_extent;
 			}
 		}
-		exstar::Vector2d normal = n - closest;
-		double d = normal.sqrMagnitude();
-		double r = B->shape->r;
-
-		if(d > r * r && !inside){
-			return false;
-		}
-
-		d = sqrt(d);
-		if(inside){
-			collision->normal.set(n*-1);
-			collision->penetration = r-d;
-		}else{
-			collision->normal.set(n);
-			collision->penetration = r-d;
-		}
-		return true;
 	}
+	exstar::Vector2d normal = n - closest;
+	float d = normal.sqrMagnitude();
+	float r = B->shape->r;
+
+	if(d > r*r && !inside){
+		return false;
+	}
+	d = sqrt(d);
+
+	if(inside){
+		collision->normal = exstar::Vector2d::normalize(normal*-1);
+		collision->penetration = r-d;
+	}else{
+		collision->normal = exstar::Vector2d::normalize(normal);
+		collision->penetration = r-d;
+	}
+	return true;
 
 }
 bool exstar::EngineCollision::CirclevsCircle(exstar::PCollision* collision){
