@@ -21,82 +21,85 @@ void exstar::Engine::Update(double deltaTime){
 		exstar::Body* current = bodies->get(a);
 		//Check Broadphase Collision
 		for(int b = 0;b < bodies->size;b++){
-			exstar::Body* looking = bodies->get(b);
-			if(exstar::TestCollider::CheckCollision(&current->testCollider,&looking->testCollider)){
-				//Possible Collision
-				collision = exstar::PCollision{current,looking};
-				switch(current->shape->id){
-					case exstar::Shape::ID::AABB:
-						switch(looking->shape->id){
-							case exstar::Shape::ID::AABB:
-								//AABBvsAABB
-								if(exstar::EngineCollision::AABBvsAABB(&collision)){
-									HandleCollision(&collision);
-								}
-								break;
-							case exstar::Shape::ID::Circle:
-								//AABBvsCircle
-								if(exstar::EngineCollision::AABBvsCircle(&collision)){
-									HandleCollision(&collision);
-								}
-								break;
-							case exstar::Shape::ID::Polygon:
-								//AABBvsPolygon
-								if(exstar::EngineCollision::PolygonvsPolygon(&collision)){
-									HandleCollision(&collision);
-								}
-								break;
-						}
-						break;
-					case exstar::Shape::ID::Circle:
-						switch(looking->shape->id){
+			if(a != b){
+				exstar::Body* looking = bodies->get(b);
+				if(exstar::TestCollider::CheckCollision(&current->testCollider,&looking->testCollider)){
+					//Possible Collision
+					collision = exstar::PCollision{current,looking};
+					switch(current->shape->id){
+						case exstar::Shape::ID::AABB:
+							switch(looking->shape->id){
 								case exstar::Shape::ID::AABB:
-									//CirclevsAABB
+									//AABBvsAABB
+									if(exstar::EngineCollision::AABBvsAABB(&collision)){
+										HandleCollision(&collision);
+									}
+									break;
+								case exstar::Shape::ID::Circle:
+									//AABBvsCircle
 									if(exstar::EngineCollision::AABBvsCircle(&collision)){
-										collision.normal *= -1;
-										HandleCollision(&collision);
-									}
-									break;
-								case exstar::Shape::ID::Circle:
-									//CirclevsCircle
-									if(exstar::EngineCollision::CirclevsCircle(&collision)){
 										HandleCollision(&collision);
 									}
 									break;
 								case exstar::Shape::ID::Polygon:
-									//CirclevsPolygon
-									if(exstar::EngineCollision::CirclevsPolygon(&collision)){
-										HandleCollision(&collision);
-									}
-									break;
-							}
-						break;
-					case exstar::Shape::ID::Polygon:
-						switch(looking->shape->id){
-								case exstar::Shape::ID::AABB:
-									//PolygonvsAABB
-									if(exstar::EngineCollision::PolygonvsPolygon(&collision)){
-										HandleCollision(&collision);
-									}
-									break;
-								case exstar::Shape::ID::Circle:
-									//PolygonvsCircle
-									if(exstar::EngineCollision::CirclevsPolygon(&collision)){
-										HandleCollision(&collision);
-									}
-									break;
-								case exstar::Shape::ID::Polygon:
-									//PolygonvsPolygon
+									//AABBvsPolygon
 									if(exstar::EngineCollision::PolygonvsPolygon(&collision)){
 										HandleCollision(&collision);
 									}
 									break;
 							}
-						break;
+							break;
+						case exstar::Shape::ID::Circle:
+							switch(looking->shape->id){
+									case exstar::Shape::ID::AABB:
+										//CirclevsAABB
+										if(exstar::EngineCollision::AABBvsCircle(&collision)){
+											collision.normal *= -1;
+											HandleCollision(&collision);
+										}
+										break;
+									case exstar::Shape::ID::Circle:
+										//CirclevsCircle
+										if(exstar::EngineCollision::CirclevsCircle(&collision)){
+											HandleCollision(&collision);
+										}
+										break;
+									case exstar::Shape::ID::Polygon:
+										//CirclevsPolygon
+										if(exstar::EngineCollision::CirclevsPolygon(&collision)){
+											HandleCollision(&collision);
+										}
+										break;
+								}
+							break;
+						
+						case exstar::Shape::ID::Polygon:
+							switch(looking->shape->id){
+									case exstar::Shape::ID::AABB:
+										//PolygonvsAABB
+										if(exstar::EngineCollision::PolygonvsPolygon(&collision)){
+											HandleCollision(&collision);
+										}
+										break;
+									case exstar::Shape::ID::Circle:
+										//PolygonvsCircle
+										if(exstar::EngineCollision::CirclevsPolygon(&collision)){
+											HandleCollision(&collision);
+										}
+										break;
+									case exstar::Shape::ID::Polygon:
+										//PolygonvsPolygon
+										if(exstar::EngineCollision::PolygonvsPolygon(&collision)){
+											collision.normal *= -1;
+											HandleCollision(&collision);
+										}
+										break;
+								}
+							break;
+					}
 				}
 			}
 		}
-		
 	}
 }
 void exstar::Engine::HandleCollision(exstar::PCollision* collision){
