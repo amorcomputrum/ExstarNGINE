@@ -1,20 +1,20 @@
-#ifndef Point_H
-#define Point_H
-	#include "Exstar/Utils/Vector2d.h"
-	namespace exstar{
+#ifndef EXSTAR_POINT_H
+#define EXSTAR_POINT_H
+#include "Exstar/Utils/Vector2d.h"
+namespace exstar{
+	/**
+	 * Point is a postion on a 2d plane
+	*/
+	struct Point{
 		/**
-		 * Point is a postion on a 2d plane
+		 * The x position
 		*/
-		struct Point{
-			/**
-			 * The x position
-			*/
-			double x;
-			/**
-			 * The y position
-			*/
-			double y;
-		};
+		double x;
+		/**
+		 * The y position
+		*/
+		double y;
+	};
 
-	}
+}
 #endif

@@ -1,3 +1,5 @@
+#ifndef EXSTAR_EXCEPTION_H
+#define EXSTAR_EXCEPTION_H
 #include <iostream>
 namespace exstar{
 	class exception {
@@ -11,3 +13,4 @@ namespace exstar{
 		exception(std::string message);
 	};
 }
+#endif

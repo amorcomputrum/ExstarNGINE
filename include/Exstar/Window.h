@@ -1,7 +1,11 @@
+#ifndef EXSTAR_WINDOW_H
+#define EXSTAR_WINDOW_H
 #define GLFW_INCLUDE_NONE
 #define STB_IMAGE_IMPLEMENTATION
 //include Dependencies
-#include "GLFW/glfw3.h"
+extern "C"{
+	#include "GLFW/glfw3.h"
+}
 
 #include <iostream>
 #include <chrono>
@@ -16,6 +20,7 @@
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Key.h"
 #include "Exstar/Clock.h"
+#include "Exstar/Physics/Engine.h"
 
 namespace exstar{
 	class Window {
@@ -326,3 +331,4 @@ namespace exstar{
 	};
 
 }
+#endif

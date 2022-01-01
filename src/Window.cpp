@@ -171,6 +171,7 @@ void exstar::Window::initGL(){
 	srand(time(NULL));
 	//Set WindowBackground Color
 	setBackgroundColor(exstar::Color::Black);
+
 }
 
 void exstar::Window::update(){

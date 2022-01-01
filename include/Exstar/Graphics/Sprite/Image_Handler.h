@@ -1,3 +1,6 @@
+#ifndef EXSTAR_IMAGE_HANDLER_H
+#define EXSTAR_IMAGE_HANDLER_H
+#define STB_IMAGE_IMPLEMENTATION
 #include "Exstar/Utils/ArrayList.h"
 namespace exstar{
 	/**
@@ -23,3 +26,4 @@ namespace exstar{
 	*/
 	void removeImage(int index);
 }
+#endif
