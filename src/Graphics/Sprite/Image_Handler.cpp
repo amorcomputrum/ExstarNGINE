@@ -1,4 +1,7 @@
-#include "Exstar/Graphics/Sprite/stb_image.h"
+extern "C" {
+	#define STB_IMAGE_IMPLEMENTATION
+	#include "Exstar/Graphics/Sprite/stb_image.h"
+}
 #include "Exstar/Utils/Exception.h"
 #include "Exstar/Graphics/Sprite/Image_Handler.h"
 

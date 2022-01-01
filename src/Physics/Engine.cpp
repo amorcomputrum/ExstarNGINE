@@ -1,8 +1,11 @@
 #include "Exstar/Physics/Engine.h"
 #include "Exstar/Physics/EngineCollision.h"
+#include "Exstar/Utils/Exception.h"
 #include "Exstar/Utils/Math.h"
 
-exstar::Engine::Engine(){}
+exstar::Engine::Engine(){
+	bodies = new ArrayList<exstar::Body*>();
+}
 
 void exstar::Engine::add(exstar::Body* body){
 	bodies->add(body);
@@ -13,6 +16,7 @@ exstar::Body* exstar::Engine::getById(std::string id){
 			return bodies->get(i);
 		}
 	}
+	throw exstar::exception("exstar::Engine::getById - No Such ID: " + id);
 }
 void exstar::Engine::Update(double deltaTime){
 	for(int a = 0;a < bodies->size;a++){
