@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.09)
 
-find_package(glfw3 3.3 REQUIRED)
+find_package(glfw3 REQUIRED)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
