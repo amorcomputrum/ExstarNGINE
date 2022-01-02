@@ -189,7 +189,7 @@ void exstar::Window::update(){
 	    //display frame
 		glfwSwapBuffers(window);
 		while(glfwGetTime() < lastTime + 1.0/frameRate){
-			#ifdef _WIN32 || _WIN64
+			#if defined(__WIN32) || defined(_WIN64)
 				sleep(1000);
 			#else
 				usleep(1000);

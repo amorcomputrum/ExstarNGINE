@@ -9,7 +9,7 @@ extern "C"{
 
 #include <iostream>
 #include <chrono>
-#if __WIN32 || _WIN64
+#if defined(__WIN32) || defined(_WIN64)
 	#include <Windows.h>
 #else
 	#include <unistd.h>
