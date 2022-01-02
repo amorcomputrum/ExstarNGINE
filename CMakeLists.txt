@@ -6,9 +6,12 @@ project(EXSTAR VERSION 0.0.1)
 
 include(GNUInstallDirs)
 
+#Compile and Install glfw
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/Dependencies/glfw")
+
 add_subdirectory(src)
 
-install(TARGETS EXSTAR DESTINATION lib/)
+install(TARGETS Exstar DESTINATION lib/)
 
 install(
     DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/include/Exstar"

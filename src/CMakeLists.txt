@@ -11,15 +11,14 @@ set(EXSTAR_SOURCE_FILES
 		Physics/Circle.cpp
 		Physics/ConvexPolygon.cpp
 		Physics/DetectCollision.cpp
+		Physics/Engine.cpp
 		Physics/EngineCollision.cpp
 		Physics/Shape.cpp
 		Physics/TestCollider.cpp
 		Utils/Exception.cpp
 		Utils/Math.cpp
 		Utils/Matrix2.cpp
-		Utils/Point.cpp
-		Utils/Vector2d.cpp
-		Physics/Engine.cpp)
+		Utils/Vector2d.cpp)
 set(EXSTAR_HEADER_FILES
 		../include/Exstar/Graphics/Sprite/stb_image.h
 		../include/Exstar/Window.h
@@ -50,17 +49,25 @@ set(EXSTAR_HEADER_FILES
 		../include/Exstar/Utils/Vector2d.h
 		../include/Exstar/Physics/Engine.h)
 
-add_library(EXSTAR SHARED ${EXSTAR_SOURCE_FILES} ${EXSTAR_HEADER_FILES})
+add_library(Exstar SHARED ${EXSTAR_SOURCE_FILES} ${EXSTAR_HEADER_FILES})
 
-target_include_directories(EXSTAR
+target_include_directories(Exstar
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/../include
 )
 
-set_target_properties(EXSTAR PROPERTIES
+target_link_libraries(Exstar glfw)
+target_compile_options(Exstar PUBLIC "-lglfw")
+target_link_libraries(Exstar "-lglfw")
+
+set_target_properties(Exstar PROPERTIES
 	CXX_STANDARD_REQUIRED YES
 	VERSION 0.0.1
 	SOVERSION 0.0.1)
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "src" FILES ${EXSTAR_SOURCE_FILES})
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/../include" PREFIX "include" FILES ${EXSTAR_HEADER_FILES})
+
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
