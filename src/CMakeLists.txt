@@ -2,6 +2,8 @@ set(EXSTAR_SOURCE_FILES
 		Window.cpp
 		Clock.cpp
 		gl.c
+		Generation/Line.cpp
+		Generation/PerlinNoise.cpp
 		Graphics/Camera.cpp
 		Graphics/Color.cpp
 		Graphics/Sprite/Image_Handler.cpp
@@ -27,6 +29,8 @@ set(EXSTAR_HEADER_FILES
 		../include/Exstar/MouseEvent.h
 		../include/Exstar/exstarglad/gl.h
 		../include/Exstar/exstarKHR/khrplatform.h
+		../include/Exstar/Generation/Line.h
+		../include/Exstar/Generation/PerlinNoise.h
 		../include/Exstar/Graphics/Camera.h
 		../include/Exstar/Graphics/Color.h
 		../include/Exstar/Graphics/Sprite/Image_Handler.h
