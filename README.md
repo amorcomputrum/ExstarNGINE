@@ -18,6 +18,7 @@
 </p>
 <hr noshade>
 <h3 align="center">Coming Soon</h3>
+<h4 align="center">Drawing will soon be change to a more effective and faster method</h4>
 <p align="center">
 	Exstar will contain 2 physics engines<br>
 	One of them will be made by Exstar, this will be a simple general use engine<br>
