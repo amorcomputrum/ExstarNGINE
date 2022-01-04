@@ -228,6 +228,19 @@ namespace exstar{
 		*/
 		void drawPixel(exstar::Point pos);
 		/**
+		 * Render a Pixel
+		 * 
+		 * @param x The x location of the pixel
+		 * @param y The y location of the pixel
+		*/
+		exstar::Color getPixel(int x,int y);
+		/**
+		 * Render a Pixel
+		 * 
+		 * @param pos The position of the pixel
+		*/
+		exstar::Color getPixel(exstar::Point pos);
+		/**
 		 * Return the Size of the camera
 		 * 
 		 * @return exstar::Dimension of the size of the Camera
@@ -258,6 +271,11 @@ namespace exstar{
 		*/
 		int getY();
 
+		void loadFilledRect();
+		void loadOutlinedRect();
+		void loadFilledEllipse();
+		void loadOutlinedEllipse();
+
 
 	private:
 		/**
@@ -272,6 +290,10 @@ namespace exstar{
 		 * The Color to use when rendering primative shapes
 		*/
 		exstar::Color color;
+
+		unsigned int filledEllipseProgram,filledEllipseVAO,filledEllipseVBO,filledEllipseEBO;
+		unsigned int filledRectProgram,filledRectVAO,filledRectVBO,filledRectEBO;
+
 	};
 };
 #endif

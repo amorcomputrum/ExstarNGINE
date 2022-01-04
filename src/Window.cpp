@@ -32,6 +32,9 @@ void exstar::Window::run(){
 	glEnable(GL_MULTISAMPLE); 
 	//create clock
 	clock = new exstar::Clock(); 
+	//Load Primatives
+	camera->loadFilledRect();
+	camera->loadFilledEllipse();
 	//begin loop
 	update();
 	//close when loop closes
