@@ -4,7 +4,6 @@
 #include "Exstar/Utils/Math.h"
 
 exstar::Engine::Engine(){
-	bodies = new ArrayList<exstar::Body*>();
 }
 
 void exstar::Engine::add(exstar::Body* body){
