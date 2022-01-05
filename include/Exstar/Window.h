@@ -16,7 +16,7 @@ extern "C"{
 #endif
 
 #include "Exstar/MouseEvent.h"
-#include "Exstar/Graphics/Camera.h"
+#include "Exstar/Graphics/Graphics.h"
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Key.h"
 #include "Exstar/Clock.h"
@@ -37,9 +37,9 @@ namespace exstar{
 		/**
 		 * Function that renders to display
 		 * 
-		 * @param camera The camera that is used to render to the window 
+		 * @param Graphics The Graphics that is used to render to the window 
 		*/
-		virtual void render(Camera camera);
+		virtual void render(Graphics g);
 		/**
 		 * Function that Updates every frame
 		 * 
@@ -124,9 +124,9 @@ namespace exstar{
 		*/
 		void setSize(exstar::Dimension size);
 		/** 
-		 * Sets whether or not the camera will move on the resize event
+		 * Sets whether or not the Camera will move on the resize event
 		 * 
-		 * @param state Boolean for whether the camera will move
+		 * @param state Boolean for whether the Camera will move
 		*/
 		void setAdjustCameraOnResize(bool state);
 		/**
@@ -153,29 +153,29 @@ namespace exstar{
 		*/
 		void setBackgroundColor(exstar::Color color);
 		/**
-		 * Moves the camera
+		 * Moves the Camera
 		 * 
 		 * @param x The distance to move on the x-axis
 		 * @param y The distance to move on the y-axis
 		*/
 		void moveCamera(int x,int y);
 		/**
-		 * Moves the camera
+		 * Moves the Camera
 		 * 
 		 * @param distance 2D-Vector for change on x and y axis
 		*/
 		void moveCamera(exstar::Vector2d distance);
 		/**
-		 * Sets the Position of the camera
+		 * Sets the Position of the Camera
 		 * 
-		 * @param x The x position to set the camera to
-		 * @param y The y position to set the camera to
+		 * @param x The x position to set the Camera to
+		 * @param y The y position to set the Camera to
 		*/
 		void setCamera(int x,int y);
 		/**
-		 * Sets the Position of the camera
+		 * Sets the Position of the Camera
 		 * 
-		 * @param pos The postion to set the camera to
+		 * @param pos The postion to set the Camera to
 		*/
 		void setCamera(exstar::Point pos);
 		/**
@@ -234,9 +234,9 @@ namespace exstar{
 		*/
 		int getHeight();
 		/**
-		 * Returns whether the camera is allowed to move on camera resize
+		 * Returns whether the Camera is allowed to move on resize
 		 * 
-		 * @return state of adjustCameraOnResize
+		 * @return state of adjustGraphicsOnResize
 		*/
 		bool getAdjustCameraOnResize();
 
@@ -268,7 +268,7 @@ namespace exstar{
 		*/
 		int frameRate = 16;
 		/**
-		 * state for whether the camera will move on resize event
+		 * state for whether the Camera will move on resize event
 		*/
 		bool adjustCameraOnResize = true;
 		/**
@@ -284,9 +284,9 @@ namespace exstar{
 		*/
 		GLFWwindow* window;
 		/**
-		 * The camera for the window
+		 * The Graphics for the window
 		*/
-		exstar::Camera* camera;
+		exstar::Graphics* g;
 		/**
 		 * The clock for calculating deltaTime
 		*/
@@ -308,7 +308,7 @@ namespace exstar{
 		void update();
 		/**
 		 * event called when window is resized
-		 * adjusts the camera and the size variable
+		 * adjusts the Graphics and the size variable
 		 * 
 		 * @param width New width of the window
 		 * @param height New height of the window

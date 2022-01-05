@@ -4,7 +4,7 @@ set(EXSTAR_SOURCE_FILES
 		gl.c
 		Generation/Line.cpp
 		Generation/PerlinNoise.cpp
-		Graphics/Camera.cpp
+		Graphics/Graphics.cpp
 		Graphics/Color.cpp
 		Graphics/Sprite/Image_Handler.cpp
 		Graphics/Sprite/Sprite.cpp
@@ -31,7 +31,7 @@ set(EXSTAR_HEADER_FILES
 		../include/Exstar/exstarKHR/khrplatform.h
 		../include/Exstar/Generation/Line.h
 		../include/Exstar/Generation/PerlinNoise.h
-		../include/Exstar/Graphics/Camera.h
+		../include/Exstar/Graphics/Graphics.h
 		../include/Exstar/Graphics/Color.h
 		../include/Exstar/Graphics/Sprite/Image_Handler.h
 		../include/Exstar/Graphics/Sprite/Sprite.h
@@ -66,8 +66,8 @@ target_link_libraries(Exstar "-lglfw")
 
 set_target_properties(Exstar PROPERTIES
 	CXX_STANDARD_REQUIRED YES
-	VERSION 0.0.1
-	SOVERSION 0.0.1)
+	VERSION 0.0.2
+	SOVERSION 0.0.2)
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "src" FILES ${EXSTAR_SOURCE_FILES})
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/../include" PREFIX "include" FILES ${EXSTAR_HEADER_FILES})

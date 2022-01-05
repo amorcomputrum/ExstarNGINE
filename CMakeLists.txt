@@ -4,7 +4,7 @@ find_package(glfw3 REQUIRED)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-project(EXSTAR VERSION 0.0.1)
+project(EXSTAR VERSION 0.0.2)
 
 include(GNUInstallDirs)
 

@@ -6,31 +6,31 @@
 #include <iostream>
 #include "Exstar/Utils/Exception.h"
 #include "Exstar/Utils/ArrayList.h"
-#include "Exstar/Graphics/Camera.h"
+#include "Exstar/Graphics/Graphics.h"
 
-exstar::Camera::Camera(int width,int height,int x,int y){
+exstar::Graphics::Graphics(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};
 	size = new exstar::Dimension{width,height};
 	color = exstar::Color(0,0,0);
 }
-void exstar::Camera::resize(int width,int height){
+void exstar::Graphics::resize(int width,int height){
 	size->width = width;
 	size->height = height;
 }
-void exstar::Camera::move(int x,int y){
+void exstar::Graphics::move(int x,int y){
 	pos->x = pos->x + x;
 	pos->y = pos->y + y;
 }
-void exstar::Camera::set(int x,int y){
+void exstar::Graphics::set(int x,int y){
 	pos->x -= pos->x - x;
 	pos->y -= pos->y - y;
 	
 }
-void exstar::Camera::setColor(exstar::Color color){
+void exstar::Graphics::setColor(exstar::Color color){
 	this->color = exstar::Color(color.r,color.g,color.b,color.a);
 }
 //-----------------------------DRAW SPRITE-----------------------------
-void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
+void exstar::Graphics::drawSprite(exstar::Sprite* sprite,int x,int y){
 	const char* vertexShaderSource = "#version 330 core\n"
 									 "layout (location = 0) in vec3 aPos;\n"
 									 "layout (location = 1) in vec3 aColor;\n"
@@ -145,11 +145,11 @@ void exstar::Camera::drawSprite(exstar::Sprite* sprite,int x,int y){
 	glDeleteBuffers(1,&EBO);
 	glDeleteProgram(shaderProgram);
 }
-void exstar::Camera::drawSprite(exstar::Sprite* sprite,exstar::Point pos){
+void exstar::Graphics::drawSprite(exstar::Sprite* sprite,exstar::Point pos){
 	drawSprite(sprite,pos.x,pos.y);
 }
 //-----------------------------DRAW RECTANGLE-----------------------------
-void exstar::Camera::drawRect(int x,int y,int w,int h){
+void exstar::Graphics::drawRect(int x,int y,int w,int h){
 	//Transformations
 	glm::mat4 projection;
 	projection = glm::ortho((int)pos->x + 0.0f,(float)size->width + (int)pos->x,(float)size->height + (int)pos->y,0.0f + (int)pos->y,-1.0f,1.0f);
@@ -172,17 +172,17 @@ void exstar::Camera::drawRect(int x,int y,int w,int h){
 	glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
-void exstar::Camera::drawRect(exstar::Point pos, exstar::Dimension size){
+void exstar::Graphics::drawRect(exstar::Point pos, exstar::Dimension size){
 	drawRect(pos.x,pos.y,size.width,size.height);
 }
-void exstar::Camera::drawRect(int x,int y, exstar::Dimension size){
+void exstar::Graphics::drawRect(int x,int y, exstar::Dimension size){
 	drawRect(x,y,size.width,size.height);
 }
-void exstar::Camera::drawRect(exstar::Point pos, int w,int h){
+void exstar::Graphics::drawRect(exstar::Point pos, int w,int h){
 	drawRect(pos.x,pos.y,w,h);
 };
 //-----------------------------DRAW ELLIPSE-----------------------------
-void exstar::Camera::drawEllipse(int x,int y,int w,int h){
+void exstar::Graphics::drawEllipse(int x,int y,int w,int h){
 	//Transformations
 	glm::mat4 projection;
 	projection = glm::ortho((int)pos->x + 0.0f,(float)size->width + (int)pos->x,(float)size->height + (int)pos->y,0.0f + (int)pos->y,-1.0f,1.0f);
@@ -204,28 +204,28 @@ void exstar::Camera::drawEllipse(int x,int y,int w,int h){
 	glDrawElements(GL_TRIANGLES,1080,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
-void exstar::Camera::drawEllipse(exstar::Point pos, exstar::Dimension size){
+void exstar::Graphics::drawEllipse(exstar::Point pos, exstar::Dimension size){
 	drawEllipse(pos.x,pos.y,size.width,size.height);
 }
-void exstar::Camera::drawEllipse(int x,int y, exstar::Dimension size){
+void exstar::Graphics::drawEllipse(int x,int y, exstar::Dimension size){
 	drawEllipse(x,y,size.width,size.height);
 }
-void exstar::Camera::drawEllipse(exstar::Point pos,int w,int h){
+void exstar::Graphics::drawEllipse(exstar::Point pos,int w,int h){
 	drawEllipse(pos.x,pos.y,w,h);
 }
 //-----------------------------DRAW CIRCLE-----------------------------
-void exstar::Camera::drawCircle(int x,int y,int r){
+void exstar::Graphics::drawCircle(int x,int y,int r){
 
 	drawEllipse(x,y,r*2,r*2);
 }
-void exstar::Camera::drawCircle(exstar::Point pos,int r){
+void exstar::Graphics::drawCircle(exstar::Point pos,int r){
 	drawEllipse(pos.x,pos.y,r*2,r*2);
 }
-void exstar::Camera::drawCircle(exstar::Vector2d pos,int r){
+void exstar::Graphics::drawCircle(exstar::Vector2d pos,int r){
 	drawEllipse(pos.x,pos.y,r*2,r*2);
 }
 //-----------------------------DRAW SHAPE-----------------------------
-void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h){
+void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h){
 	const char* vertexShaderSource = "#version 330 core\n"
 									 "layout (location = 0) in vec2 aPos;\n"
 									 "layout (location = 1) in vec3 aColor;\n"
@@ -253,16 +253,16 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 	for(int i = 0; i<=shape->size;i++){
 		if(i < shape->size){
 			if(shape->get(i).x >w || shape->get(i).x < 0){
-				throw exstar::exception("exstar::Camera::drawShape - x position is out of range 0-" + std::to_string(w));
+				throw exstar::exception("exstar::Graphics::drawShape - x position is out of range 0-" + std::to_string(w));
 			}else if(shape->get(i).y >h || shape->get(i).y < 0){
-				throw exstar::exception("exstar::Camera::drawShape - y position is out of range 0-" + std::to_string(h));
+				throw exstar::exception("exstar::Graphics::drawShape - y position is out of range 0-" + std::to_string(h));
 			}
 			geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(i).x)/size->width*2))+","+std::to_string((((((float)-shape->get(i).y)))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
 		}else{
 			if(shape->get(0).x >w || shape->get(0).x < 0){
-				throw exstar::exception("exstar::Camera::drawShape - x position is out of range 0-" + std::to_string(w));
+				throw exstar::exception("exstar::Graphics::drawShape - x position is out of range 0-" + std::to_string(w));
 			}else if(shape->get(0).y >h || shape->get(0).y < 0){
-				throw exstar::exception("exstar::Camera::drawShape - y position is out of range 0-" + std::to_string(h));
+				throw exstar::exception("exstar::Graphics::drawShape - y position is out of range 0-" + std::to_string(h));
 			}
 			geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(0).x)/size->width*2))+","+std::to_string((((((float)-shape->get(0).y)))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
 		}
@@ -329,24 +329,24 @@ void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int
 	glDeleteBuffers(1, &VBO);
 	glDeleteProgram(shaderProgram);
 }
-void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h){
+void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h){
 	drawShape(shape,pos.x,pos.y,w,h);
 }
-void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,exstar::Dimension size){
+void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,exstar::Dimension size){
 	drawShape(shape,pos.x,pos.y,size.width,size.height);
 }
-void exstar::Camera::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size){
+void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size){
 	drawShape(shape,x,y,size.width,size.height);
 }
 //-----------------------------DRAW LINE-----------------------------
-void exstar::Camera::drawLine(int x1,int y1,int x2,int y2){
+void exstar::Graphics::drawLine(int x1,int y1,int x2,int y2){
 	const char* vertexShaderSource = "#version 330 core\n"
 									 "layout (location = 0) in vec2 aPos;\n"
 									 "void main()\n"
 									 "{\n"
 									 "	gl_Position = vec4(aPos.x,aPos.y,0.0f,1.0f);\n"
 									 "}\0";
-	//Pass Camera's color
+	//Pass Graphics's color
 	float r,g,b,a;
 	r = exstar::Color::getFloat(color.r);
 	g = exstar::Color::getFloat(color.g);
@@ -400,21 +400,21 @@ void exstar::Camera::drawLine(int x1,int y1,int x2,int y2){
 	glDeleteBuffers(1, &VBO);
 	glDeleteProgram(shaderProgram);
 }
-void exstar::Camera::drawLine(exstar::Point pos1,exstar::Point pos2){
+void exstar::Graphics::drawLine(exstar::Point pos1,exstar::Point pos2){
 	drawLine(pos1.x,pos1.y,pos2.x,pos2.y);
 }
-void exstar::Camera::drawLine(exstar::Point pos1,exstar::Vector2d offset){
+void exstar::Graphics::drawLine(exstar::Point pos1,exstar::Vector2d offset){
 	drawLine(pos1.x,pos1.y,offset.getX(),offset.getY());
 }
 //-----------------------------DRAW PIXEL-----------------------------
-void exstar::Camera::drawPixel(int x,int y){
+void exstar::Graphics::drawPixel(int x,int y){
 	const char* vertexShaderSource = "#version 330 core\n"
 									 "layout (location = 0) in vec2 aPos;\n"
 									 "void main()\n"
 									 "{\n"
 									 "	gl_Position = vec4(aPos.x,aPos.y,0.0f,1.0f);\n"
 									 "}\0";
-	//Pass Camera's color
+	//Pass Graphics's color
 	float r,g,b,a;
 	r = exstar::Color::getFloat(color.r);
 	g = exstar::Color::getFloat(color.g);
@@ -466,27 +466,27 @@ void exstar::Camera::drawPixel(int x,int y){
 	glDeleteBuffers(1, &VBO);
 	glDeleteProgram(shaderProgram);
 }
-void exstar::Camera::drawPixel(exstar::Point pos){
+void exstar::Graphics::drawPixel(exstar::Point pos){
 	drawPixel(pos.x,pos.y);
 }
-exstar::Dimension exstar::Camera::getSize(){
+exstar::Dimension exstar::Graphics::getSize(){
 	return *size;
 }
-int exstar::Camera::getWidth(){
+int exstar::Graphics::getWidth(){
 	return size->width;
 }
-int exstar::Camera::getHeight(){
+int exstar::Graphics::getHeight(){
 	return size->height;
 }
-int exstar::Camera::getX(){
+int exstar::Graphics::getX(){
 	return pos->x;
 }
-int exstar::Camera::getY(){
+int exstar::Graphics::getY(){
 	return pos->y;
 }
 
 
-void exstar::Camera::loadFilledRect(){
+void exstar::Graphics::loadFilledRect(){
 	const char* vertexShaderSource = "#version 330 core\n"
 									 "layout (location = 0) in vec3 aPos;\n"
 									 "out vec4 bColor;\n"
@@ -547,11 +547,11 @@ void exstar::Camera::loadFilledRect(){
 	glEnableVertexAttribArray(0);	
 }
 
-void exstar::Camera::loadOutlinedRect(){
+void exstar::Graphics::loadOutlinedRect(){
 
 }
 
-void exstar::Camera::loadFilledEllipse(){
+void exstar::Graphics::loadFilledEllipse(){
 	const char* vertexShaderSource = "#version 330 core\n"
 									 "layout (location = 0) in vec3 aPos;\n"
 									 "out vec4 bColor;\n"
@@ -631,6 +631,6 @@ void exstar::Camera::loadFilledEllipse(){
 	glBindVertexArray(0);
 }
 
-void exstar::Camera::loadOutlinedEllipse(){
+void exstar::Graphics::loadOutlinedEllipse(){
 
 }

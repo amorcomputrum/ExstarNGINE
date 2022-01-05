@@ -1,45 +1,45 @@
-#ifndef EXSTAR_CAMERA_H
-#define EXSTAR_CAMERA_H
+#ifndef EXSTAR_Graphics_H
+#define EXSTAR_Graphics_H
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Graphics/Color.h"
 #include "Exstar/Graphics/Sprite/Sprite.h"
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Utils/ArrayList.h"
 namespace exstar{
-	class Camera
+	class Graphics
 	{
 	public:
 		/**
-		 * Initialize the Camera Object
+		 * Initialize the Graphics Object
 		 * 
 		 * @param width The width of the content to display
 		 * @param height The height of the content to display
-		 * @param x The x position for the top-left of the camera
-		 * @param y The y postion for the top-left of the camera
+		 * @param x The x position for the top-left of the Graphics
+		 * @param y The y postion for the top-left of the Graphics
 		 * 
-		 * If camera is placed at x=100 and width=100 then contents displayed
+		 * If Graphics is placed at x=100 and width=100 then contents displayed
 		 * will be from x=100 to x = 200
 		*/
-		Camera(int width,int height,int x,int y);
+		Graphics(int width,int height,int x,int y);
 		/**
-		 * Resize the view of the Camera
+		 * Resize the view of the Graphics
 		 * 
 		 * @param width The width of the content to display
 		 * @param height The height of the content to display
 		*/
 		void resize(int width,int height);
 		/**
-		 * Move the camera a distance
+		 * Move the Graphics a distance
 		 * 
-		 * @param x The distance to move the camera on the x-axis
-		 * @param y The distance to move the camera on the y-axis
+		 * @param x The distance to move the Graphics on the x-axis
+		 * @param y The distance to move the Graphics on the y-axis
 		*/
 		void move(int x,int y);
 		/**
-		 * Set the camera postion
+		 * Set the Graphics postion
 		 * 
-		 * @param x The x position to move the camera to
-		 * @param y The y position to move the camera to
+		 * @param x The x position to move the Graphics to
+		 * @param y The y position to move the Graphics to
 		*/
 		void set(int x,int y);
 		/**
@@ -241,33 +241,33 @@ namespace exstar{
 		*/
 		exstar::Color getPixel(exstar::Point pos);
 		/**
-		 * Return the Size of the camera
+		 * Return the Size of the Graphics
 		 * 
-		 * @return exstar::Dimension of the size of the Camera
+		 * @return exstar::Dimension of the size of the Graphics
 		*/
 		exstar::Dimension getSize();
 		/**
-		 * Return the Width of the camera
+		 * Return the Width of the Graphics
 		 * 
-		 * @return int value of the width of the camera
+		 * @return int value of the width of the Graphics
 		*/
 		int getWidth();
 		/**
-		 * Return the Height of the camera
+		 * Return the Height of the Graphics
 		 * 
-		 * @return int value of the height of the camera
+		 * @return int value of the height of the Graphics
 		*/
 		int getHeight();
 		/**
-		 * Return the X postion of the camera
+		 * Return the X postion of the Graphics
 		 * 
-		 * @return int value of the x postion of the camera
+		 * @return int value of the x postion of the Graphics
 		*/
 		int getX();
 		/**
-		 * Return the Y postion of the camera
+		 * Return the Y postion of the Graphics
 		 * 
-		 * @return int value of the y postion of the camera
+		 * @return int value of the y postion of the Graphics
 		*/
 		int getY();
 
@@ -279,11 +279,11 @@ namespace exstar{
 
 	private:
 		/**
-		 * The Postion of the Camera
+		 * The Postion of the Graphics
 		*/
 		exstar::Point* pos;
 		/**
-		 * The Size of the Camera
+		 * The Size of the Graphics
 		*/
 		exstar::Dimension* size;
 		/**
