@@ -53,7 +53,7 @@ set(EXSTAR_HEADER_FILES
 		../include/Exstar/Utils/Vector2d.h
 		../include/Exstar/Physics/Engine.h)
 
-add_library(Exstar SHARED ${EXSTAR_SOURCE_FILES} ${EXSTAR_HEADER_FILES})
+add_library(Exstar SHARED ${EXSTAR_SOURCE_FILES})
 
 target_include_directories(Exstar
 	PUBLIC
