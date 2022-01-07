@@ -16,7 +16,7 @@ namespace exstar{
 		exstar::TestCollider testCollider;
 		exstar::Vector2d* position;
 		exstar::Vector2d* velocity;
-		exstar::Vector2d* tempVelocity;
+		exstar::Vector2d* force;
 		std::string id;
 		Body();
 		Body(exstar::Vector2d position,float restitution,int mass,exstar::Shape* shape,std::string id);

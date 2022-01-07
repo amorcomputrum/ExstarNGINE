@@ -22,7 +22,7 @@ exstar::Body::Body(exstar::Vector2d position,float restitution,int mass,exstar::
 			break;
 	}
 	this->shape = shape;
-	tempVelocity = new exstar::Vector2d();
+	force = new exstar::Vector2d();
 	updateCollider();
 }
 exstar::Body::Body(exstar::Vector2d position,exstar::Vector2d velocity,float restitution,int mass,exstar::Shape* shape,std::string id){
@@ -45,23 +45,23 @@ exstar::Body::Body(exstar::Vector2d position,exstar::Vector2d velocity,float res
 			break;
 	}
 	this->shape = shape;
-	tempVelocity = new exstar::Vector2d();
+	force = new exstar::Vector2d();
 	updateCollider();
 }
 
 void exstar::Body::Update(double deltaTime){
 	*position += *velocity*deltaTime;
-	*position += *tempVelocity*deltaTime;
+	*position += *force*deltaTime;
 	updateCollider();
-	tempVelocity->set(0,0);
+	force->set(0,0);
 }
 
 void exstar::Body::applyForce(exstar::Vector2d force){
-	*this->tempVelocity += force;
+	*this->force += force;
 }
 
 void exstar::Body::applyForce(int x,int y){
-	*this->tempVelocity += exstar::Vector2d(x,y);
+	*this->force += exstar::Vector2d(x,y);
 }
 
 void exstar::Body::updateCollider(){
