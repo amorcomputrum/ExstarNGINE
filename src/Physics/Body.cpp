@@ -53,7 +53,6 @@ void exstar::Body::Update(double deltaTime){
 	*position += *velocity*deltaTime;
 	*position += *force*deltaTime;
 	updateCollider();
-	force->set(0,0);
 }
 
 void exstar::Body::applyForce(exstar::Vector2d force){

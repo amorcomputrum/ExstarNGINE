@@ -103,6 +103,7 @@ void exstar::Engine::Update(double deltaTime){
 				}
 			}
 		}
+		current->force->set(0,0);
 	}
 }
 void exstar::Engine::HandleCollision(exstar::PCollision* collision){
@@ -114,7 +115,7 @@ void exstar::Engine::Impulse(exstar::PCollision* collision){
 	exstar::Body* B = collision->B;
 	float penetration = collision->penetration;
 	exstar::Vector2d normal = exstar::Vector2d((float)collision->normal.x,(float)collision->normal.y);
-	exstar::Vector2d rv = *B->velocity - *A->velocity;
+	exstar::Vector2d rv = (*B->velocity+*B->force) - (*A->velocity+*A->force);
 
 	float velAlongNormal = exstar::Vector2d::dot(rv,normal);
 

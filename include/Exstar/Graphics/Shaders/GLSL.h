@@ -9,6 +9,7 @@ namespace exstar{
 	class GLSL{
 	public:
 		GLSL(const std::string shader);
+		void use();
 		void uniformMat4(const char* uniform,glm::mat4& matrix);
 		void uniformVec4(const char* uniform,glm::vec4& vector);
 		unsigned int* getProgram();
