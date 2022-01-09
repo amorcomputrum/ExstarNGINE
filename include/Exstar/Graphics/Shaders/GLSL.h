@@ -8,6 +8,9 @@
 namespace exstar{
 	class GLSL{
 	public:
+		enum Shader{
+			VERTEX,FRAGMENT,GEOMETRY
+		};
 		GLSL(const std::string shader);
 		void use();
 		void uniformMat4(const char* uniform,glm::mat4& matrix);
@@ -17,11 +20,7 @@ namespace exstar{
 		unsigned int* getVBO();
 		unsigned int* getEBO();
 	private:
-		enum Shader{
-			VERTEX,FRAGMENT,GEOMETRY
-		}
 		unsigned int VBO,VAO,EBO,Program;
-		std::string id;
 		void CompileShaders(const std::string shader);
 		std::string loadShader(const std::string file,exstar::GLSL::Shader type);
 	};

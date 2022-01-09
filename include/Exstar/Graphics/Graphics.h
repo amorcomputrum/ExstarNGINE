@@ -5,6 +5,7 @@
 #include "Exstar/Graphics/Sprite/Sprite.h"
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Utils/ArrayList.h"
+#include "Exstar/Graphics/Shaders/GLSL.h"
 namespace exstar{
 	class Graphics
 	{
@@ -291,8 +292,8 @@ namespace exstar{
 		*/
 		exstar::Color color;
 
-		unsigned int filledEllipseProgram,filledEllipseVAO,filledEllipseVBO,filledEllipseEBO;
-		unsigned int filledRectProgram,filledRectVAO,filledRectVBO,filledRectEBO;
+		exstar::GLSL* filledEllipse;
+		exstar::GLSL* filledRect;
 
 	};
 };

@@ -162,13 +162,12 @@ void exstar::Graphics::drawRect(int x,int y,int w,int h){
 	b = exstar::Color::getFloat(color.b);
 	a = exstar::Color::getFloat(color.a);
 	glm::vec4 Color(r,g,b,a);
-	glUseProgram(this->filledRectProgram);
+	this->filledRect->use();
 	//Set Uniforms
-	glUniformMatrix4fv(glGetUniformLocation(this->filledRectProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(this->filledRectProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
-	glUniform4fv(glGetUniformLocation(this->filledEllipseProgram,"aColor"),1,glm::value_ptr(Color));
-
-	glBindVertexArray(this->filledRectVAO);
+	this->filledRect->uniformMat4("ModelMatrix",ModelMatrix);
+	this->filledRect->uniformMat4("projection",projection);
+	this->filledRect->uniformVec4("Color",Color);
+	glBindVertexArray(*this->filledRect->getVAO());
 	glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
@@ -195,12 +194,12 @@ void exstar::Graphics::drawEllipse(int x,int y,int w,int h){
 	b = exstar::Color::getFloat(color.b);
 	a = exstar::Color::getFloat(color.a);
 	glm::vec4 Color(r,g,b,a);
-	glUseProgram(this->filledEllipseProgram);
+	this->filledEllipse->use();
 	//Set Uniforms
-	glUniformMatrix4fv(glGetUniformLocation(this->filledEllipseProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(this->filledEllipseProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
-	glUniform4fv(glGetUniformLocation(this->filledEllipseProgram,"aColor"),1,glm::value_ptr(Color));
-	glBindVertexArray(this->filledEllipseVAO);
+	this->filledEllipse->uniformMat4("ModelMatrix",ModelMatrix);
+	this->filledEllipse->uniformMat4("projection",projection);
+	this->filledEllipse->uniformVec4("Color",Color);
+	glBindVertexArray(*this->filledEllipse->getVAO());
 	glDrawElements(GL_TRIANGLES,1080,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
@@ -487,43 +486,10 @@ int exstar::Graphics::getY(){
 
 
 void exstar::Graphics::loadFilledRect(){
-	const char* vertexShaderSource = "#version 330 core\n"
-									 "layout (location = 0) in vec3 aPos;\n"
-									 "out vec4 bColor;\n"
-									 "uniform mat4 ModelMatrix;\n"
-									 "uniform mat4 projection;\n"
-									 "uniform vec4 aColor;\n"
-									 "void main()\n"
-									 "{\n"
-									 "	gl_Position = projection*(ModelMatrix*vec4(aPos,1.0f));\n"
-									 "	bColor = aColor;\n"
-									 "}\0";
-	const char* fragmentShaderSource = "#version 330 core\n"
-									   "out vec4 FragColor;\n"
-									   "in vec4 bColor;\n"
-									   "void main()\n"
-									   "{\n"
-									   "	FragColor = bColor;\n"
-									   "}\0";
-
-	unsigned int vertexShader,fragmentShader;
-	//Create and Compile VertexShader
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-	glCompileShader(vertexShader);
-	//Create and Compile Fragment Shader
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
-	glCompileShader(fragmentShader);
-	//Create and Link ShaderProgram
-	this->filledRectProgram = glCreateProgram();
-	glAttachShader(this->filledRectProgram,vertexShader);
-	glAttachShader(this->filledRectProgram, fragmentShader);
-	glLinkProgram(this->filledRectProgram);
-	//Delete Shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-
+	const std::string file =
+	#include "Exstar/Graphics/Shaders/Rect.glsl"
+	;
+	filledRect = new exstar::GLSL(file);
 	float vertices[] = {
 		1.0f,1.0f,0.0f,
 		1.0f,0.0f,0.0f,
@@ -533,14 +499,14 @@ void exstar::Graphics::loadFilledRect(){
 
 	unsigned int indices[] = {0,1,3,1,2,3};
 	//Prepare Buffers
-	glGenVertexArrays(1,&this->filledRectVAO);
-	glGenBuffers(1,&this->filledRectVBO);
-	glGenBuffers(1,&this->filledRectEBO);
+	glGenVertexArrays(1,this->filledRect->getVAO());
+	glGenBuffers(1,this->filledRect->getVBO());
+	glGenBuffers(1,this->filledRect->getEBO());
 	//Bind Buffers
-	glBindVertexArray(this->filledRectVAO);
-	glBindBuffer(GL_ARRAY_BUFFER,this->filledRectVBO);
+	glBindVertexArray(*this->filledRect->getVAO());
+	glBindBuffer(GL_ARRAY_BUFFER,*this->filledRect->getVBO());
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->filledRectEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,*this->filledRect->getEBO());
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
 	//Position attributes
 	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);
@@ -552,41 +518,10 @@ void exstar::Graphics::loadOutlinedRect(){
 }
 
 void exstar::Graphics::loadFilledEllipse(){
-	const char* vertexShaderSource = "#version 330 core\n"
-									 "layout (location = 0) in vec3 aPos;\n"
-									 "out vec4 bColor;\n"
-									 "uniform mat4 ModelMatrix;\n"
-									 "uniform mat4 projection;\n"
-									 "uniform vec4 aColor;\n"
-									 "void main()\n"
-									 "{\n"
-									 "	gl_Position = projection*(ModelMatrix*vec4(aPos,1.0f));\n"
-									 "	bColor = aColor;\n"
-									 "}\0";
-	const char* fragmentShaderSource = "#version 330 core\n"
-									   "in vec4 bColor;\n"
-									   "void main()\n"
-									   "{\n"
-									   "	gl_FragColor = bColor;\n"
-									   "}\0";
-	unsigned int vertexShader,fragmentShader;
-	//Create and Compile VertexShader
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-	glCompileShader(vertexShader);
-	//Create and Compile FragmentShader
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
-	glCompileShader(fragmentShader);
-	//Create and Link ShaderProgram
-	this->filledEllipseProgram = glCreateProgram();
-	glAttachShader(this->filledEllipseProgram,vertexShader);
-	glAttachShader(this->filledEllipseProgram, fragmentShader);
-	glLinkProgram(this->filledEllipseProgram);
-	glUseProgram(this->filledEllipseProgram);
-	//Delete Shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	const std::string file = 
+	#include "Exstar/Graphics/Shaders/Ellipse.glsl"
+	;
+	filledEllipse = new exstar::GLSL(file);
 	//360 degrees of verticies to render
 	float vertices[] = {
 		0.5,0.5,0.0,1.0,0.5,0.0,0.7702,0.9207,0.0,0.2919,0.9546,0.0,0.005,0.5706,0.0,0.1732,0.1216,0.0,0.6418,0.0205,0.0,0.9801,0.3603,0.0,0.877,0.8285,0.0,0.4272,0.9947,0.0,0.0444,0.7061,0.0,0.0805,0.228,0.0,0.5022,0.0,0.0,0.9219,0.2317,0.0,0.9537,0.7101,0.0,0.5684,0.9953,0.0,0.1202,0.8251,0.0,0.0212,0.356,0.0,0.3624,0.0193,0.0,0.8302,0.1245,0.0,0.9944,0.5749,0.0,0.704,0.9565,0.0,0.2261,0.9183,0.0,0.0,0.4956,0.0,0.2336,0.0769,0.0,0.7121,0.0472,0.0,0.9956,0.4338,0.0,0.8235,0.8813,
@@ -616,14 +551,14 @@ void exstar::Graphics::loadFilledEllipse(){
 		0,356,355,0,357,356,0,358,357,0,359,358,0,360,359,0,360,1
 		};
 	//Prepare Buffers
-	glGenVertexArrays(1,&this->filledEllipseVAO);
-	glGenBuffers(1,&this->filledEllipseVBO);
-	glGenBuffers(1,&this->filledEllipseEBO);
+	glGenVertexArrays(1,this->filledEllipse->getVAO());
+	glGenBuffers(1,this->filledEllipse->getVBO());
+	glGenBuffers(1,this->filledEllipse->getEBO());
 	//Bind Buffers
-	glBindVertexArray(this->filledEllipseVAO);
-	glBindBuffer(GL_ARRAY_BUFFER,this->filledEllipseVBO);
+	glBindVertexArray(*this->filledEllipse->getVAO());
+	glBindBuffer(GL_ARRAY_BUFFER,*this->filledEllipse->getVBO());
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,this->filledEllipseEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,*this->filledEllipse->getEBO());
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
 	//Position attribute
 	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);

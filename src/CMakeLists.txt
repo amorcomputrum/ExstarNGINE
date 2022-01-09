@@ -5,6 +5,7 @@ set(EXSTAR_SOURCE_FILES
 		Generation/Line.cpp
 		Generation/PerlinNoise.cpp
 		Graphics/Graphics.cpp
+		Graphics/Shaders/GLSL.cpp
 		Graphics/Color.cpp
 		Graphics/Sprite/Image_Handler.cpp
 		Graphics/Sprite/Sprite.cpp
@@ -39,7 +40,6 @@ set_target_properties(Exstar PROPERTIES
 	SOVERSION ${CMAKE_PROJECT_VERSION})
 
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" PREFIX "src" FILES ${EXSTAR_SOURCE_FILES})
-source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}/../include" PREFIX "include" FILES ${EXSTAR_HEADER_FILES})
 
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
