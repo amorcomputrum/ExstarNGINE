@@ -159,11 +159,9 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 		if(inside){
 			collision->normal.set(exstar::Vector2d::normalize(n)*-1);
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
-			std::cout << collision->normal.y << std::endl;
 		}else{
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
 			collision->normal.set(exstar::Vector2d::normalize(n));
-			std::cout << collision->normal.x << std::endl;
 		}
 		return true;
 	}
