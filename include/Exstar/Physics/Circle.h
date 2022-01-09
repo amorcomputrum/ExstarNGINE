@@ -3,9 +3,11 @@
 #include "Exstar/Physics/Shape.h"
 
 namespace exstar{
-	class Circle : public exstar::Shape{
-	public:
-		Circle(double r);
-	};
+	namespace physics{
+		class Circle : public exstar::physics::Shape{
+		public:
+			Circle(double r);
+		};
+	}
 }
 #endif

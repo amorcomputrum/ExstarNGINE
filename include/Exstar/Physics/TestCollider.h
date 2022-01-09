@@ -2,12 +2,14 @@
 #define EXSTAR_TESTCOLLIDER_H
 #include "Exstar/Utils/Vector2d.h"
 namespace exstar{
-	class TestCollider{
-	public:
-		float w,h,x,y;
-		TestCollider();
-		TestCollider(float w,float h,float x,float y);
-		static bool CheckCollision(exstar::TestCollider* t1,exstar::TestCollider* t2);
-	};
+	namespace physics{
+		class TestCollider{
+		public:
+			float w,h,x,y;
+			TestCollider();
+			TestCollider(float w,float h,float x,float y);
+			static bool CheckCollision(exstar::physics::TestCollider* t1,exstar::physics::TestCollider* t2);
+		};
+	}
 }
 #endif

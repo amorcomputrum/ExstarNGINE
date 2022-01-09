@@ -4,9 +4,11 @@
 #include "Exstar/Physics/Shape.h"
 
 namespace exstar{
-	class Box : public exstar::Shape{
-	public:
-		Box(double w,double h);
-	};
+	namespace physics{
+		class Box : public exstar::physics::Shape{
+		public:
+			Box(double w,double h);
+		};
+	}
 }
 #endif

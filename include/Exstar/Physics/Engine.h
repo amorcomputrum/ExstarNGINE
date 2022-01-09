@@ -3,17 +3,19 @@
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Physics/PCollision.h"
 namespace exstar{
-	class Engine{
-	public:
-		ArrayList<exstar::Body*>* bodies = new ArrayList<exstar::Body*>();;
-		exstar::PCollision collision;
-		Engine();
-		void add(exstar::Body* body);
-		exstar::Body* getById(std::string id);
-		void Update(double deltaTime);
-		static void HandleCollision(exstar::PCollision* collision);
-		static void Impulse(exstar::PCollision* collision);
-		static void PositionalCorrection(exstar::PCollision* collision);
-	};
+	namespace physics{
+		class Engine{
+		public:
+			ArrayList<exstar::physics::Body*>* bodies = new ArrayList<exstar::physics::Body*>();;
+			exstar::physics::PCollision collision;
+			Engine();
+			void add(exstar::physics::Body* body);
+			exstar::physics::Body* getById(std::string id);
+			void Update(double deltaTime);
+			static void HandleCollision(exstar::physics::PCollision* collision);
+			static void Impulse(exstar::physics::PCollision* collision);
+			static void PositionalCorrection(exstar::physics::PCollision* collision);
+		};
+	}
 }
 #endif
