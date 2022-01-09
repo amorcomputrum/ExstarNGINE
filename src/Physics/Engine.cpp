@@ -70,6 +70,7 @@ void exstar::Engine::Update(double deltaTime){
 									case exstar::Shape::ID::Polygon:
 										//CirclevsPolygon
 										if(exstar::EngineCollision::CirclevsPolygon(&collision)){
+											collision.normal *= -1;
 											HandleCollision(&collision);
 										}
 										break;
@@ -93,7 +94,6 @@ void exstar::Engine::Update(double deltaTime){
 									case exstar::Shape::ID::Polygon:
 										//PolygonvsPolygon
 										if(exstar::EngineCollision::PolygonvsPolygon(&collision)){
-											collision.normal *= -1;
 											HandleCollision(&collision);
 										}
 										break;
@@ -115,6 +115,12 @@ void exstar::Engine::Impulse(exstar::PCollision* collision){
 	exstar::Body* B = collision->B;
 	float penetration = collision->penetration;
 	exstar::Vector2d normal = exstar::Vector2d((float)collision->normal.x,(float)collision->normal.y);
+	if(std::isnan(normal.x)){
+		normal.x = 0;
+	}
+	if(std::isnan(normal.y)){
+		normal.y = 0;
+	}
 	exstar::Vector2d rv = (*B->velocity+*B->force) - (*A->velocity+*A->force);
 
 	float velAlongNormal = exstar::Vector2d::dot(rv,normal);
@@ -130,6 +136,9 @@ void exstar::Engine::Impulse(exstar::PCollision* collision){
 	exstar::Vector2d impulse = normal*j;
 	float sum_mass = A->mass + B->mass;
 	float ratio = A->mass / sum_mass;
+	if(std::isnan(ratio)){
+		ratio = 1.0;
+	}
 	if(A->inv_mass != 0){
 		*A->velocity -= (impulse*A->inv_mass)*ratio;
 	}
@@ -137,8 +146,6 @@ void exstar::Engine::Impulse(exstar::PCollision* collision){
 	if(B->inv_mass != 0){
 		*B->velocity += (impulse*B->inv_mass)*ratio;
 	}
-	
-	
 }
 
 void exstar::Engine::PositionalCorrection(exstar::PCollision* collision){
@@ -146,6 +153,12 @@ void exstar::Engine::PositionalCorrection(exstar::PCollision* collision){
 	exstar::Body* B = collision->B;
 	float penetration = collision->penetration;
 	exstar::Vector2d normal = exstar::Vector2d((float)collision->normal.x,(float)collision->normal.y);
+	if(std::isnan(normal.x)){
+		normal.x = 0;
+	}
+	if(std::isnan(normal.y)){
+		normal.y = 0;
+	}
 
 	const float percent = 0.025;
 	const float slop = 0.01;

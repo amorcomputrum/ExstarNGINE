@@ -131,38 +131,39 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	exstar::Vector2d closest = *B->shape->vertices->get(0) + *B->position;
 	exstar::Vector2d n;
 	for(int i = 0; i < B->shape->vertices->size;i++){
-			exstar::Vector2d point = *B->shape->vertices->get(i) + *B->position;
-			if((pow(A->position->x-closest.x,2) + pow(A->position->y-closest.y,2)) > (pow(A->position->x-point.x,2) + pow(A->position->y-point.y,2))){
-				closest = point;
-			}
-			int next = i+1;
-			if(next == B->shape->vertices->size) next = 0;
-			exstar::Vector2d vc = *B->shape->vertices->get(i)+*B->position;
-			exstar::Vector2d vn;
-			if(i+1 < B->shape->vertices->size){
-				vn = *B->shape->vertices->get(i+1)+*B->position;
-			}else{
-				vn = *B->shape->vertices->get(0)+*B->position;
-			}
-			detected = exstar::DetectCollision::LinevsCircle(vc.x,vc.y,vn.x,vn.y,A->position->x,A->position->y,A->shape->r);
-			if(detected){
-				exstar::Vector2d face = vn - vc;
-				face = exstar::Vector2d(face.y,-face.x);
-				n = face;
-			}
-			if(detected) break;
-			if (((vc.y >= A->position->y && vn.y < A->position->y) || (vc.y < A->position->y && vn.y >= A->position->y)) &&
-         (A->position->x < (vn.x-vc.x)*(A->position->y-vc.y) / (vn.y-vc.y)+vc.x)) {
-            inside = !inside;
-    }
+		exstar::Vector2d point = *B->shape->vertices->get(i) + *B->position;
+		if((pow(A->position->x-closest.x,2) + pow(A->position->y-closest.y,2)) > (pow(A->position->x-point.x,2) + pow(A->position->y-point.y,2))){
+			closest = point;
+		}
+		int next = i+1;
+		if(next == B->shape->vertices->size) next = 0;
+		exstar::Vector2d vc = *B->shape->vertices->get(i)+*B->position;
+		exstar::Vector2d vn;
+		if(i+1 < B->shape->vertices->size){
+			vn = *B->shape->vertices->get(i+1)+*B->position;
+		}else{
+			vn = *B->shape->vertices->get(0)+*B->position;
+		}
+		detected = exstar::DetectCollision::LinevsCircle(vc.x,vc.y,vn.x,vn.y,A->position->x,A->position->y,A->shape->r);
+		if(detected){
+			exstar::Vector2d face = vn - vc;
+			n = exstar::Vector2d(face.y,-face.x);
+		}
+		if(detected) break;
+		if (((vc.y >= A->position->y && vn.y < A->position->y) || (vc.y < A->position->y && vn.y >= A->position->y)) &&
+      (A->position->x < (vn.x-vc.x)*(A->position->y-vc.y) / (vn.y-vc.y)+vc.x)) {
+         inside = !inside;
+ 		}
 	}
 	if(detected || inside){
 		if(inside){
 			collision->normal.set(exstar::Vector2d::normalize(n)*-1);
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
+			std::cout << collision->normal.y << std::endl;
 		}else{
 			collision->penetration = (((*A->position-closest)*-1) + A->shape->r).magnitude();
 			collision->normal.set(exstar::Vector2d::normalize(n));
+			std::cout << collision->normal.x << std::endl;
 		}
 		return true;
 	}
