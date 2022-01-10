@@ -150,74 +150,6 @@ void exstar::Graphics::drawShape(exstar::Shape shape,int x,int y){
 	glDrawArrays(GL_TRIANGLE_FAN,0,shape.getSize());
 	glBindVertexArray(0);
 }
-//-----------------------------DRAW LINE-----------------------------
-void exstar::Graphics::drawLine(int x1,int y1,int x2,int y2){
-	const char* vertexShaderSource = "#version 330 core\n"
-									 "layout (location = 0) in vec2 aPos;\n"
-									 "void main()\n"
-									 "{\n"
-									 "	gl_Position = vec4(aPos.x,aPos.y,0.0f,1.0f);\n"
-									 "}\0";
-	//Pass Graphics's color
-	float r,g,b,a;
-	r = exstar::Color::getFloat(color.r);
-	g = exstar::Color::getFloat(color.g);
-	b = exstar::Color::getFloat(color.b);
-	a = exstar::Color::getFloat(color.a);
-	//Create and Convert FragmentShaderSource to proper format
-	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
-	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
-	unsigned int shaderProgram,vertexShader,fragmentShader;
-	//Create and Compile VertexShader
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-	glCompileShader(vertexShader);
-	//Create and Compile FragmentShader
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
-	glCompileShader(fragmentShader);
-	//Create and Link ShaderProgram
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram,vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	glUseProgram(shaderProgram);
-	//Delete Shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	float vertices[] = {
-		(float)(x1 - pos->x)/size->width*2.0 - 1.0,//x1
-		-((float)(y1 - pos->y)/size->height*2.0 - 1.0),//y1
-		(float)(x2 - pos->x)/size->width*2.0 - 1.0,//x2
-		-((float)(y2 - pos->y)/size->height*2.0 - 1.0)//y2
-		};
-	unsigned int VBO, VAO;
-	//Prepare Buffers
-	glGenVertexArrays(1,&VAO);
-	glGenBuffers(1,&VBO);
-	//Bind Buffers
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER,VBO);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-	//Position attribute
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
-	glBindVertexArray(0);
-	glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
-	glDrawArrays(GL_LINES,0,2);
-	glBindVertexArray(0);
-	//Delete Buffers
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
-}
-void exstar::Graphics::drawLine(exstar::Point pos1,exstar::Point pos2){
-	drawLine(pos1.x,pos1.y,pos2.x,pos2.y);
-}
-void exstar::Graphics::drawLine(exstar::Point pos1,exstar::Vector2d offset){
-	drawLine(pos1.x,pos1.y,offset.getX(),offset.getY());
-}
 //-----------------------------DRAW PIXEL-----------------------------
 void exstar::Graphics::drawPixel(int x,int y){
 	//Transformations
@@ -302,7 +234,7 @@ void exstar::Graphics::loadEllipse(){
 void exstar::Graphics::loadPixel(){
 	Pixel = exstar::Graphics::Shader();
 	float vertices[] = {
-		0.0f,1.0f
+		0.0f,0.0f
 	};
 	glGenVertexArrays(1,Pixel.getVAO());
 	glGenBuffers(1,Pixel.getVBO());

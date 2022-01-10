@@ -154,26 +154,6 @@ namespace exstar{
 		
 		void drawShape(exstar::Shape shape,int x,int y);
 
-		/** Render a Line
-		 * 
-		 * @param x1 The first x location of the line
-		 * @param y1 The first y location of the line
-		 * @param x2 The second x location of the line
-		 * @param y2 The second y location of the line
-		*/
-		void drawLine(int x1,int y1,int x2,int y2);
-		/** Render a Line
-		 * 
-		 * @param pos1 The first end of the line
-		 * @param pos2 The second end of the line
-		*/
-		void drawLine(exstar::Point pos1,exstar::Point pos2);
-		/** Render a Line
-		 * 
-		 * @param pos1 The first end of the line
-		 * @param offset The offset from the pos1 location
-		*/
-		void drawLine(exstar::Point pos1,exstar::Vector2d offset);
 		/**
 		 * Render a Pixel
 		 * 
@@ -256,14 +236,12 @@ namespace exstar{
 		Shader Ellipse;
 		Shader Rect;
 		Shader Shape;
-		Shader Line;
 		Shader Pixel;
 		exstar::GLSL spriteShader;
 		exstar::GLSL shapeShader;
 		void loadData();
 		void loadRect();
 		void loadEllipse();
-		void loadLine();
 		void loadPixel();
 		void loadShape();
 		void loadSpriteShader();
