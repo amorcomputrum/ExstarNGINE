@@ -12,6 +12,7 @@ exstar::Graphics::Graphics(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};
 	size = new exstar::Dimension{width,height};
 	color = exstar::Color(0,0,0);
+	loadShaders();
 }
 void exstar::Graphics::resize(int width,int height){
 	size->width = width;
@@ -30,122 +31,25 @@ void exstar::Graphics::setColor(exstar::Color color){
 	this->color = exstar::Color(color.r,color.g,color.b,color.a);
 }
 //-----------------------------DRAW SPRITE-----------------------------
-void exstar::Graphics::drawSprite(exstar::Sprite* sprite,int x,int y){
-	const char* vertexShaderSource = "#version 330 core\n"
-									 "layout (location = 0) in vec3 aPos;\n"
-									 "layout (location = 1) in vec3 aColor;\n"
-									 "layout (location = 2) in vec2 aTexCoord;\n"
-									 "out vec3 ourColor;\n"
-									 "out vec2 TexCoord;\n"
-									 "uniform mat4 ModelMatrix;\n"
-									 "uniform mat4 projection;\n"
-									 "void main()\n"
-									 "{\n"
-									 "gl_Position = projection*(ModelMatrix*vec4(aPos,1.0f));\n"
-									 "ourColor = aColor;\n"
-									 "TexCoord = aTexCoord;\n"
-									 "}\0";
-	const char* fragmentShaderSource = "#version 330 core\n"
-									   "out vec4 FragColor;\n"
-									   "in vec3 ourColor;\n"
-									   "in vec2 TexCoord;\n"
-									   "uniform sampler2D ourTexture;\n"
-									   "void main()\n"
-									   "{\n"
-									   "	FragColor = texture(ourTexture, TexCoord);\n"
-									   "}\0";
-	//Create and Compile VertexShader
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-	glCompileShader(vertexShader);
-	//Create and Compile FragmentShader
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
-	glCompileShader(fragmentShader);
-	//Create and Link ShaderProgram
-	unsigned int shaderProgram;
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram,vertexShader);
-	glAttachShader(shaderProgram,fragmentShader);
-	glLinkProgram(shaderProgram);
-	//Delete Shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	//Define the sides of the sprite to load
-	float lx,ty,rx,by;
-	lx = sprite->getPos().x/sprite->getTextureSize().width;
-	ty = sprite->getPos().y/sprite->getTextureSize().height;
-	rx = (sprite->getPos().x + sprite->getCut().width)/sprite->getTextureSize().width;
-	by = (sprite->getPos().y + sprite->getCut().height)/sprite->getTextureSize().height;
-	//XYZ,RGB,ST
-	float vertices[] = {
-		1.0f,1.0f,0.0f,1.0f,0.0f,0.0f,rx,by,//top-right
-		1.0f,0.0f,0.0f,0.0f,1.0f,0.0f,rx,ty,//bottom-right
-		0.0f,0.0f,0.0f,0.0f,0.0f,1.0f,lx,ty,//bottom-left
-		0.0f,1.0f,0.0f,1.0f,1.0f,0.0f,lx,by//top-left
-		};
-
-	unsigned int indices[] = {0,1,3,1,2,3};
-	//Prepare Buffers
-	unsigned int VBO, VAO, EBO;
-	glGenVertexArrays(1,&VAO);
-	glGenBuffers(1,&VBO);
-	glGenBuffers(1,&EBO);
-	//Bind Buffers
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER,VBO);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
-    // position attribute
-	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,8*sizeof(float),(void*)0);
-	glEnableVertexAttribArray(0);
-    // color attribute
-	glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,8*sizeof(float),(void*)(3*sizeof(float)));
-	glEnableVertexAttribArray(1);
-    // texture coord attribute
-	glVertexAttribPointer(2,2,GL_FLOAT,GL_FALSE,8*sizeof(float),(void*)(6*sizeof(float)));
-	glEnableVertexAttribArray(2);
-	//Load Texture
-	unsigned int texture;
-	glGenTextures(1,&texture);
-	glBindTexture(GL_TEXTURE_2D,texture);
-    // set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-    //Load Sprite according to its type(RGB,RGBA)
-	if(sprite->getType() == 3){
-		glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,sprite->getTextureWidth(),sprite->getTextureHeight(),0,GL_RGB,GL_UNSIGNED_BYTE,sprite->getImage());
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}else{
-		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,sprite->getTextureWidth(),sprite->getTextureHeight(),0,GL_RGBA,GL_UNSIGNED_BYTE,sprite->getImage());
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
+void exstar::Graphics::drawSprite(exstar::Sprite sprite,int x,int y){
     //Transformations
 	glm::mat4 projection;
 	projection = glm::ortho((int)pos->x + 0.0f,(float)size->width + (int)pos->x,(float)size->height + (int)pos->y,0.0f + (int)pos->y,-1.0f,1.0f);
 	glm::mat4 ModelMatrix(1.0f);
 	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
-	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(sprite->getWidth(),sprite->getHeight(),1.0f));
+	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(sprite.getWidth(),sprite.getHeight(),1.0f));
 	//Draw Sprite and cleanup
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUseProgram(shaderProgram);
+	sprite.Bind();
+	spriteShader.use();
 	//Set uniforms
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
-	glBindVertexArray(VAO);
+	spriteShader.uniformMat4("ModelMatrix",ModelMatrix);
+	spriteShader.uniformMat4("projection",projection);
+	glBindVertexArray(sprite.getVAO());
 	glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
-	//Delete Buffers
-	glDeleteVertexArrays(1,&VAO);
-	glDeleteBuffers(1,&VBO);
-	glDeleteBuffers(1,&EBO);
-	glDeleteProgram(shaderProgram);
 }
-void exstar::Graphics::drawSprite(exstar::Sprite* sprite,exstar::Point pos){
+void exstar::Graphics::drawSprite(exstar::Sprite sprite,exstar::Point pos){
 	drawSprite(sprite,pos.x,pos.y);
 }
 //-----------------------------DRAW RECTANGLE-----------------------------
@@ -162,12 +66,12 @@ void exstar::Graphics::drawRect(int x,int y,int w,int h){
 	b = exstar::Color::getFloat(color.b);
 	a = exstar::Color::getFloat(color.a);
 	glm::vec4 Color(r,g,b,a);
-	this->filledRect->use();
+	this->filledRect.use();
 	//Set Uniforms
-	this->filledRect->uniformMat4("ModelMatrix",ModelMatrix);
-	this->filledRect->uniformMat4("projection",projection);
-	this->filledRect->uniformVec4("Color",Color);
-	glBindVertexArray(*this->filledRect->getVAO());
+	this->filledRect.uniformMat4("ModelMatrix",ModelMatrix);
+	this->filledRect.uniformMat4("projection",projection);
+	this->filledRect.uniformVec4("Color",Color);
+	glBindVertexArray(*this->filledRect.getVAO());
 	glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
@@ -194,12 +98,12 @@ void exstar::Graphics::drawEllipse(int x,int y,int w,int h){
 	b = exstar::Color::getFloat(color.b);
 	a = exstar::Color::getFloat(color.a);
 	glm::vec4 Color(r,g,b,a);
-	this->filledEllipse->use();
+	this->filledEllipse.use();
 	//Set Uniforms
-	this->filledEllipse->uniformMat4("ModelMatrix",ModelMatrix);
-	this->filledEllipse->uniformMat4("projection",projection);
-	this->filledEllipse->uniformVec4("Color",Color);
-	glBindVertexArray(*this->filledEllipse->getVAO());
+	this->filledEllipse.uniformMat4("ModelMatrix",ModelMatrix);
+	this->filledEllipse.uniformMat4("projection",projection);
+	this->filledEllipse.uniformVec4("Color",Color);
+	glBindVertexArray(*this->filledEllipse.getVAO());
 	glDrawElements(GL_TRIANGLES,1080,GL_UNSIGNED_INT,0);
 	glBindVertexArray(0);
 }
@@ -224,118 +128,26 @@ void exstar::Graphics::drawCircle(exstar::Vector2d pos,int r){
 	drawEllipse(pos.x,pos.y,r*2,r*2);
 }
 //-----------------------------DRAW SHAPE-----------------------------
-void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h){
-	const char* vertexShaderSource = "#version 330 core\n"
-									 "layout (location = 0) in vec2 aPos;\n"
-									 "layout (location = 1) in vec3 aColor;\n"
-									 "out VS_OUT {\n"
-									 "    vec3 color;\n"
-									 "} vs_out;\n"
-									 "uniform mat4 ModelMatrix;\n"
-									 "uniform mat4 projection;\n"
-									 "void main()\n"
-									 "{\n"
-									 "    vs_out.color = aColor;\n"
-									 "    gl_Position = projection*(ModelMatrix*vec4(aPos.x,aPos.y,0.0,1.0));\n"
-									 "}\0";
+void exstar::Graphics::drawShape(exstar::Shape shape,int x,int y){
+	//Transformations
+	glm::mat4 projection;
+	projection = glm::ortho((int)pos->x + 0.0f,(float)size->width + (int)pos->x,(float)size->height + (int)pos->y,0.0f + (int)pos->y,-1.0f,1.0f);
+	glm::mat4 ModelMatrix(1.0f);
+	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
 	float r,g,b,a;
 	r = exstar::Color::getFloat(color.r);
 	g = exstar::Color::getFloat(color.g);
 	b = exstar::Color::getFloat(color.b);
 	a = exstar::Color::getFloat(color.a);
-	//Create and Convert FragmentShaderSource to proper format
-	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
-	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
-
-	//Create and Convert GeometryShaderSource to proper format
-	std::string geometryShaderSourceRef = "#version 330 core\nlayout (points) in;\nlayout (triangle_strip, max_vertices = " +  std::to_string(shape->size+1) + ") out;\nin VS_OUT {\n\tvec3 color;\n} gs_in[];\nout vec3 fColor;\nvoid build_shape(vec4 position)\n{\n\tfColor = gs_in[0].color;\n";
-	for(int i = 0; i<=shape->size;i++){
-		if(i < shape->size){
-			if(shape->get(i).x >w || shape->get(i).x < 0){
-				throw exstar::exception("exstar::Graphics::drawShape - x position is out of range 0-" + std::to_string(w));
-			}else if(shape->get(i).y >h || shape->get(i).y < 0){
-				throw exstar::exception("exstar::Graphics::drawShape - y position is out of range 0-" + std::to_string(h));
-			}
-			geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(i).x)/size->width*2))+","+std::to_string((((((float)-shape->get(i).y)))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
-		}else{
-			if(shape->get(0).x >w || shape->get(0).x < 0){
-				throw exstar::exception("exstar::Graphics::drawShape - x position is out of range 0-" + std::to_string(w));
-			}else if(shape->get(0).y >h || shape->get(0).y < 0){
-				throw exstar::exception("exstar::Graphics::drawShape - y position is out of range 0-" + std::to_string(h));
-			}
-			geometryShaderSourceRef+="\tgl_Position = position + vec4("+std::to_string((((float)shape->get(0).x)/size->width*2))+","+std::to_string((((((float)-shape->get(0).y)))/(size->height)*2))+", 0.0,0.0);\n\tEmitVertex();\n";
-		}
-	}
-	geometryShaderSourceRef+="\tEndPrimitive();\n}\nvoid main() {\n\tbuild_shape(gl_in[0].gl_Position);\n}";
-	
-	const char* geometryShaderSource = geometryShaderSourceRef.c_str();
-	unsigned int vertexShader,fragmentShader,geometryShader,shaderProgram;
-	//Create and Compile VertexShader
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-	glCompileShader(vertexShader);
-	//Create and Compile FragmentShader
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
-	glCompileShader(fragmentShader);
-	//Create and Compile GeometryShader
-	geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
-	glShaderSource(geometryShader,1,&geometryShaderSource,NULL);
-	glCompileShader(geometryShader);
-	//Create and Link ShaderProgram
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram,vertexShader);
-	glAttachShader(shaderProgram,fragmentShader);
-	glAttachShader(shaderProgram,geometryShader);
-	glLinkProgram(shaderProgram);
-	//Delete Shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	glDeleteShader(geometryShader);
-	float points[] = {
-    	0.0f,  0.0f, 0.0f, 1.0f, 0.0f, // top-right
-		};  
-	unsigned int VBO, VAO;
-	//Prepare Buffers
-    glGenBuffers(1,&VBO);
-    glGenVertexArrays(1,&VAO);
-    //Bind Buffers
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER,VBO);
-    glBufferData(GL_ARRAY_BUFFER,sizeof(points), &points, GL_STATIC_DRAW);
-    //Position attribute
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,5*sizeof(float),(void*)0);
-    //Color attribute
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1,3,GL_FLOAT,GL_FALSE,5*sizeof(float),(void*)(2*sizeof(float)));
-    glBindVertexArray(0);
-    //Transformations
-	glm::mat4 projection;
-	projection = glm::ortho((int)pos->x + 0.0f,(float)size->width + (int)pos->x,(float)size->height + (int)pos->y,0.0f + (int)pos->y,-1.0f,1.0f);
-	glm::mat4 ModelMatrix(1.0f);
-	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
-	ModelMatrix = glm::scale(ModelMatrix,glm::vec3(w,h,1.0f));
-    glUseProgram(shaderProgram);
-    //Set Uniforms
-    glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"ModelMatrix"),1,GL_FALSE,glm::value_ptr(ModelMatrix));
-	glUniformMatrix4fv(glGetUniformLocation(shaderProgram,"projection"),1,GL_FALSE,glm::value_ptr(projection));
-    glBindVertexArray(VAO);
-    glDrawArrays(GL_POINTS,0,1);
-    glBindVertexArray(0);
-    //Delete Buffers
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
-}
-void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h){
-	drawShape(shape,pos.x,pos.y,w,h);
-}
-void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,exstar::Dimension size){
-	drawShape(shape,pos.x,pos.y,size.width,size.height);
-}
-void exstar::Graphics::drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size){
-	drawShape(shape,x,y,size.width,size.height);
+	glm::vec4 Color(r,g,b,a);
+	shapeShader.use();
+	//Set uniforms
+	shapeShader.uniformMat4("ModelMatrix",ModelMatrix);
+	shapeShader.uniformMat4("projection",projection);
+	shapeShader.uniformVec4("Color",Color);
+	glBindVertexArray(*shape.getVAO());
+	glDrawArrays(GL_TRIANGLE_FAN,0,shape.getSize()+1);
+	glBindVertexArray(0);
 }
 //-----------------------------DRAW LINE-----------------------------
 void exstar::Graphics::drawLine(int x1,int y1,int x2,int y2){
@@ -484,12 +296,18 @@ int exstar::Graphics::getY(){
 	return pos->y;
 }
 
+void exstar::Graphics::loadShaders(){
+	loadFilledRectShader();
+	loadFilledEllipseShader();
+	loadSpriteShader();
+	loadShapeShader();
+}
 
-void exstar::Graphics::loadFilledRect(){
+void exstar::Graphics::loadFilledRectShader(){
 	const std::string file =
 	#include "Exstar/Graphics/Shaders/Rect.glsl"
 	;
-	filledRect = new exstar::GLSL(file);
+	filledRect = exstar::GLSL(file);
 	float vertices[] = {
 		1.0f,1.0f,0.0f,
 		1.0f,0.0f,0.0f,
@@ -499,29 +317,25 @@ void exstar::Graphics::loadFilledRect(){
 
 	unsigned int indices[] = {0,1,3,1,2,3};
 	//Prepare Buffers
-	glGenVertexArrays(1,this->filledRect->getVAO());
-	glGenBuffers(1,this->filledRect->getVBO());
-	glGenBuffers(1,this->filledRect->getEBO());
+	glGenVertexArrays(1,this->filledRect.getVAO());
+	glGenBuffers(1,this->filledRect.getVBO());
+	glGenBuffers(1,this->filledRect.getEBO());
 	//Bind Buffers
-	glBindVertexArray(*this->filledRect->getVAO());
-	glBindBuffer(GL_ARRAY_BUFFER,*this->filledRect->getVBO());
+	glBindVertexArray(*this->filledRect.getVAO());
+	glBindBuffer(GL_ARRAY_BUFFER,*this->filledRect.getVBO());
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,*this->filledRect->getEBO());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,*this->filledRect.getEBO());
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
 	//Position attributes
 	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);
 	glEnableVertexAttribArray(0);	
 }
 
-void exstar::Graphics::loadOutlinedRect(){
-
-}
-
-void exstar::Graphics::loadFilledEllipse(){
+void exstar::Graphics::loadFilledEllipseShader(){
 	const std::string file = 
 	#include "Exstar/Graphics/Shaders/Ellipse.glsl"
 	;
-	filledEllipse = new exstar::GLSL(file);
+	filledEllipse = exstar::GLSL(file);
 	//360 degrees of verticies to render
 	float vertices[] = {
 		0.5,0.5,0.0,1.0,0.5,0.0,0.7702,0.9207,0.0,0.2919,0.9546,0.0,0.005,0.5706,0.0,0.1732,0.1216,0.0,0.6418,0.0205,0.0,0.9801,0.3603,0.0,0.877,0.8285,0.0,0.4272,0.9947,0.0,0.0444,0.7061,0.0,0.0805,0.228,0.0,0.5022,0.0,0.0,0.9219,0.2317,0.0,0.9537,0.7101,0.0,0.5684,0.9953,0.0,0.1202,0.8251,0.0,0.0212,0.356,0.0,0.3624,0.0193,0.0,0.8302,0.1245,0.0,0.9944,0.5749,0.0,0.704,0.9565,0.0,0.2261,0.9183,0.0,0.0,0.4956,0.0,0.2336,0.0769,0.0,0.7121,0.0472,0.0,0.9956,0.4338,0.0,0.8235,0.8813,
@@ -551,14 +365,14 @@ void exstar::Graphics::loadFilledEllipse(){
 		0,356,355,0,357,356,0,358,357,0,359,358,0,360,359,0,360,1
 		};
 	//Prepare Buffers
-	glGenVertexArrays(1,this->filledEllipse->getVAO());
-	glGenBuffers(1,this->filledEllipse->getVBO());
-	glGenBuffers(1,this->filledEllipse->getEBO());
+	glGenVertexArrays(1,this->filledEllipse.getVAO());
+	glGenBuffers(1,this->filledEllipse.getVBO());
+	glGenBuffers(1,this->filledEllipse.getEBO());
 	//Bind Buffers
-	glBindVertexArray(*this->filledEllipse->getVAO());
-	glBindBuffer(GL_ARRAY_BUFFER,*this->filledEllipse->getVBO());
+	glBindVertexArray(*this->filledEllipse.getVAO());
+	glBindBuffer(GL_ARRAY_BUFFER,*this->filledEllipse.getVBO());
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,*this->filledEllipse->getEBO());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,*this->filledEllipse.getEBO());
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
 	//Position attribute
 	glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,3*sizeof(float),(void*)0);
@@ -566,6 +380,16 @@ void exstar::Graphics::loadFilledEllipse(){
 	glBindVertexArray(0);
 }
 
-void exstar::Graphics::loadOutlinedEllipse(){
+void exstar::Graphics::loadSpriteShader(){
+	const std::string file =
+	#include "Exstar/Graphics/Shaders/Sprite.glsl"
+	;
+	this->spriteShader = exstar::GLSL(file);
+}
 
+void exstar::Graphics::loadShapeShader(){
+	const std::string file =
+	#include "Exstar/Graphics/Shaders/Shape.glsl"
+	;
+	this->shapeShader = exstar::GLSL(file);
 }

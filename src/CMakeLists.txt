@@ -5,6 +5,7 @@ set(EXSTAR_SOURCE_FILES
 		Generation/Line.cpp
 		Generation/PerlinNoise.cpp
 		Graphics/Graphics.cpp
+		Graphics/Shape.cpp
 		Graphics/Shaders/GLSL.cpp
 		Graphics/Color.cpp
 		Graphics/Sprite/Image_Handler.cpp
@@ -16,7 +17,6 @@ set(EXSTAR_SOURCE_FILES
 		Physics/DetectCollision.cpp
 		Physics/Engine.cpp
 		Physics/EngineCollision.cpp
-		Physics/Shape.cpp
 		Physics/TestCollider.cpp
 		Utils/Exception.cpp
 		Utils/Math.cpp

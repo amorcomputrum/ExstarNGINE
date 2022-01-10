@@ -6,6 +6,7 @@
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Graphics/Shaders/GLSL.h"
+#include "Exstar/Graphics/Shape.h"
 namespace exstar{
 	class Graphics
 	{
@@ -56,14 +57,14 @@ namespace exstar{
 		 * @param x The x position to render the sprite at (top-left)
 		 * @param y The y position to render the sprite at (top-left)
 		*/
-		void drawSprite(exstar::Sprite* sprite,int x,int y);
+		void drawSprite(exstar::Sprite sprite,int x,int y);
 		/**
 		 * Render a Sprite to the screen
 		 * 
 		 * @param sprite The sprite to render to the screen
 		 * @param pos The (x,y) postion to render the sprite to (top-left)
 		*/
-		void drawSprite(exstar::Sprite* sprite,exstar::Point pos);
+		void drawSprite(exstar::Sprite sprite,exstar::Point pos);
 		/**
 		 * Render a Rectangle to the screen
 		 * 
@@ -150,51 +151,9 @@ namespace exstar{
 		 * @param r The radius of the circle to render
 		*/
 		void drawCircle(exstar::Vector2d pos,int r);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param x The left x location of the canvas to draw on
-		 * @param y The top y location of the canvas to draw on
-		 * @param w The width of the canvas to draw on
-		 * @param h The height of the canvas to draw on
-		*/
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param x The left x location of the canvas to draw on
-		 * @param y The top y location of the canvas to draw on
-		 * @param w The width of the canvas to draw on
-		 * @param h The height of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param pos The top-left location of the canvas
-		 * @param w The width of the canvas to draw on
-		 * @param h The height of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param pos The top-left location of the canvas
-		 * @param size The size of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,exstar::Dimension size);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param x The left x location of the canvas to draw on
-		 * @param y The top y location of the canvas to draw on
-		 * @param size The size of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size);
+		
+		void drawShape(exstar::Shape shape,int x,int y);
+
 		/** Render a Line
 		 * 
 		 * @param x1 The first x location of the line
@@ -272,11 +231,6 @@ namespace exstar{
 		*/
 		int getY();
 
-		void loadFilledRect();
-		void loadOutlinedRect();
-		void loadFilledEllipse();
-		void loadOutlinedEllipse();
-
 
 	private:
 		/**
@@ -292,8 +246,21 @@ namespace exstar{
 		*/
 		exstar::Color color;
 
-		exstar::GLSL* filledEllipse;
-		exstar::GLSL* filledRect;
+		exstar::GLSL filledEllipse;
+		exstar::GLSL filledRect;
+		exstar::GLSL filledShape;
+		exstar::GLSL spriteShader;
+		exstar::GLSL shapeShader;
+		void loadShaders();
+		void loadFilledRectShader();
+		//void loadOutlinedRect();
+		void loadFilledEllipseShader();
+		//void loadOutlinedEllipse();
+		void loadFilledShapeShader();
+		//void loadOutlinedShapeShader();
+		void loadLineShader();
+		void loadSpriteShader();
+		void loadShapeShader();
 
 	};
 };

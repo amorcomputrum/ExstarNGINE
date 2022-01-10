@@ -11,6 +11,7 @@ namespace exstar{
 		enum Shader{
 			VERTEX,FRAGMENT,GEOMETRY
 		};
+		GLSL();
 		GLSL(const std::string shader);
 		void use();
 		void uniformMat4(const char* uniform,glm::mat4& matrix);

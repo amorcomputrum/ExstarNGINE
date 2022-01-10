@@ -14,7 +14,6 @@ namespace exstar{
 			ArrayList<exstar::Vector2d*>* vertices;
 			float r;
 			int w,h;
-			void rotate(double radians);
 		};
 	}
 }

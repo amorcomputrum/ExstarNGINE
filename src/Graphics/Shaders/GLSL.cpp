@@ -1,7 +1,11 @@
+#include <vector>
+
 #include "Exstar/exstarglad/gl.h"
 
 #include "Exstar/Utils/Exception.h"
 #include "Exstar/Graphics/Shaders/GLSL.h"
+
+exstar::GLSL::GLSL(){}
 
 exstar::GLSL::GLSL(const std::string shader){
 	CompileShaders(shader);

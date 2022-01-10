@@ -8,8 +8,8 @@
 exstar::Window::Window(int width,int height,std::string title){
 	size = exstar::Dimension{width,height};
 	this->title = title;
-	g = new exstar::Graphics(size.width,size.height,0,0);
 	initGL();
+	g = new exstar::Graphics(size.width,size.height,0,0);
 }
 //Virtual Functions
 void exstar::Window::render(exstar::Graphics g){}
@@ -21,8 +21,7 @@ void exstar::Window::mousePressed(MouseEvent* event){}
 void exstar::Window::mouseReleased(MouseEvent* event){}
 void exstar::Window::run(){
 	//show window
-	glfwMakeContextCurrent(window);
-	gladLoadGL(glfwGetProcAddress);
+	glfwShowWindow(window);
 	//set interval for buffer
 	glfwSwapInterval(1);
 	//allow Forward compatability with opengl
@@ -32,9 +31,6 @@ void exstar::Window::run(){
 	glEnable(GL_MULTISAMPLE); 
 	//create clock
 	clock = new exstar::Clock(); 
-	//Load Primatives
-	g->loadFilledRect();
-	g->loadFilledEllipse();
 	//begin loop
 	update();
 	//close when loop closes
@@ -178,6 +174,9 @@ void exstar::Window::initGL(){
 	//Set WindowBackground Color
 	setBackgroundColor(exstar::Color::Black);
 
+	glfwMakeContextCurrent(window);
+	gladLoadGL(glfwGetProcAddress);
+	glfwHideWindow(window);
 }
 
 void exstar::Window::update(){

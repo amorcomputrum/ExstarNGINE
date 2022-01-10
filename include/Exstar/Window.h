@@ -20,7 +20,6 @@ extern "C"{
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Key.h"
 #include "Exstar/Clock.h"
-#include "Exstar/Physics/Engine.h"
 
 namespace exstar{
 	class Window {

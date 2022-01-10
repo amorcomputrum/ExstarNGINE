@@ -2,10 +2,12 @@
 #define EXSTAR_SPRITE_H
 #include "Exstar/Utils/Dimension.h"
 #include "Exstar/Utils/Point.h"
+#include "Exstar/Graphics/Shaders/GLSL.h"
 namespace exstar{
 	class Sprite
 	{
 	public:
+		Sprite();
 		/**
 		 * Initialize the Sprite
 		 * 
@@ -40,24 +42,6 @@ namespace exstar{
 		*/
 		void resize(exstar::Dimension size);
 		/**
-		 * Return the Sprite's native width
-		 * 
-		 * @return width of the Sprite's native size
-		*/
-		int getTextureWidth();
-		/**
-		 * Return the Sprite's native height
-		 * 
-		 * @return height of the Sprite's native size
-		*/
-		int getTextureHeight();
-		/**
-		 * Return the Sprite's native size
-		 * 
-		 * @return native size of the Sprite
-		*/
-		exstar::Dimension getTextureSize();
-		/**
 		 * Return the Sprite's rendered width
 		 * 
 		 * @return width of the Sprite's rendered size
@@ -75,32 +59,8 @@ namespace exstar{
 		 * @return rendered size of the Sprite
 		*/
 		exstar::Dimension getSize();
-		/**
-		 * Return the dimensions of the area to render from file
-		 * 
-		 * @return dimensions of the area to render from file
-		*/
-		exstar::Dimension getCut();
-		/**
-		 * The location to render from the file
-		 * 
-		 * @returns The x,y of the area to render
-		*/
-		exstar::Point getPos();
-		/**
-		 * Return the type of the image
-		 * 
-		 * @return int value of the images type
-		 * 3=RGB
-		 * 4=RGBA
-		*/
-		int getType();
-		/**
-		 * Return the Image data
-		 * 
-		 * @return The Image data of the Sprite
-		*/
-		unsigned char * getImage();
+		unsigned int getVAO();
+		void Bind();
 	private:
 		/**
 		 * The location of the image in the Image_Handler.h
@@ -133,6 +93,8 @@ namespace exstar{
 		 * The x,y on the Sprite
 		*/
 		exstar::Point Pos;
+		unsigned int texture,VAO,VBO,EBO;
+		void loadShader();
 
 	};
 };

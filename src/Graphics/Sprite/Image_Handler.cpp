@@ -14,7 +14,7 @@ int* exstar::addImage(const char* file){
 	int w,h,type;
 	unsigned char * data = stbi_load(file,&w,&h,&type,0);
 	if(!data){
-		throw exstar::exception("Image is not in RGBA format");
+		throw exstar::exception("exstar::addImage - Image failed to load");
 	}
 	//check if already in images
 	for(int i = 0; i < exstar::images->size; i++){
