@@ -29,8 +29,6 @@ void exstar::Window::run(){
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_SAMPLES, 2);
 	glEnable(GL_MULTISAMPLE); 
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	//create clock
 	clock = new exstar::Clock(); 
 	//begin loop
