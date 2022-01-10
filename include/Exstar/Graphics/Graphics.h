@@ -245,22 +245,30 @@ namespace exstar{
 		 * The Color to use when rendering primative shapes
 		*/
 		exstar::Color color;
-
-		exstar::GLSL filledEllipse;
-		exstar::GLSL filledRect;
-		exstar::GLSL filledShape;
+		class Shader{
+		public:
+			Shader();
+			unsigned int* getVAO();
+			unsigned int* getVBO();
+		private:
+			unsigned int VAO,VBO;
+		};
+		Shader Ellipse;
+		Shader Rect;
+		Shader Shape;
+		Shader Line;
+		Shader Pixel;
 		exstar::GLSL spriteShader;
 		exstar::GLSL shapeShader;
-		void loadShaders();
-		void loadFilledRectShader();
-		//void loadOutlinedRect();
-		void loadFilledEllipseShader();
-		//void loadOutlinedEllipse();
-		void loadFilledShapeShader();
-		//void loadOutlinedShapeShader();
-		void loadLineShader();
+		void loadData();
+		void loadRect();
+		void loadEllipse();
+		void loadLine();
+		void loadPixel();
+		void loadShape();
 		void loadSpriteShader();
 		void loadShapeShader();
+
 
 	};
 };
