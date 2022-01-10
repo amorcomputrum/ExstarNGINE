@@ -324,8 +324,8 @@ void exstar::Graphics::loadEllipse(){
 	Ellipse = exstar::Graphics::Shader();
 	float vertices[720];
 	for(int i = 0;i < 720;i+=2){
-		vertices[i] = 0.0f + (cos(i*(3.14*2)/360)*1.0);
-		vertices[i+1] = 0.0f + (sin(i*(3.14*2)/360)*1.0);
+		vertices[i] = 0.0f + (cos(i/2*(3.14*2)/360)*1.0);
+		vertices[i+1] = 0.0f + (sin(i/2*(3.14*2)/360)*1.0);
 	}
 	glGenVertexArrays(1,Ellipse.getVAO());
 	glGenBuffers(1,Ellipse.getVBO());
