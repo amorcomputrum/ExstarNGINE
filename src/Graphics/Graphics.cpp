@@ -220,63 +220,25 @@ void exstar::Graphics::drawLine(exstar::Point pos1,exstar::Vector2d offset){
 }
 //-----------------------------DRAW PIXEL-----------------------------
 void exstar::Graphics::drawPixel(int x,int y){
-	const char* vertexShaderSource = "#version 330 core\n"
-									 "layout (location = 0) in vec2 aPos;\n"
-									 "void main()\n"
-									 "{\n"
-									 "	gl_Position = vec4(aPos.x,aPos.y,0.0f,1.0f);\n"
-									 "}\0";
-	//Pass Graphics's color
+	//Transformations
+	glm::mat4 projection;
+	projection = glm::ortho((int)pos->x + 0.0f,(float)size->width + (int)pos->x,(float)size->height + (int)pos->y,0.0f + (int)pos->y,-1.0f,1.0f);
+	glm::mat4 ModelMatrix(1.0f);
+	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(x,y,0.0f));
 	float r,g,b,a;
 	r = exstar::Color::getFloat(color.r);
 	g = exstar::Color::getFloat(color.g);
 	b = exstar::Color::getFloat(color.b);
 	a = exstar::Color::getFloat(color.a);
-	//Create and Convert FragmentShaderSource to proper format
-	std::string fragmentShaderSourceString = "#version 330 core\nout vec4 FragColor;\nvoid main()\n{\n\tFragColor = vec4("+std::to_string(r)+","+std::to_string(g)+","+std::to_string(b)+","+std::to_string(a)+");\n}\0";
-	const char* fragmentShaderSource = fragmentShaderSourceString.c_str();
-	unsigned int shaderProgram,vertexShader,fragmentShader;
-	//Create and Compile VertexShader
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader,1,&vertexShaderSource,NULL);
-	glCompileShader(vertexShader);
-	//Create and Compile FragmentShader
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader,1,&fragmentShaderSource,NULL);
-	glCompileShader(fragmentShader);
-	//Create and Link ShaderProgram
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram,vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	glUseProgram(shaderProgram);
-	//Delete Shaders
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
-	float vertices[] = {
-		(float)(x - pos->x)/size->width*2.0 - 1.0,//x
-		-((float)((y - 1) - pos->y)/size->height*2.0 - 1.0)//y
-		};
-	unsigned int VBO, VAO;
-	//Prepare Buffers
-	glGenVertexArrays(1,&VAO);
-	glGenBuffers(1,&VBO);
-	glBindVertexArray(VAO);
-	//Bind Buffers
-	glBindBuffer(GL_ARRAY_BUFFER,VBO);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
-	//Postion Attribute
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
-	glBindVertexArray(0);
-	glUseProgram(shaderProgram);
-	glBindVertexArray(VAO);
+	glm::vec4 Color(r,g,b,a);
+	shapeShader.use();
+	//Set uniforms
+	shapeShader.uniformMat4("ModelMatrix",ModelMatrix);
+	shapeShader.uniformMat4("projection",projection);
+	shapeShader.uniformVec4("Color",Color);
+	glBindVertexArray(*Pixel.getVAO());
 	glDrawArrays(GL_POINTS,0,1);
 	glBindVertexArray(0);
-	//Delete Buffers
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteProgram(shaderProgram);
 }
 void exstar::Graphics::drawPixel(exstar::Point pos){
 	drawPixel(pos.x,pos.y);
@@ -302,6 +264,7 @@ void exstar::Graphics::loadData(){
 	loadShapeShader();
 	loadRect();
 	loadEllipse();
+	loadPixel();
 }
 void exstar::Graphics::loadRect(){
 	Rect = exstar::Graphics::Shader();
@@ -332,6 +295,20 @@ void exstar::Graphics::loadEllipse(){
 
 	glBindVertexArray(*Ellipse.getVAO());
 	glBindBuffer(GL_ARRAY_BUFFER,*Ellipse.getVBO());
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
+	glEnableVertexAttribArray(0);
+}
+void exstar::Graphics::loadPixel(){
+	Pixel = exstar::Graphics::Shader();
+	float vertices[] = {
+		0.0f,1.0f
+	};
+	glGenVertexArrays(1,Pixel.getVAO());
+	glGenBuffers(1,Pixel.getVBO());
+
+	glBindVertexArray(*Pixel.getVAO());
+	glBindBuffer(GL_ARRAY_BUFFER,*Pixel.getVBO());
 	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
 	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
 	glEnableVertexAttribArray(0);
