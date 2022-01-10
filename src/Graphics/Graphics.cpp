@@ -105,10 +105,7 @@ void exstar::Graphics::drawEllipse(int x,int y,int w,int h){
 	this->shapeShader.uniformMat4("projection",projection);
 	this->shapeShader.uniformVec4("Color",Color);
 	glBindVertexArray(*Ellipse.getVAO());
-	glDrawArrays(GL_TRIANGLE_FAN,0,360);
-	ModelMatrix = glm::rotate(ModelMatrix,glm::radians(45.0f),glm::vec3(0.0f,0.0f,1.0f));
-	this->shapeShader.uniformMat4("ModelMatrix",ModelMatrix);
-	glDrawArrays(GL_TRIANGLE_FAN,0,360);
+	glDrawArrays(GL_TRIANGLE_FAN,0,720);
 	glBindVertexArray(0);
 }
 void exstar::Graphics::drawEllipse(exstar::Point pos, exstar::Dimension size){
@@ -325,12 +322,10 @@ void exstar::Graphics::loadRect(){
 }
 void exstar::Graphics::loadEllipse(){
 	Ellipse = exstar::Graphics::Shader();
-	float vertices[722];
-	vertices[0] = 0.0f;
-	vertices[1] = 0.0f;
-	for(int i = 2;i < 722;i+=2){
-		vertices[i] = 0.0f + (cos(i)*1.0);
-		vertices[i+1] = 0.0f + (sin(i)*1.0);
+	float vertices[720];
+	for(int i = 0;i < 720;i+=2){
+		vertices[i] = 0.0f + (cos(i*(3.14*2)/360)*1.0);
+		vertices[i+1] = 0.0f + (sin(i*(3.14*2)/360)*1.0);
 	}
 	glGenVertexArrays(1,Ellipse.getVAO());
 	glGenBuffers(1,Ellipse.getVBO());
