@@ -8,11 +8,11 @@
 exstar::Window::Window(int width,int height,std::string title){
 	size = exstar::Dimension{width,height};
 	this->title = title;
-	camera = new exstar::Camera(size.width,size.height,0,0);
 	initGL();
+	g = new exstar::Graphics(size.width,size.height,0,0);
 }
 //Virtual Functions
-void exstar::Window::render(exstar::Camera camera){}
+void exstar::Window::render(exstar::Graphics g){}
 void exstar::Window::Update(double deltaTime){}
 void exstar::Window::onResize(exstar::Dimension size){}
 void exstar::Window::keyPressed(int key){}
@@ -21,20 +21,16 @@ void exstar::Window::mousePressed(MouseEvent* event){}
 void exstar::Window::mouseReleased(MouseEvent* event){}
 void exstar::Window::run(){
 	//show window
-	glfwMakeContextCurrent(window);
-	gladLoadGL(glfwGetProcAddress);
+	glfwShowWindow(window);
 	//set interval for buffer
 	glfwSwapInterval(1);
 	//allow Forward compatability with opengl
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_SAMPLES, 2);
 	glEnable(GL_MULTISAMPLE); 
 	//create clock
 	clock = new exstar::Clock(); 
-	//Load Primatives
-	camera->loadFilledRect();
-	camera->loadFilledEllipse();
 	//begin loop
 	update();
 	//close when loop closes
@@ -99,16 +95,16 @@ void exstar::Window::setBackgroundColor(exstar::Color color){
 	backgroundColor[3] = exstar::Color::getFloat(color.a);
 }
 void exstar::Window::moveCamera(int x,int y){
-	camera->move(x,y);
+	g->move(x,y);
 }
 void exstar::Window::moveCamera(exstar::Vector2d distance){
-	camera->move(distance.x,distance.y);
+	g->move(distance.x,distance.y);
 }
 void exstar::Window::setCamera(int x,int y){
-	camera->set(x,y);
+	g->set(x,y);
 }
 void exstar::Window::setCamera(exstar::Point pos){
-	camera->set(pos.x,pos.y);
+	g->set(pos.x,pos.y);
 }
 std::string exstar::Window::getTitle(){
 	return title;
@@ -178,6 +174,9 @@ void exstar::Window::initGL(){
 	//Set WindowBackground Color
 	setBackgroundColor(exstar::Color::Black);
 
+	glfwMakeContextCurrent(window);
+	gladLoadGL(glfwGetProcAddress);
+	glfwHideWindow(window);
 }
 
 void exstar::Window::update(){
@@ -191,7 +190,7 @@ void exstar::Window::update(){
 		glClearColor((float)backgroundColor[0],(float)backgroundColor[1],(float)backgroundColor[2],(float)backgroundColor[3]);
 		glClear(GL_COLOR_BUFFER_BIT);
 		Update(this->deltaTime);
-		render((*camera));
+		render((*g));
 	    //display frame
 		glfwSwapBuffers(window);
 		while(glfwGetTime() < lastTime + 1.0/frameRate){
@@ -254,8 +253,8 @@ void exstar::Window::update(){
 				//add mouseEvent to copy
 				mouseEventsCopy->add(mouseEvents->get(mp));
 				//call mousePressed event
-				mouseEvents->get(mp)->pos.x+=camera->getX();
-				mouseEvents->get(mp)->pos.y+=camera->getY();
+				mouseEvents->get(mp)->pos.x+=g->getX();
+				mouseEvents->get(mp)->pos.y+=g->getY();
 				mousePressed(mouseEvents->get(mp));
 			}
 		}
@@ -282,11 +281,11 @@ void exstar::Window::update(){
 }
 void exstar::Window::resizeEvent(int width, int height){
 	if(adjustCameraOnResize){
-		//get difference in size, then adjust camera pos
+		//get difference in size, then adjust Camera pos
 		int diffx = size.width-width;
 		int diffy = size.height-height;
-		camera->move(diffx/2,diffy/2);
-		camera->resize(width,height);
+		g->move(diffx/2,diffy/2);
+		g->resize(width,height);
 	}
 	//Update size
 	size = exstar::Dimension{width,height};

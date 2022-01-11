@@ -1,16 +1,16 @@
 #include "Exstar/Physics/TestCollider.h"
 #include <iostream>
 
-exstar::TestCollider::TestCollider(){}
+exstar::physics::TestCollider::TestCollider(){}
 
-exstar::TestCollider::TestCollider(float w,float h,float x,float y){
+exstar::physics::TestCollider::TestCollider(float w,float h,float x,float y){
 	this->w = w;
 	this->h = h;
 	this->x = x;
 	this->y = y;
 }
 
-bool exstar::TestCollider::CheckCollision(exstar::TestCollider* t1,exstar::TestCollider* t2){
+bool exstar::physics::TestCollider::CheckCollision(exstar::physics::TestCollider* t1,exstar::physics::TestCollider* t2){
 	float x1 = t1->x;
 	float y1 = t1->y;
 	float w1 = t1->w;

@@ -5,9 +5,9 @@
 #include "Exstar/Utils/Math.h"
 #include "Exstar/Physics/DetectCollision.h"
 
-bool exstar::EngineCollision::AABBvsAABB(exstar::PCollision* collision){
-	exstar::Body* A = collision->A;
-	exstar::Body* B = collision->B;
+bool exstar::physics::EngineCollision::AABBvsAABB(exstar::physics::PCollision* collision){
+	exstar::physics::Body* A = collision->A;
+	exstar::physics::Body* B = collision->B;
 
 	exstar::Vector2d n = *collision->B->position - *collision->A->position;
 
@@ -41,10 +41,10 @@ bool exstar::EngineCollision::AABBvsAABB(exstar::PCollision* collision){
 	}
 	return false;
 }
-bool exstar::EngineCollision::AABBvsCircle(exstar::PCollision* collision){
-	exstar::Body* A;
-	exstar::Body* B;
-	if(collision->A->shape->id == exstar::Shape::ID::Circle){
+bool exstar::physics::EngineCollision::AABBvsCircle(exstar::physics::PCollision* collision){
+	exstar::physics::Body* A;
+	exstar::physics::Body* B;
+	if(collision->A->shape->id == exstar::physics::Shape::ID::Circle){
 		A = collision->B;
 		B = collision->A;
 	}else{
@@ -98,7 +98,7 @@ bool exstar::EngineCollision::AABBvsCircle(exstar::PCollision* collision){
 	return true;
 
 }
-bool exstar::EngineCollision::CirclevsCircle(exstar::PCollision* collision){
+bool exstar::physics::EngineCollision::CirclevsCircle(exstar::physics::PCollision* collision){
 	int r1 = collision->A->shape->r;
 	int r2 = collision->B->shape->r;
 	exstar::Vector2d n = *collision->B->position - *collision->A->position;
@@ -116,10 +116,10 @@ bool exstar::EngineCollision::CirclevsCircle(exstar::PCollision* collision){
 		collision->normal.set(1,0);
 	}
 }
-bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
-	exstar::Body* A;
-	exstar::Body* B;
-	if(collision->A->shape->id == exstar::Shape::ID::Circle){
+bool exstar::physics::EngineCollision::CirclevsPolygon(exstar::physics::PCollision* collision){
+	exstar::physics::Body* A;
+	exstar::physics::Body* B;
+	if(collision->A->shape->id == exstar::physics::Shape::ID::Circle){
 		A = collision->A;
 		B = collision->B;
 	}else{
@@ -131,30 +131,29 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	exstar::Vector2d closest = *B->shape->vertices->get(0) + *B->position;
 	exstar::Vector2d n;
 	for(int i = 0; i < B->shape->vertices->size;i++){
-			exstar::Vector2d point = *B->shape->vertices->get(i) + *B->position;
-			if((pow(A->position->x-closest.x,2) + pow(A->position->y-closest.y,2)) > (pow(A->position->x-point.x,2) + pow(A->position->y-point.y,2))){
-				closest = point;
-			}
-			int next = i+1;
-			if(next == B->shape->vertices->size) next = 0;
-			exstar::Vector2d vc = *B->shape->vertices->get(i)+*B->position;
-			exstar::Vector2d vn;
-			if(i+1 < B->shape->vertices->size){
-				vn = *B->shape->vertices->get(i+1)+*B->position;
-			}else{
-				vn = *B->shape->vertices->get(0)+*B->position;
-			}
-			detected = exstar::DetectCollision::LinevsCircle(vc.x,vc.y,vn.x,vn.y,A->position->x,A->position->y,A->shape->r);
-			if(detected){
-				exstar::Vector2d face = vn - vc;
-				face = exstar::Vector2d(face.y,-face.x);
-				n = face;
-			}
-			if(detected) break;
-			if (((vc.y >= A->position->y && vn.y < A->position->y) || (vc.y < A->position->y && vn.y >= A->position->y)) &&
-         (A->position->x < (vn.x-vc.x)*(A->position->y-vc.y) / (vn.y-vc.y)+vc.x)) {
-            inside = !inside;
-    }
+		exstar::Vector2d point = *B->shape->vertices->get(i) + *B->position;
+		if((pow(A->position->x-closest.x,2) + pow(A->position->y-closest.y,2)) > (pow(A->position->x-point.x,2) + pow(A->position->y-point.y,2))){
+			closest = point;
+		}
+		int next = i+1;
+		if(next == B->shape->vertices->size) next = 0;
+		exstar::Vector2d vc = *B->shape->vertices->get(i)+*B->position;
+		exstar::Vector2d vn;
+		if(i+1 < B->shape->vertices->size){
+			vn = *B->shape->vertices->get(i+1)+*B->position;
+		}else{
+			vn = *B->shape->vertices->get(0)+*B->position;
+		}
+		detected = exstar::physics::DetectCollision::LinevsCircle(vc.x,vc.y,vn.x,vn.y,A->position->x,A->position->y,A->shape->r);
+		if(detected){
+			exstar::Vector2d face = vn - vc;
+			n = exstar::Vector2d(face.y,-face.x);
+		}
+		if(detected) break;
+		if (((vc.y >= A->position->y && vn.y < A->position->y) || (vc.y < A->position->y && vn.y >= A->position->y)) &&
+      (A->position->x < (vn.x-vc.x)*(A->position->y-vc.y) / (vn.y-vc.y)+vc.x)) {
+         inside = !inside;
+ 		}
 	}
 	if(detected || inside){
 		if(inside){
@@ -168,9 +167,9 @@ bool exstar::EngineCollision::CirclevsPolygon(exstar::PCollision* collision){
 	}
 	return false;
 }
-bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){//from here
-	exstar::Body* A = collision->A;
-	exstar::Body* B = collision->B;
+bool exstar::physics::EngineCollision::PolygonvsPolygon(exstar::physics::PCollision* collision){//from here
+	exstar::physics::Body* A = collision->A;
+	exstar::physics::Body* B = collision->B;
 	exstar::Vector2d axis;
 	bool intersect = true;
 	for (int i = 0; i <  A->shape->vertices->size+B->shape->vertices->size; ++i){
@@ -224,7 +223,7 @@ bool exstar::EngineCollision::PolygonvsPolygon(exstar::PCollision* collision){//
 	return false;
 }
 
-float exstar::EngineCollision::IntervalDistance(exstar::Vector2d a,exstar::Vector2d b){
+float exstar::physics::EngineCollision::IntervalDistance(exstar::Vector2d a,exstar::Vector2d b){
 	if(a.x < b.x){
 		return b.x - a.y;
 	}else{

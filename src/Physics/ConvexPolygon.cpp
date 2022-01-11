@@ -1,14 +1,13 @@
 #include "Exstar/Physics/ConvexPolygon.h"
 
-exstar::ConvexPolygon::ConvexPolygon(){
+exstar::physics::ConvexPolygon::ConvexPolygon(){
 	vertices = new ArrayList<exstar::Vector2d*>();
-	this->id = exstar::Shape::ID::Polygon;
+	this->id = exstar::physics::Shape::ID::Polygon;
 }
-void exstar::ConvexPolygon::add(double x,double y){
-	vertices->add(new exstar::Vector2d(x,y));
-}
-void exstar::ConvexPolygon::add(ArrayList<exstar::Point>* verts){
-	for(int i = 0; i < verts->size;i++){
-		add(verts->get(i).x,verts->get(i).y);
+exstar::physics::ConvexPolygon::ConvexPolygon(exstar::Shape shape){
+	vertices = new ArrayList<exstar::Vector2d*>();
+	this->id = exstar::physics::Shape::ID::Polygon;
+	for(int i = 0; i < shape.getSize(); i++){
+		vertices->add(new exstar::Vector2d(shape.getVector(i).x,shape.getVector(i).y));
 	}
 }

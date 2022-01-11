@@ -1,6 +1,6 @@
 #include "Exstar/Physics/Circle.h"
 
-exstar::Circle::Circle(double r){
+exstar::physics::Circle::Circle(double r){
 	this->r = r;
-	this->id = exstar::Shape::ID::Circle;
+	this->id = exstar::physics::Shape::ID::Circle;
 }

@@ -1,45 +1,47 @@
-#ifndef EXSTAR_CAMERA_H
-#define EXSTAR_CAMERA_H
+#ifndef EXSTAR_Graphics_H
+#define EXSTAR_Graphics_H
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Graphics/Color.h"
 #include "Exstar/Graphics/Sprite/Sprite.h"
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Utils/ArrayList.h"
+#include "Exstar/Graphics/Shaders/GLSL.h"
+#include "Exstar/Graphics/Shape.h"
 namespace exstar{
-	class Camera
+	class Graphics
 	{
 	public:
 		/**
-		 * Initialize the Camera Object
+		 * Initialize the Graphics Object
 		 * 
 		 * @param width The width of the content to display
 		 * @param height The height of the content to display
-		 * @param x The x position for the top-left of the camera
-		 * @param y The y postion for the top-left of the camera
+		 * @param x The x position for the top-left of the Graphics
+		 * @param y The y postion for the top-left of the Graphics
 		 * 
-		 * If camera is placed at x=100 and width=100 then contents displayed
+		 * If Graphics is placed at x=100 and width=100 then contents displayed
 		 * will be from x=100 to x = 200
 		*/
-		Camera(int width,int height,int x,int y);
+		Graphics(int width,int height,int x,int y);
 		/**
-		 * Resize the view of the Camera
+		 * Resize the view of the Graphics
 		 * 
 		 * @param width The width of the content to display
 		 * @param height The height of the content to display
 		*/
 		void resize(int width,int height);
 		/**
-		 * Move the camera a distance
+		 * Move the Graphics a distance
 		 * 
-		 * @param x The distance to move the camera on the x-axis
-		 * @param y The distance to move the camera on the y-axis
+		 * @param x The distance to move the Graphics on the x-axis
+		 * @param y The distance to move the Graphics on the y-axis
 		*/
 		void move(int x,int y);
 		/**
-		 * Set the camera postion
+		 * Set the Graphics postion
 		 * 
-		 * @param x The x position to move the camera to
-		 * @param y The y position to move the camera to
+		 * @param x The x position to move the Graphics to
+		 * @param y The y position to move the Graphics to
 		*/
 		void set(int x,int y);
 		/**
@@ -55,14 +57,14 @@ namespace exstar{
 		 * @param x The x position to render the sprite at (top-left)
 		 * @param y The y position to render the sprite at (top-left)
 		*/
-		void drawSprite(exstar::Sprite* sprite,int x,int y);
+		void drawSprite(exstar::Sprite sprite,int x,int y);
 		/**
 		 * Render a Sprite to the screen
 		 * 
 		 * @param sprite The sprite to render to the screen
 		 * @param pos The (x,y) postion to render the sprite to (top-left)
 		*/
-		void drawSprite(exstar::Sprite* sprite,exstar::Point pos);
+		void drawSprite(exstar::Sprite sprite,exstar::Point pos);
 		/**
 		 * Render a Rectangle to the screen
 		 * 
@@ -149,71 +151,9 @@ namespace exstar{
 		 * @param r The radius of the circle to render
 		*/
 		void drawCircle(exstar::Vector2d pos,int r);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param x The left x location of the canvas to draw on
-		 * @param y The top y location of the canvas to draw on
-		 * @param w The width of the canvas to draw on
-		 * @param h The height of the canvas to draw on
-		*/
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param x The left x location of the canvas to draw on
-		 * @param y The top y location of the canvas to draw on
-		 * @param w The width of the canvas to draw on
-		 * @param h The height of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,int w,int h);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param pos The top-left location of the canvas
-		 * @param w The width of the canvas to draw on
-		 * @param h The height of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,int w,int h);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param pos The top-left location of the canvas
-		 * @param size The size of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,exstar::Point pos,exstar::Dimension size);
-		/**
-		 * Render a Custom Shape
-		 * 
-		 * @param shape The Verticies to render onto the defined canvas
-		 * @param x The left x location of the canvas to draw on
-		 * @param y The top y location of the canvas to draw on
-		 * @param size The size of the canvas to draw on
-		*/
-		void drawShape(exstar::ArrayList<exstar::Point>* shape,int x,int y,exstar::Dimension size);
-		/** Render a Line
-		 * 
-		 * @param x1 The first x location of the line
-		 * @param y1 The first y location of the line
-		 * @param x2 The second x location of the line
-		 * @param y2 The second y location of the line
-		*/
-		void drawLine(int x1,int y1,int x2,int y2);
-		/** Render a Line
-		 * 
-		 * @param pos1 The first end of the line
-		 * @param pos2 The second end of the line
-		*/
-		void drawLine(exstar::Point pos1,exstar::Point pos2);
-		/** Render a Line
-		 * 
-		 * @param pos1 The first end of the line
-		 * @param offset The offset from the pos1 location
-		*/
-		void drawLine(exstar::Point pos1,exstar::Vector2d offset);
+		
+		void drawShape(exstar::Shape shape,int x,int y);
+
 		/**
 		 * Render a Pixel
 		 * 
@@ -241,58 +181,72 @@ namespace exstar{
 		*/
 		exstar::Color getPixel(exstar::Point pos);
 		/**
-		 * Return the Size of the camera
+		 * Return the Size of the Graphics
 		 * 
-		 * @return exstar::Dimension of the size of the Camera
+		 * @return exstar::Dimension of the size of the Graphics
 		*/
 		exstar::Dimension getSize();
 		/**
-		 * Return the Width of the camera
+		 * Return the Width of the Graphics
 		 * 
-		 * @return int value of the width of the camera
+		 * @return int value of the width of the Graphics
 		*/
 		int getWidth();
 		/**
-		 * Return the Height of the camera
+		 * Return the Height of the Graphics
 		 * 
-		 * @return int value of the height of the camera
+		 * @return int value of the height of the Graphics
 		*/
 		int getHeight();
 		/**
-		 * Return the X postion of the camera
+		 * Return the X postion of the Graphics
 		 * 
-		 * @return int value of the x postion of the camera
+		 * @return int value of the x postion of the Graphics
 		*/
 		int getX();
 		/**
-		 * Return the Y postion of the camera
+		 * Return the Y postion of the Graphics
 		 * 
-		 * @return int value of the y postion of the camera
+		 * @return int value of the y postion of the Graphics
 		*/
 		int getY();
-
-		void loadFilledRect();
-		void loadOutlinedRect();
-		void loadFilledEllipse();
-		void loadOutlinedEllipse();
 
 
 	private:
 		/**
-		 * The Postion of the Camera
+		 * The Postion of the Graphics
 		*/
 		exstar::Point* pos;
 		/**
-		 * The Size of the Camera
+		 * The Size of the Graphics
 		*/
 		exstar::Dimension* size;
 		/**
 		 * The Color to use when rendering primative shapes
 		*/
 		exstar::Color color;
+		class Shader{
+		public:
+			Shader();
+			unsigned int* getVAO();
+			unsigned int* getVBO();
+		private:
+			unsigned int VAO,VBO;
+		};
+		Shader Ellipse;
+		Shader Rect;
+		Shader Shape;
+		Shader Pixel;
+		exstar::GLSL spriteShader;
+		exstar::GLSL shapeShader;
+		void loadData();
+		void loadRect();
+		void loadEllipse();
+		void loadPixel();
+		void loadShape();
+		void loadSpriteShader();
+		void loadShapeShader();
 
-		unsigned int filledEllipseProgram,filledEllipseVAO,filledEllipseVBO,filledEllipseEBO;
-		unsigned int filledRectProgram,filledRectVAO,filledRectVBO,filledRectEBO;
 
 	};
 };
