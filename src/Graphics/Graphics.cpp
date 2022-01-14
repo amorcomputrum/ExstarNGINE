@@ -12,7 +12,7 @@ exstar::Graphics::Graphics(int width,int height,int x,int y){
 	pos = new exstar::Point{x,y};
 	size = new exstar::Dimension{width,height};
 	color = exstar::Color(0,0,0);
-	loadData();
+	preRender();
 }
 void exstar::Graphics::resize(int width,int height){
 	size->width = width;
@@ -191,14 +191,14 @@ int exstar::Graphics::getY(){
 	return pos->y;
 }
 
-void exstar::Graphics::loadData(){
+void exstar::Graphics::preRender(){
 	loadSpriteShader();
 	loadShapeShader();
-	loadRect();
-	loadEllipse();
-	loadPixel();
+	renderRect();
+	renderEllipse();
+	renderPixel();
 }
-void exstar::Graphics::loadRect(){
+void exstar::Graphics::renderRect(){
 	Rect = exstar::Graphics::Shader();
 	float vertices[] = {
 		1.0f,1.0f,
@@ -215,7 +215,7 @@ void exstar::Graphics::loadRect(){
 	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
 	glEnableVertexAttribArray(0);
 }
-void exstar::Graphics::loadEllipse(){
+void exstar::Graphics::renderEllipse(){
 	Ellipse = exstar::Graphics::Shader();
 	float vertices[720];
 	for(int i = 0;i < 720;i+=2){
@@ -231,7 +231,7 @@ void exstar::Graphics::loadEllipse(){
 	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
 	glEnableVertexAttribArray(0);
 }
-void exstar::Graphics::loadPixel(){
+void exstar::Graphics::renderPixel(){
 	Pixel = exstar::Graphics::Shader();
 	float vertices[] = {
 		0.0f,0.0f

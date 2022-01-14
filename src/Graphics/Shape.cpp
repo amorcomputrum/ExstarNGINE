@@ -6,46 +6,58 @@
 exstar::Shape::Shape(){}
 
 void exstar::Shape::add(unsigned int x,unsigned int y){
-	points->add(exstar::Point{x,y});
-	if(points->size >= 3){
+	vertices->add(exstar::Point{x,y});
+	if(vertices->size >= 3){
 		loadShader();
 	}
 }
 
-void exstar::Shape::add(exstar::Vector2d point){
-	if(point.x < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
+void exstar::Shape::add(exstar::Vector2d vertex){
+	if(vertex.x < 0 || vertex.y < 0){
+		throw exstar::exception("exstar::Shape::add - Points cannot be negative")
 	}
-	if(point.y < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
-	}
-	points->add(exstar::Point{point.x,point.y});
+	add(vertex.x,vertex.y);
 }
 
-void exstar::Shape::add(exstar::Point point){
-	if(point.x < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
+void exstar::Shape::add(exstar::Point vertex){
+	if(vertex.x < 0 || vertex.y < 0){
+		throw exstar::exception("exstar::Shape::add - Points cannot be negative")
 	}
-	if(point.y < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
-	}
-	points->add(exstar::Point{point.x,point.y});
+	add(vertex.x,vertex.y);
 }
-
+void  exstar::Shape::remove(unsigned int x,unsigned int y){
+	int index = getIndex(x,y);
+	if(index != -1){
+		remove(index);
+	}
+}
+void  exstar::Shape::remove(exstar::Vector2d vertex){
+	remove(vertex.x,vertex.y);
+}
+void  exstar::Shape::remove(exstar::Point vertex){
+	remove(vertex.x,vertex.y);
+}
+void  exstar::Shape::remove(int i){
+	if(vertices->size == 3){
+		throw exstar::exception("exstar::Shape::remove - Cannot have less than 3 verties");
+	}
+	vertices->remove(i);
+	loadShader();
+}
 exstar::Vector2d exstar::Shape::getVector(int i){
-	return exstar::Vector2d(points->get(i).x,points->get(i).y);
+	return exstar::Vector2d(vertices->get(i).x,vertices->get(i).y);
 }
 
 exstar::Point exstar::Shape::getPoint(int i){
-	return exstar::Point{points->get(i).x,points->get(i).y};
+	return exstar::Point{vertices->get(i).x,vertices->get(i).y};
 }
 
 unsigned int exstar::Shape::getX(int i){
-	return points->get(i).x;
+	return vertices->get(i).x;
 }
 
 unsigned int exstar::Shape::getY(int i){
-	return points->get(i).y;
+	return vertices->get(i).y;
 }
 
 unsigned int* exstar::Shape::getVAO(){
@@ -53,20 +65,28 @@ unsigned int* exstar::Shape::getVAO(){
 }
 
 int exstar::Shape::getSize(){
-	return points->size;
+	return vertices->size;
 }
-
+int exstar::Shape::getIndex(unsigned int x,unsigned int y){
+	for(int i = 0; i < vertices->size; i++){
+		exstar::Point vertex = vertices->get(i);
+		if(vertex.x == x && vertex.y == y){
+			return i;
+		}
+	}
+	return -1;
+}
 void exstar::Shape::loadShader(){
-	if(points->size > 3){
+	if(vertices->size > 3){
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
 	}
-	float vertices[points->size*2];
+	float vertices[vertices->size*2];
 	int pos = 0;
-	for(int i = 0; i < points->size;i++){
-		vertices[pos] = points->get(i).x;
+	for(int i = 0; i < vertices->size;i++){
+		vertices[pos] = vertices->get(i).x;
 		pos++;
-		vertices[pos] = points->get(i).y;
+		vertices[pos] = vertices->get(i).y;
 		pos++;
 	}
 	glGenVertexArrays(1,&VAO);

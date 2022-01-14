@@ -239,15 +239,13 @@ namespace exstar{
 		Shader Pixel;
 		exstar::GLSL spriteShader;
 		exstar::GLSL shapeShader;
-		void loadData();
-		void loadRect();
-		void loadEllipse();
-		void loadPixel();
-		void loadShape();
+		void preRender();
+		void renderRect();
+		void renderEllipse();
+		void renderPixel();
+		void renderShape();
 		void loadSpriteShader();
 		void loadShapeShader();
-
-
 	};
 };
 #endif

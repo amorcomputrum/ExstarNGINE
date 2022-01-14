@@ -9,8 +9,12 @@ namespace exstar{
 	public:
 		Shape();
 		void add(unsigned int x,unsigned int y);
-		void add(exstar::Vector2d point);
-		void add(exstar::Point point);
+		void add(exstar::Vector2d vertex);
+		void add(exstar::Point vertex);
+		void remove(unsigned int x,unsigned int y);
+		void remove(exstar::Vector2d vertex);
+		void remove(exstar::Point vertex);
+		void remove(int i);
 		exstar::Vector2d getVector(int i);
 		exstar::Point getPoint(int i);
 		unsigned int getX(int i);
@@ -18,8 +22,9 @@ namespace exstar{
 		unsigned int* getVAO();
 		int getSize();
 	private:
-		exstar::ArrayList<exstar::Point>* points = new exstar::ArrayList<exstar::Point>;
+		exstar::ArrayList<exstar::Point>* vertices = new exstar::ArrayList<exstar::Point>;
 		unsigned int VAO,VBO;
+		int getIndex();
 		void loadShader();
 	};
 }
