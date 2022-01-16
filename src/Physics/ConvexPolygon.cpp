@@ -12,18 +12,18 @@ exstar::physics::ConvexPolygon::ConvexPolygon(exstar::Shape shape){
 		vertices->add(new exstar::Vector2d(shape.getVector(i).x,shape.getVector(i).y));
 	}
 }
-void exstar::physics::ConvexPolygon::add(int x,int y){
+void exstar::physics::ConvexPolygon::add(unsigned int x,unsigned int y){
 	vertices->add(new exstar::Vector2d(x,y));
 }
 void exstar::physics::ConvexPolygon::add(exstar::Vector2d vertex){
 	if(vertex.x < 0 || vertex.y < 0){
-		throw exstar::exception("exstar::physics::ConvexPolygon::add - Points cannot be negative")
+		throw exstar::exception("exstar::physics::ConvexPolygon::add - Points cannot be negative");
 	}
 	add(vertex.x,vertex.y);
 }
 void exstar::physics::ConvexPolygon::add(exstar::Point vertex){
 	if(vertex.x < 0 || vertex.y < 0){
-		throw exstar::exception("exstar::physics::ConvexPolygon::add - Points cannot be negative")
+		throw exstar::exception("exstar::physics::ConvexPolygon::add - Points cannot be negative");
 	}
 	add(vertex.x,vertex.y);
 }
@@ -54,7 +54,7 @@ exstar::Vector2d exstar::physics::ConvexPolygon::getVertex(int i){
 int  exstar::physics::ConvexPolygon::getIndex(unsigned int x,unsigned int y){
 	for(int i = 0; i < vertices->size; i++){
 		exstar::Vector2d* vertex = vertices->get(i);
-		if(vertex.x == x && vertex.y == y){
+		if(vertex->x == x && vertex->y == y){
 			return i;
 		}
 	}

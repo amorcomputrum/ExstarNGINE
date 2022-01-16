@@ -1,5 +1,4 @@
-#ifndef EXSTAR_BODY_H
-#define EXSTAR_BODY_H
+#pragma once
 #include "Exstar/Physics/Shape.h"
 #include "Exstar/Physics/Box.h"
 #include "Exstar/Physics/Circle.h"
@@ -29,4 +28,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

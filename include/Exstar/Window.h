@@ -1,5 +1,4 @@
-#ifndef EXSTAR_WINDOW_H
-#define EXSTAR_WINDOW_H
+#pragma once
 #define GLFW_INCLUDE_NONE
 #define STB_IMAGE_IMPLEMENTATION
 //include Dependencies
@@ -330,4 +329,3 @@ namespace exstar{
 	};
 
 }
-#endif

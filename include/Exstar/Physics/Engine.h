@@ -1,5 +1,4 @@
-#ifndef EXSTAR_ENGINE_H
-#define EXSTAR_ENGINE_H
+#pragma once
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Physics/PCollision.h"
 namespace exstar{
@@ -18,4 +17,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

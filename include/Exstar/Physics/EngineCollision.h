@@ -1,5 +1,4 @@
-#ifndef EXSTAR_ENGINECOLLISION_H
-#define EXSTAR_ENGINECOLLISION_H
+#pragma once
 #include "Exstar/Physics/PCollision.h"
 #include "Exstar/Utils/Vector2d.h"
 namespace exstar{\
@@ -15,4 +14,3 @@ namespace exstar{\
 		};
 	}
 }
-#endif

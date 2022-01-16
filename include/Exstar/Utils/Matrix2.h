@@ -1,5 +1,4 @@
-#ifndef EXSTAR_MATRIX2_H
-#define EXSTAR_MATRIX2_H
+#pragma once
 #include "Exstar/Utils/Vector2d.h"
 namespace exstar{
 	class Matrix2{
@@ -32,4 +31,3 @@ namespace exstar{
 		exstar::Matrix2 operator*(exstar::Matrix2 param);
 	};
 }
-#endif

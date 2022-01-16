@@ -1,5 +1,4 @@
-#ifndef EXSTAR_KEY_H
-#define EXSTAR_KEY_H
+#pragma once
 namespace exstar{
 	/**
 	 * Every key that is used
@@ -128,4 +127,3 @@ namespace exstar{
 	,MENU = 348
 	};
 };
-#endif

@@ -1,5 +1,4 @@
-#ifndef EXSTAR_MOUSEEVENT_H
-#define EXSTAR_MOUSEEVENT_H
+#pragma once
 #include "Exstar/Utils/Point.h"
 namespace exstar{
 	/**
@@ -19,4 +18,3 @@ namespace exstar{
 		Point pos;
 	};
 }
-#endif

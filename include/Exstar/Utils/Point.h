@@ -1,5 +1,4 @@
-#ifndef EXSTAR_POINT_H
-#define EXSTAR_POINT_H
+#pragma once
 #include "Exstar/Utils/Vector2d.h"
 namespace exstar{
 	/**
@@ -17,4 +16,3 @@ namespace exstar{
 	};
 
 }
-#endif

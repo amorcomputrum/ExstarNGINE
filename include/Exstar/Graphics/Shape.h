@@ -24,7 +24,7 @@ namespace exstar{
 	private:
 		exstar::ArrayList<exstar::Point>* vertices = new exstar::ArrayList<exstar::Point>;
 		unsigned int VAO,VBO;
-		int getIndex();
+		int getIndex(unsigned int x,unsigned int y);
 		void loadShader();
 	};
 }

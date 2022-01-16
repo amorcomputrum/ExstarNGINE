@@ -14,14 +14,14 @@ void exstar::Shape::add(unsigned int x,unsigned int y){
 
 void exstar::Shape::add(exstar::Vector2d vertex){
 	if(vertex.x < 0 || vertex.y < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative")
+		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
 	}
 	add(vertex.x,vertex.y);
 }
 
 void exstar::Shape::add(exstar::Point vertex){
 	if(vertex.x < 0 || vertex.y < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative")
+		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
 	}
 	add(vertex.x,vertex.y);
 }
@@ -81,12 +81,12 @@ void exstar::Shape::loadShader(){
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
 	}
-	float vertices[vertices->size*2];
+	float vertex[vertices->size*2];
 	int pos = 0;
 	for(int i = 0; i < vertices->size;i++){
-		vertices[pos] = vertices->get(i).x;
+		vertex[pos] = vertices->get(i).x;
 		pos++;
-		vertices[pos] = vertices->get(i).y;
+		vertex[pos] = vertices->get(i).y;
 		pos++;
 	}
 	glGenVertexArrays(1,&VAO);
@@ -94,7 +94,7 @@ void exstar::Shape::loadShader(){
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ARRAY_BUFFER,VBO);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER,sizeof(vertex),vertex,GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
 	glEnableVertexAttribArray(0);

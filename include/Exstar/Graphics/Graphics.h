@@ -1,5 +1,4 @@
-#ifndef EXSTAR_Graphics_H
-#define EXSTAR_Graphics_H
+#pragma once
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Graphics/Color.h"
 #include "Exstar/Graphics/Sprite/Sprite.h"
@@ -248,4 +247,3 @@ namespace exstar{
 		void loadShapeShader();
 	};
 };
-#endif

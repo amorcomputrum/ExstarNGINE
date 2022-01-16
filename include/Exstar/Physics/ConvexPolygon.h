@@ -1,5 +1,4 @@
-#ifndef EXSTAR_CONVEXPOLYGON_H
-#define EXSTAR_CONVEXPOLYGON_H
+#pragma once
 #include "Exstar/Physics/Shape.h"
 #include "Exstar/Graphics/Shape.h"
 #include "Exstar/Utils/Point.h"
@@ -23,4 +22,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

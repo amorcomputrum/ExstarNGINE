@@ -1,5 +1,4 @@
-#ifndef EXSTAR_TESTCOLLIDER_H
-#define EXSTAR_TESTCOLLIDER_H
+#pragma once
 #include "Exstar/Utils/Vector2d.h"
 namespace exstar{
 	namespace physics{
@@ -12,4 +11,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

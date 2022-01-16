@@ -1,5 +1,4 @@
-#ifndef EXSTAR_DetectCollision_H
-#define EXSTAR_DetectCollision_H
+#pragma once
 #include "Exstar/Utils/Vector2d.h"
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Utils/ArrayList.h"
@@ -33,4 +32,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef EXSTAR_MATH_H
-#define EXSTAR_MATH_H
+#pragma once
 #include <cmath>
 #include <stdlib.h>
 #include "Exstar/Utils/Vector2d.h"
@@ -38,4 +37,3 @@ namespace exstar{
 	*/
 	int Random(int min,int max);
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef EXSTAR_COLOR_H
-#define EXSTAR_COLOR_H
+#pragma once
 namespace exstar{
 	class Color{
 	public:
@@ -53,4 +52,3 @@ namespace exstar{
 		}
 	};
 }
-#endif

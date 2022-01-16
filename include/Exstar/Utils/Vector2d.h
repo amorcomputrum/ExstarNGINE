@@ -1,5 +1,4 @@
-#ifndef EXSTAR_VECTOR2D_H
-#define EXSTAR_VECTOR2D_H
+#pragma once
 namespace exstar{
 	class Vector2d{
 	public:
@@ -198,4 +197,3 @@ namespace exstar{
 		static exstar::Vector2d normalize(exstar::Vector2d vec);
 	};
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef EXSTAR_ARRAYLIST_H
-#define EXSTAR_ARRAYLIST_H
+#pragma once
 #include "vector"
 #include "ostream"
 #include <iostream>
@@ -71,4 +70,3 @@ namespace exstar{
 		std::vector<T> data;
 	};
 };
-#endif

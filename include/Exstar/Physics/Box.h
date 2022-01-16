@@ -1,6 +1,4 @@
-#ifndef EXSTAR_BOX_H
-#define EXSTAR_BOX_H
-
+#pragma once
 #include "Exstar/Physics/Shape.h"
 
 namespace exstar{
@@ -11,4 +9,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

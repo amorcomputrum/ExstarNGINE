@@ -1,5 +1,4 @@
-#ifndef EXSTAR_SPRITE_H
-#define EXSTAR_SPRITE_H
+#pragma once
 #include "Exstar/Utils/Dimension.h"
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Graphics/Shaders/GLSL.h"
@@ -98,4 +97,3 @@ namespace exstar{
 
 	};
 };
-#endif

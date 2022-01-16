@@ -1,5 +1,4 @@
-#ifndef EXSTAR_SHAPE_H
-#define EXSTAR_SHAPE_H
+#pragma once
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Utils/Vector2d.h"
 
@@ -17,4 +16,3 @@ namespace exstar{
 		};
 	}
 }
-#endif
