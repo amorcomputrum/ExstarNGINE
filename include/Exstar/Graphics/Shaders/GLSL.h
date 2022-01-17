@@ -1,5 +1,4 @@
-#ifndef EXSTAR_GRAPHICS_SHADERS_GLSL_H
-#define EXSTAR_GRAPHICS_SHADERS_GLSL_H
+#pragma once
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -12,18 +11,17 @@ namespace exstar{
 			VERTEX,FRAGMENT,GEOMETRY
 		};
 		GLSL();
-		GLSL(const std::string shader);
+		GLSL(const std::string SHADER);
 		void use();
-		void uniformMat4(const char* uniform,glm::mat4& matrix);
-		void uniformVec4(const char* uniform,glm::vec4& vector);
+		void uniformMat4(const char* uniform, glm::mat4& matrix);
+		void uniformVec4(const char* uniform, glm::vec4& vector);
 		unsigned int* getProgram();
 		unsigned int* getVAO();
 		unsigned int* getVBO();
 		unsigned int* getEBO();
 	private:
 		unsigned int VBO,VAO,EBO,Program;
-		void CompileShaders(const std::string shader);
-		std::string loadShader(const std::string file,exstar::GLSL::Shader type);
+		void CompileShaders(const std::string SHADER);
+		std::string loadShader(const std::string FILE, exstar::GLSL::Shader type);
 	};
 }
-#endif

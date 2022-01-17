@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Exstar/Utils/ArrayList.h"
+
 namespace exstar{
 	/**
 	 * The images data
@@ -12,11 +14,11 @@ namespace exstar{
 	/**
 	 * Add an image to the images ArrayList
 	 * 
-	 * @param file The file to load
+	 * @param File The File to load
 	 * 
-	 * @return The index,width, and height of the file
+	 * @return The index,width, and height of the File
 	*/
-	int* addImage(const char* file);
+	int* addImage(const char* File);
 	/**
 	 * Removes an image from the images ArrayList
 	 * 

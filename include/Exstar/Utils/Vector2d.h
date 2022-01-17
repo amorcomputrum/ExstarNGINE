@@ -13,7 +13,7 @@ namespace exstar{
 		 * @param x Sets the value of x
 		 * @param y Sets the value of y
 		*/
-		Vector2d(double x,double y);
+		Vector2d(double x, double y);
 		/** 
 		 * Returns the magnitude of the Vector
 		 * @return The value of C (a^2 + b^2 = C^2)
@@ -25,16 +25,12 @@ namespace exstar{
 		*/
 		float sqrMagnitude();
 		/**
-		 * Normalize vector
-		*/
-		void normalize();
-		/**
 		 * Set the Values of the 2dVector
 		 * 
 		 * @param x The x value to set the vector to
 		 * @param y The y value to set the vector to
 		*/
-		void set(double x,double y);
+		void set(double x, double y);
 
 		/**
 		 * Set the Values of the 2dVector
@@ -168,7 +164,7 @@ namespace exstar{
 		 * 
 		 * @returns float of the DotProduct
 		*/
-		static float dot(exstar::Vector2d vec1,exstar::Vector2d vec2);
+		static float dot(exstar::Vector2d vec1, exstar::Vector2d vec2);
 		/**
 		 * Returns the scalar of 2 vectors
 		 * 
@@ -177,7 +173,7 @@ namespace exstar{
 		 * 
 		 * @returns Returns the scalar of 2 vectors
 		*/
-		static float cross(exstar::Vector2d vec1,exstar::Vector2d vec2);
+		static float cross(exstar::Vector2d vec1, exstar::Vector2d vec2);
 		/**
 		 * Returns the Vector of a vector and scalar
 		 * 
@@ -186,7 +182,7 @@ namespace exstar{
 		 * 
 		 * @returns Returns the Vector of a vector and scalar
 		*/
-		static exstar::Vector2d cross(exstar::Vector2d vec1,float s);
+		static exstar::Vector2d cross(exstar::Vector2d vec1, float s);
 		/**
 		 * Returns The Normalized Vector
 		 * 

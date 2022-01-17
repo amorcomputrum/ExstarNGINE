@@ -1,7 +1,9 @@
 #pragma once
+
+#include "Exstar/Graphics/Shaders/GLSL.h"
 #include "Exstar/Utils/Dimension.h"
 #include "Exstar/Utils/Point.h"
-#include "Exstar/Graphics/Shaders/GLSL.h"
+
 namespace exstar{
 	class Sprite
 	{
@@ -10,19 +12,19 @@ namespace exstar{
 		/**
 		 * Initialize the Sprite
 		 * 
-		 * @param file The location of the sprite to load
+		 * @param FILE The location of the sprite to load
 		*/
-		Sprite(const char* file);
+		Sprite(const char* FILE);
 		/**
 		 * Initialize the Sprite
 		 * 
-		 * @param file The location of the sprite to load
+		 * @param FILE The location of the sprite to load
 		 * @param x The x location of the sprite to render(This is for rendering only part of a sprite from the file)
 		 * @param y The y location of the sprite to render(This is for rendering only part of a sprite from the file)
-		 * @param w The width of the area to render from the file
-		 * @param h The height of the area to render from the file
+		 * @param w The width of the area to render from the FILE
+		 * @param h The height of the area to render from the FILE
 		*/
-		Sprite(const char* file,int x,int y,int w,int h);
+		Sprite(const char* FILE, int x, int y, int w, int h);
 		/**
 		 * Destruct the Inialized Sprite
 		*/
@@ -33,7 +35,7 @@ namespace exstar{
 		 * @param width The width of the rendered Sprite
 		 * @param height The height of the rendered Sprite
 		*/
-		void resize(int width,int height);
+		void resize(int width, int height);
 		/**
 		 * Change the size of the rendered Sprite when an exstar::Camera renders it
 		 * 
@@ -74,7 +76,7 @@ namespace exstar{
 		/**
 		 * The location of the sprite to load
 		*/
-		const char* file;
+		const char* FILE;
 		/**
 		 * The native size of the Sprite
 		*/

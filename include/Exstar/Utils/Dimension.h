@@ -1,4 +1,5 @@
 #pragma once
+
 namespace exstar{
 	/**
 	 * Dimension is the 2d Dimensional values

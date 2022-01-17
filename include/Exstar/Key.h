@@ -1,4 +1,5 @@
 #pragma once
+
 namespace exstar{
 	/**
 	 * Every key that is used
