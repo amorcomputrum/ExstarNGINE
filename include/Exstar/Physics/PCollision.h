@@ -1,6 +1,7 @@
-#ifndef EXSTAR_PCOLLISION_H
-#define EXSTAR_PCOLLISION_H
+#pragma once
+
 #include "Exstar/Physics/Body.h"
+
 namespace exstar{
 	namespace physics{
 		struct PCollision{
@@ -11,4 +12,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

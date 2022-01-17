@@ -1,8 +1,9 @@
-#ifndef EXSTAR_ARRAYLIST_H
-#define EXSTAR_ARRAYLIST_H
-#include "vector"
-#include "ostream"
+#pragma once
+
+#include <vector>
+#include <ostream>
 #include <iostream>
+
 namespace exstar{
 	template<class T>
 	class ArrayList
@@ -36,7 +37,7 @@ namespace exstar{
 		 * 
 		 * i will become equal to n
 		*/
-		void replace(int i,T n){
+		void replace(int i, T n){
 			this->exstar::ArrayList<T>::data[i] = n;
 		}
 		/**
@@ -47,7 +48,7 @@ namespace exstar{
 		 * i will be removed from the list and size will decrement
 		*/
 		void remove(int i){
-			this->exstar::ArrayList<T>::data.erase(this->data.begin()+i);
+			this->exstar::ArrayList<T>::data.erase(this->data.begin() + i);
 			size--;
 		}
 		/** 
@@ -71,4 +72,3 @@ namespace exstar{
 		std::vector<T> data;
 	};
 };
-#endif

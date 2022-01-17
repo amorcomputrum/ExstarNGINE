@@ -1,7 +1,8 @@
-#ifndef EXSTAR_CLOCK_H
-#define EXSTAR_CLOCK_H
+#pragma once
+
 #include <chrono>
 #include <time.h>
+
 namespace exstar{
 	class Clock
 	{
@@ -23,4 +24,3 @@ namespace exstar{
 		
 	};
 }
-#endif

@@ -1,11 +1,12 @@
-#ifndef EXSTAR_MATRIX2_H
-#define EXSTAR_MATRIX2_H
+#pragma once
+
 #include "Exstar/Utils/Vector2d.h"
+
 namespace exstar{
 	class Matrix2{
 	public:
 		float m00,m01,m10,m11;
-		Matrix2(float m00,float m01,float m10,float m11);
+		Matrix2(float m00, float m01, float m10, float m11);
 		/**
 		 * Create from angle in radian
 		 * 
@@ -32,4 +33,3 @@ namespace exstar{
 		exstar::Matrix2 operator*(exstar::Matrix2 param);
 	};
 }
-#endif

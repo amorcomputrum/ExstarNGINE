@@ -1,5 +1,5 @@
-#ifndef EXSTAR_CIRCLE_H
-#define EXSTAR_CIRCLE_H
+#pragma once
+
 #include "Exstar/Physics/Shape.h"
 
 namespace exstar{
@@ -10,4 +10,3 @@ namespace exstar{
 		};
 	}
 }
-#endif

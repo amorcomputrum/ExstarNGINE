@@ -1,12 +1,13 @@
 #include "Exstar/exstarglad/gl.h"
 
-#include "Exstar/Graphics/Shape.h"
 #include "Exstar/Utils/Exception.h"
+
+#include "Exstar/Graphics/Shape.h"
 
 exstar::Shape::Shape(){}
 
-void exstar::Shape::add(unsigned int x,unsigned int y){
-	vertices->add(exstar::Point{x,y});
+void exstar::Shape::add(unsigned int x, unsigned int y){
+	vertices->add(exstar::Point{x, y});
 	if(vertices->size >= 3){
 		loadShader();
 	}
@@ -14,30 +15,30 @@ void exstar::Shape::add(unsigned int x,unsigned int y){
 
 void exstar::Shape::add(exstar::Vector2d vertex){
 	if(vertex.x < 0 || vertex.y < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative")
+		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
 	}
-	add(vertex.x,vertex.y);
+	add(vertex.x, vertex.y);
 }
 
 void exstar::Shape::add(exstar::Point vertex){
 	if(vertex.x < 0 || vertex.y < 0){
-		throw exstar::exception("exstar::Shape::add - Points cannot be negative")
+		throw exstar::exception("exstar::Shape::add - Points cannot be negative");
 	}
-	add(vertex.x,vertex.y);
+	add(vertex.x, vertex.y);
 }
-void  exstar::Shape::remove(unsigned int x,unsigned int y){
-	int index = getIndex(x,y);
+void exstar::Shape::remove(unsigned int x, unsigned int y){
+	int index = getIndex(x, y);
 	if(index != -1){
 		remove(index);
 	}
 }
-void  exstar::Shape::remove(exstar::Vector2d vertex){
-	remove(vertex.x,vertex.y);
+void exstar::Shape::remove(exstar::Vector2d vertex){
+	remove(vertex.x, vertex.y);
 }
-void  exstar::Shape::remove(exstar::Point vertex){
-	remove(vertex.x,vertex.y);
+void exstar::Shape::remove(exstar::Point vertex){
+	remove(vertex.x, vertex.y);
 }
-void  exstar::Shape::remove(int i){
+void exstar::Shape::remove(int i){
 	if(vertices->size == 3){
 		throw exstar::exception("exstar::Shape::remove - Cannot have less than 3 verties");
 	}
@@ -45,11 +46,11 @@ void  exstar::Shape::remove(int i){
 	loadShader();
 }
 exstar::Vector2d exstar::Shape::getVector(int i){
-	return exstar::Vector2d(vertices->get(i).x,vertices->get(i).y);
+	return exstar::Vector2d(vertices->get(i).x, vertices->get(i).y);
 }
 
 exstar::Point exstar::Shape::getPoint(int i){
-	return exstar::Point{vertices->get(i).x,vertices->get(i).y};
+	return exstar::Point{   vertices->get(i).x, vertices->get(i).y};
 }
 
 unsigned int exstar::Shape::getX(int i){
@@ -67,7 +68,7 @@ unsigned int* exstar::Shape::getVAO(){
 int exstar::Shape::getSize(){
 	return vertices->size;
 }
-int exstar::Shape::getIndex(unsigned int x,unsigned int y){
+int exstar::Shape::getIndex(unsigned int x, unsigned int y){
 	for(int i = 0; i < vertices->size; i++){
 		exstar::Point vertex = vertices->get(i);
 		if(vertex.x == x && vertex.y == y){
@@ -81,22 +82,22 @@ void exstar::Shape::loadShader(){
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
 	}
-	float vertices[vertices->size*2];
+	float vertex[vertices->size*2];
 	int pos = 0;
 	for(int i = 0; i < vertices->size;i++){
-		vertices[pos] = vertices->get(i).x;
+		vertex[pos] = vertices->get(i).x;
 		pos++;
-		vertices[pos] = vertices->get(i).y;
+		vertex[pos] = vertices->get(i).y;
 		pos++;
 	}
-	glGenVertexArrays(1,&VAO);
-	glGenBuffers(1,&VBO);
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
 
 	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER,VBO);
-	glBufferData(GL_ARRAY_BUFFER,sizeof(vertices),vertices,GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex), vertex, GL_STATIC_DRAW);
 
-	glVertexAttribPointer(0,2,GL_FLOAT,GL_FALSE,2*sizeof(float),(void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2*sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 
 	glBindVertexArray(0);

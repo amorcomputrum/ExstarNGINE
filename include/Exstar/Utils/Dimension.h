@@ -1,5 +1,5 @@
-#ifndef EXSTAR_DIMENSION_H
-#define EXSTAR_DIMENSION_H
+#pragma once
+
 namespace exstar{
 	/**
 	 * Dimension is the 2d Dimensional values
@@ -16,4 +16,3 @@ namespace exstar{
 		int height;	
 	};
 }
-#endif

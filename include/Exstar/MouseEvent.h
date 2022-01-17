@@ -1,6 +1,7 @@
-#ifndef EXSTAR_MOUSEEVENT_H
-#define EXSTAR_MOUSEEVENT_H
+#pragma once
+
 #include "Exstar/Utils/Point.h"
+
 namespace exstar{
 	/**
 	 * MouseEvent is a struct that stores what button was used and where it happened
@@ -19,4 +20,3 @@ namespace exstar{
 		Point pos;
 	};
 }
-#endif

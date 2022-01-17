@@ -1,11 +1,11 @@
-#ifndef EXSTAR_WINDOW_H
-#define EXSTAR_WINDOW_H
+#pragma once
+
 #define GLFW_INCLUDE_NONE
 #define STB_IMAGE_IMPLEMENTATION
+
 //include Dependencies
-extern "C"{
-	#include "GLFW/glfw3.h"
-}
+#include "GLFW/glfw3.h"
+
 
 #include <iostream>
 #include <chrono>
@@ -15,11 +15,12 @@ extern "C"{
 	#include <unistd.h>
 #endif
 
-#include "Exstar/MouseEvent.h"
+
 #include "Exstar/Graphics/Graphics.h"
 #include "Exstar/Utils/Vector2d.h"
-#include "Exstar/Key.h"
 #include "Exstar/Clock.h"
+#include "Exstar/Key.h"
+#include "Exstar/MouseEvent.h"
 
 namespace exstar{
 	class Window {
@@ -31,7 +32,7 @@ namespace exstar{
 		 * @param height The height of the window to display
 		 * @param title The title of the window to display
 		*/
-		Window(int width,int height,std::string title);
+		Window(int width, int height, std::string title);
 		//-------------Virtual Functions-------------
 		/**
 		 * Function that renders to display
@@ -108,7 +109,7 @@ namespace exstar{
 		 * @param maxW The maximum width the window can have
 		 * @param maxHThe maximum height the window can have 
 		*/
-		void setSizeLimits(int minW,int minH,int maxW,int maxH);
+		void setSizeLimits(int minW, int minH, int maxW, int maxH);
 		/**
 		 * Set the size of the window
 		 * 
@@ -135,7 +136,7 @@ namespace exstar{
 		 * @param g Green Color 0-255
 		 * @param b Black Color 0-255
 		*/
-		void setBackgroundColor(double r,double g,double b);
+		void setBackgroundColor(double r, double g, double b);
 		/**
 		 * Sets the Background Color of the window
 		 * 
@@ -144,7 +145,7 @@ namespace exstar{
 		 * @param b Black Color 0-255
 		 * @param a Alpha Color 0-255
 		*/
-		void setBackgroundColor(double r,double g,double b,double a);
+		void setBackgroundColor(double r, double g, double b, double a);
 		/**
 		 * Sets the Background Color of the window
 		 * 
@@ -157,7 +158,7 @@ namespace exstar{
 		 * @param x The distance to move on the x-axis
 		 * @param y The distance to move on the y-axis
 		*/
-		void moveCamera(int x,int y);
+		void moveCamera(int x, int y);
 		/**
 		 * Moves the Camera
 		 * 
@@ -170,7 +171,7 @@ namespace exstar{
 		 * @param x The x position to set the Camera to
 		 * @param y The y position to set the Camera to
 		*/
-		void setCamera(int x,int y);
+		void setCamera(int x, int y);
 		/**
 		 * Sets the Position of the Camera
 		 * 
@@ -322,7 +323,7 @@ namespace exstar{
 		/**
 		 * Used when OpenGL has a mouse event
 		*/
-		static void mouse_callback(GLFWwindow* window,int button,int action,int mods);
+		static void mouse_callback(GLFWwindow* window, int button, int action, int mods);
 		/**
 		 * Used when OpenGL has a key event
 		*/
@@ -330,4 +331,3 @@ namespace exstar{
 	};
 
 }
-#endif

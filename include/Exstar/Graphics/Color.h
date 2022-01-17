@@ -1,5 +1,5 @@
-#ifndef EXSTAR_COLOR_H
-#define EXSTAR_COLOR_H
+#pragma once
+
 namespace exstar{
 	class Color{
 	public:
@@ -31,7 +31,7 @@ namespace exstar{
 		 * @param g The Green Value on the RGB/RGBA scale
 		 * @param b The Blue Value on the RGB/RGBA scale
 		*/
-		Color(int r,int g,int b);
+		Color(int r, int g, int b);
 		/**
 		 * Initialize Color
 		 * 
@@ -40,7 +40,7 @@ namespace exstar{
 		 * @param b The Blue Value on the RGB/RGBA scale
 		 * @param a The Alpha Value on the RGB/RGBA scale
 		*/
-		Color(int r,int g,int b,int a);
+		Color(int r, int g, int b, int a);
 		/**
 		 * Return the Float value of a color
 		 * 
@@ -48,9 +48,6 @@ namespace exstar{
 		 * 
 		 * @return The 0-1 value of the color
 		*/
-		static float getFloat(int color){
-			return (float)(color/255.0);
-		}
+		static float getFloat(int color);
 	};
 }
-#endif
