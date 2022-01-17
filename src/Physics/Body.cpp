@@ -5,12 +5,13 @@
 
 exstar::physics::Body::Body(){}
 
-exstar::physics::Body::Body(exstar::Vector2d position, float restitution, int mass, exstar::physics::Shape* shape, std::string id){
+exstar::physics::Body::Body(exstar::Vector2d position, float restitution, int mass, exstar::physics::Shape* shape, std::string id, bool hasGravity){
 	this->position    = new exstar::Vector2d(position.x, position.y);
 	this->velocity    = new exstar::Vector2d(0.0, 0.0);
 	this->restitution = restitution;
 	this->mass        = mass;
 	this->id          = id;
+	this->hasGravity  = hasGravity;
 	if(mass == 0){
 		inv_mass = 0.0;
 	}else{
@@ -29,12 +30,13 @@ exstar::physics::Body::Body(exstar::Vector2d position, float restitution, int ma
 	updateCollider();
 }
 
-exstar::physics::Body::Body(exstar::Vector2d position, exstar::Vector2d velocity, float restitution, int mass, exstar::physics::Shape* shape, std::string id){
+exstar::physics::Body::Body(exstar::Vector2d position, exstar::Vector2d velocity, float restitution, int mass, exstar::physics::Shape* shape, std::string id, bool hasGravity){
 	this->position    = new exstar::Vector2d(position.x, position.y);
 	this->velocity    = new exstar::Vector2d(velocity.x, velocity.y);
 	this->restitution = restitution;
 	this->mass        = mass;
 	this->id          = id;
+	this->hasGravity  = hasGravity;
 	if(mass == 0){
 		inv_mass = 0.0;
 	}else{
@@ -54,6 +56,7 @@ exstar::physics::Body::Body(exstar::Vector2d position, exstar::Vector2d velocity
 }
 
 void exstar::physics::Body::Update(double deltaTime){
+	*velocity += exstar::physics::Engine::GRAVITY;
 	*position += *velocity*deltaTime;
 	*position += *force*deltaTime;
 	updateCollider();

@@ -24,14 +24,16 @@ namespace exstar{
 			exstar::Vector2d* force;
 			std::string id;
 			Body();
-			Body(exstar::Vector2d position, float restitution, int mass, exstar::physics::Shape* shape, std::string id);
-			Body(exstar::Vector2d position, exstar::Vector2d velocity, float restitution, int mass, exstar::physics::Shape* shape, std::string id);
+			Body(exstar::Vector2d position, float restitution, int mass, exstar::physics::Shape* shape, std::string id, bool hasGravity);
+			Body(exstar::Vector2d position, exstar::Vector2d velocity, float restitution, int mass, exstar::physics::Shape* shape, std::string id, bool hasGravity);
 			void Update(double deltaTime);
 			void setLayer(int layer);
 			void setFriction(float staticF, float dynamicF);
 			void applyForce(exstar::Vector2d force);
 			void applyForce(int x, int y);
 			void updateCollider();
+		private:
+			bool hasGravity;
 		};
 	}
 }
