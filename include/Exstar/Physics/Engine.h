@@ -7,6 +7,7 @@ namespace exstar{
 	namespace physics{
 		class Engine{
 		public:
+			static exstar::Vector2d GRAVITY;
 			ArrayList<exstar::physics::Body*>* bodies = new ArrayList<exstar::physics::Body*>();;
 			exstar::physics::PCollision collision;
 			Engine();

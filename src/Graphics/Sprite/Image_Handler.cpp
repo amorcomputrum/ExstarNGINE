@@ -6,7 +6,7 @@
 #include "Exstar/Graphics/Sprite/Image_Handler.h"
 
 //Define Variables
-exstar::ArrayList<unsigned char *>* exstar::images = new exstar::ArrayList<unsigned char *>();
+exstar::ArrayList<unsigned char *>* exstar::images  = new exstar::ArrayList<unsigned char *>();
 exstar::ArrayList<int>*             exstar::numUses = new exstar::ArrayList<int>();
 
 int* exstar::addImage(const char* FILE){
