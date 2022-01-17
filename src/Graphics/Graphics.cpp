@@ -213,7 +213,9 @@ void exstar::Graphics::drawPixel(exstar::Point pos){
 }
 
 exstar::Color exstar::Graphics::getPixel(int x, int y){
-
+	struct{ GLubyte red, green, blue; } pixel;
+	glReadPixels(x, y, 1, 1, GL_RGB, GL_UNSIGNED_BYTE, &pixel);
+	return exstar::Color(pixel.red*255.0,pixel.green*255.0,pixel.blue*255);
 }
 
 exstar::Color exstar::Graphics::getPixel(exstar::Point pos){
