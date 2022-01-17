@@ -12,7 +12,7 @@
 
 <h3 align="center">Compiling</h3>
 <p align="center">
-	<span style="font-weight: bold;">G++: </span> Use -lExstar -lglfw when compiling<br><br>
+	<span style="font-weight: bold;">G++: </span> Use -lExstar when compiling<br><br>
 </p>
 <hr noshade>
 <h3 align="center">
@@ -54,7 +54,7 @@ public:
 </pre>
 <p>Compiling with G++</p>
 <pre><code>
-g++ main.cpp -o app -lExstar -lglfw -Iinclude/
+g++ main.cpp -o app -lExstar -Iinclude/
 </code>
 </pre>
 
