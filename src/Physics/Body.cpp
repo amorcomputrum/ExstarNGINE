@@ -1,6 +1,8 @@
 #include <float.h>
 #include <math.h>
 
+#include "Exstar/Physics/Engine.h"
+
 #include "Exstar/Physics/Body.h"
 
 exstar::physics::Body::Body(){}
@@ -56,7 +58,9 @@ exstar::physics::Body::Body(exstar::Vector2d position, exstar::Vector2d velocity
 }
 
 void exstar::physics::Body::Update(double deltaTime){
-	*velocity += exstar::physics::Engine::GRAVITY;
+	if(hasGravity){
+		*velocity += exstar::physics::Engine::GRAVITY;
+	}
 	*position += *velocity*deltaTime;
 	*position += *force*deltaTime;
 	updateCollider();

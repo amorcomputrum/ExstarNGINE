@@ -3,6 +3,8 @@
 #include "Exstar/Utils/Exception.h"
 #include "Exstar/Utils/Math.h"
 
+exstar::Vector2d exstar::physics::Engine::GRAVITY = exstar::Vector2d(0,9.81);
+
 exstar::physics::Engine::Engine(){}
 
 void exstar::physics::Engine::add(exstar::physics::Body* body){
