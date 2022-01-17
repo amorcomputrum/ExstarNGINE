@@ -25,8 +25,8 @@ void exstar::physics::Engine::Update(double deltaTime){
 		exstar::physics::Body* current = bodies->get(a);
 		//Check Broadphase Collision
 		for(int b = 0; b < bodies->size; b++){
-			if(a != b){
-				exstar::physics::Body* looking = bodies->get(b);
+			exstar::physics::Body* looking = bodies->get(b);
+			if(a != b && current->layer == looking->layer){
 				if(exstar::physics::TestCollider::CheckCollision(&current->testCollider, &looking->testCollider)){
 					//Possible Collision
 					collision = exstar::physics::PCollision{current, looking};
@@ -138,6 +138,23 @@ void exstar::physics::Engine::Impulse(exstar::physics::PCollision* collision){
 	j /= A->inv_mass + B->inv_mass;
 	exstar::Vector2d impulse = normal*j;
 
+	exstar::Vector2d tangent = rv - normal*exstar::Vector2d::dot(rv,normal);
+	tangent = exstar::Vector2d::normalize(tangent);
+
+	float jt = exstar::Vector2d::dot(rv,tangent) * -1;
+	jt /= A->inv_mass + B->inv_mass;
+
+	float mu = sqrt(pow(A->staticFriction,2) + pow(B->staticFriction,2));
+
+	exstar::Vector2d frictionImpulse;
+
+	if(abs(jt) < j*mu){
+		frictionImpulse = tangent*jt;
+	}else{
+		float df = sqrt(pow(A->dynamicFriction,2) + pow(B->dynamicFriction,2));
+		frictionImpulse = tangent*-jt*df;
+	}
+
 	float sum_mass = A->mass + B->mass;
 	float ratio    = A->mass/sum_mass;
 	if(std::isnan(ratio)){
@@ -146,6 +163,9 @@ void exstar::physics::Engine::Impulse(exstar::physics::PCollision* collision){
 	if(A->inv_mass != 0){
 		*A->velocity -= (impulse*A->inv_mass)*ratio;
 	}
+
+	*A->velocity -= frictionImpulse*A->inv_mass;
+	*B->velocity += frictionImpulse*B->inv_mass;
 
 	ratio = B->mass/sum_mass;
 

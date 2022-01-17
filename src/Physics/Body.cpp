@@ -59,6 +59,15 @@ void exstar::physics::Body::Update(double deltaTime){
 	updateCollider();
 }
 
+void exstar::physics::Body::setLayer(int layer){
+	this->layer = layer;
+}
+
+void exstar::physics::Body::setFriction(float staticF, float dynamicF){
+	staticFriction = staticF;
+	dynamicFriction = dynamicF;
+}
+
 void exstar::physics::Body::applyForce(exstar::Vector2d force){
 	*this->force += force;
 }
