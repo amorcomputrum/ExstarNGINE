@@ -12,7 +12,7 @@
 
 <h3 align="center">Compiling</h3>
 <p align="center">
-	<span style="font-weight: bold;">G++: </span> Use -lExstar when compiling<br><br>
+	<span style="font-weight: bold;">Linking: </span> Link Exstar when compiling<br><br>
 </p>
 <hr noshade>
 <h3 align="center">
