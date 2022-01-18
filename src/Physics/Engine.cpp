@@ -20,6 +20,15 @@ exstar::physics::Body* exstar::physics::Engine::getById(std::string id){
 	throw exstar::exception("exstar::Engine::getById - No Such ID: " + id);
 }
 
+void exstar::physics::Engine::getById(std::string id){
+	for(int i = 0; i < bodies->size; i++){
+		if(bodies->get(i)->id == id){
+			bodies->remove(i);
+		}
+	}
+	throw exstar::exception("exstar::Engine::getById - No Such ID: " + id);
+}
+
 void exstar::physics::Engine::Update(double deltaTime){
 	for(int a = 0; a < bodies->size; a++){
 		//update body
