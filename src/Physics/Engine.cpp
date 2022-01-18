@@ -20,6 +20,15 @@ exstar::physics::Body* exstar::physics::Engine::getById(std::string id){
 	throw exstar::exception("exstar::Engine::getById - No Such ID: " + id);
 }
 
+void exstar::physics::Engine::removeById(std::string id){
+	for(int i = 0; i < bodies->size; i++){
+		if(bodies->get(i)->id == id){
+			bodies->remove(i);
+		}
+	}
+	throw exstar::exception("exstar::Engine::getById - No Such ID: " + id);
+}
+
 void exstar::physics::Engine::Update(double deltaTime){
 	for(int a = 0; a < bodies->size; a++){
 		//update body
@@ -28,7 +37,7 @@ void exstar::physics::Engine::Update(double deltaTime){
 		//Check Broadphase Collision
 		for(int b = 0; b < bodies->size; b++){
 			exstar::physics::Body* looking = bodies->get(b);
-			if(a != b && current->layer == looking->layer){
+			if(a != b && current->layer == looking->layer && !(current->inv_mass == 0.0 && looking->inv_mass == 0.0)){
 				if(exstar::physics::TestCollider::CheckCollision(&current->testCollider, &looking->testCollider)){
 					//Possible Collision
 					collision = exstar::physics::PCollision{current, looking};

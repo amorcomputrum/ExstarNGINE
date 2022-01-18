@@ -13,6 +13,7 @@ namespace exstar{
 			Engine();
 			void add(exstar::physics::Body* body);
 			exstar::physics::Body* getById(std::string id);
+			void removeById(std::string id);
 			void Update(double deltaTime);
 			static void HandleCollision(exstar::physics::PCollision* collision);
 			static void Impulse(exstar::physics::PCollision* collision);
