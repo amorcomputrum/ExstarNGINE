@@ -28,7 +28,7 @@ void exstar::physics::Engine::Update(double deltaTime){
 		//Check Broadphase Collision
 		for(int b = 0; b < bodies->size; b++){
 			exstar::physics::Body* looking = bodies->get(b);
-			if(a != b && current->layer == looking->layer){
+			if(a != b && current->layer == looking->layer && !(current->inv_mass == 0.0 && looking->inv_mass == 0.0)){
 				if(exstar::physics::TestCollider::CheckCollision(&current->testCollider, &looking->testCollider)){
 					//Possible Collision
 					collision = exstar::physics::PCollision{current, looking};
