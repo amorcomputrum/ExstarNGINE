@@ -31,6 +31,8 @@ namespace exstar{
 			void setFriction(float staticF, float dynamicF);
 			void applyForce(exstar::Vector2d force);
 			void applyForce(int x, int y);
+			void applyImpulse(exstar::Vector2d impulse);
+			void applyImpulse(int x, int y);
 			void updateCollider();
 		private:
 			bool hasGravity;

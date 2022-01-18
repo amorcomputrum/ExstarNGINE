@@ -83,6 +83,14 @@ void exstar::physics::Body::applyForce(int x, int y){
 	*this->force += exstar::Vector2d(x, y);
 }
 
+void exstar::physics::Body::applyImpulse(exstar::Vector2d impulse){
+	*this->velocity += impulse;
+}
+
+void exstar::physics::Body::applyImpulse(int x, int y){
+	*this->velocity += exstar::Vector2d(x, y);
+}
+
 void exstar::physics::Body::updateCollider(){
 	switch(shape->id){
 		case exstar::physics::Shape::ID::AABB:
