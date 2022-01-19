@@ -240,6 +240,12 @@ namespace exstar{
 		*/
 		bool getAdjustCameraOnResize();
 
+	protected:
+		/**
+		 * The Graphics for the window
+		*/
+		exstar::Graphics* g;
+
 	private:
 		/**
 		 * ArrayList of the Keys that are currently pressed
@@ -283,10 +289,7 @@ namespace exstar{
 		 * The GLFW window
 		*/
 		GLFWwindow* window;
-		/**
-		 * The Graphics for the window
-		*/
-		exstar::Graphics* g;
+
 		/**
 		 * The clock for calculating deltaTime
 		*/
