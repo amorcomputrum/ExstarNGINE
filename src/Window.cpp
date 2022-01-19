@@ -226,7 +226,7 @@ void exstar::Window::update(){
 		glClearColor((float)backgroundColor[0], (float)backgroundColor[1], (float)backgroundColor[2], (float)backgroundColor[3]);
 		glClear(GL_COLOR_BUFFER_BIT);
 		Update(this->deltaTime);
-		render((*g));
+		render(*g);
 	    //display frame
 		glfwSwapBuffers(window);
 		while(glfwGetTime() < lastTime + 1.0/frameRate){
@@ -238,6 +238,7 @@ void exstar::Window::update(){
 		}
 		lastTime += 1.0/frameRate;
 		this->deltaTime = clock->getTime()/1000;
+		
 		//check if resized
 		int w,h;
 		glfwGetFramebufferSize(window, &w, &h);
