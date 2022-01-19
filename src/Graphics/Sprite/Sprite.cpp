@@ -21,12 +21,11 @@ exstar::Sprite::Sprite(const char* FILE){
 exstar::Sprite::Sprite(const char* FILE, int x, int y, int w, int h){
 	this->FILE    = FILE;
 	int* feedback = exstar::addImage(FILE);
-	std::cout << feedback << std::endl;
 	fileIndex     = feedback[0];
 	size          = exstar::Dimension{w, h};
 	cutSize       = exstar::Dimension{w, h};
-	//textureSize   = exstar::Dimension{feedback[1], feedback[2]};
-	//type          = feedback[3];
+	textureSize   = exstar::Dimension{feedback[1], feedback[2]};
+	type          = feedback[3];
 	Pos           = exstar::Point{x,y};
 	loadShader();
 }
