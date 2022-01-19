@@ -12,6 +12,9 @@ exstar::ArrayList<int>*             exstar::numUses = new exstar::ArrayList<int>
 int* exstar::addImage(const char* FILE){
 	//load data
 	int w,h,type;
+
+	static int feedback[4];
+	
 	unsigned char* data = stbi_load(FILE, &w, &h, &type, 0);
 	if(!data){
 		throw exstar::exception("exstar::addImage - Image failed to load");
@@ -20,7 +23,6 @@ int* exstar::addImage(const char* FILE){
 	for(int i = 0; i < exstar::images->size; i++){
 		if(exstar::images->get(i) == data){
 			exstar::numUses->replace(i, exstar::numUses->get(i) + 1);
-			int feedback[4];
 
 			feedback[0] = i;
 			feedback[1] = w;
@@ -35,8 +37,6 @@ int* exstar::addImage(const char* FILE){
 	exstar::images->size;
 	exstar::numUses->add(1);
 
-	int feedback[4];
-
 	feedback[0] = exstar::images->size - 1;
 	feedback[1] = w;
 	feedback[2] = h;
@@ -46,9 +46,11 @@ int* exstar::addImage(const char* FILE){
 
 void exstar::removeImage(int index){
 	//Update Number of Uses
-	if(exstar::numUses->get(index) <= 0){
+	if(exstar::numUses->get(index)-1 <= 0){
 		stbi_image_free(exstar::images->get(index));
 		exstar::images->remove(index );
 		exstar::numUses->remove(index);
+	}else{
+		exstar::numUses->replace(index, exstar::numUses->get(index) - 1);
 	}
 }

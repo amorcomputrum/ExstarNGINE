@@ -18,7 +18,7 @@ namespace exstar{
 	 * 
 	 * @return The index,width, and height of the File
 	*/
-	int* addImage(const char* File);
+	int* addImage(const char* FILE);
 	/**
 	 * Removes an image from the images ArrayList
 	 * 
