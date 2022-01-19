@@ -58,14 +58,14 @@ namespace exstar{
 		 * @param x The x position to render the sprite at (top-left)
 		 * @param y The y position to render the sprite at (top-left)
 		*/
-		void drawSprite(exstar::Sprite sprite, int x, int y);
+		void drawSprite(exstar::Sprite* sprite, int x, int y);
 		/**
 		 * Render a Sprite to the screen
 		 * 
 		 * @param sprite The sprite to render to the screen
 		 * @param pos The (x,y) postion to render the sprite to (top-left)
 		*/
-		void drawSprite(exstar::Sprite sprite, exstar::Point pos);
+		void drawSprite(exstar::Sprite* sprite, exstar::Point pos);
 		/**
 		 * Render a Rectangle to the screen
 		 * 

@@ -38,29 +38,29 @@ void exstar::Graphics::setColor(exstar::Color color){
 }
 
 //-----------------------------DRAW SPRITE-----------------------------
-void exstar::Graphics::drawSprite(exstar::Sprite sprite, int x, int y){
+void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){
     //Transformations
 	glm::mat4 projection;
 	projection  = glm::ortho((int)pos->x + 0.0f, (float)size->width + (int)pos->x, (float)size->height + (int)pos->y,0.0f + (int)pos->y, -1.0f, 1.0f);
 	glm::mat4 ModelMatrix(1.0f);
 	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x, y, 0.0f));
-	ModelMatrix = glm::scale(ModelMatrix,     glm::vec3(sprite.getWidth(), sprite.getHeight(), 1.0f));
+	ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(sprite->getWidth(), sprite->getHeight(), 1.0f));
 
 	//Draw Sprite and cleanup
 	glActiveTexture(GL_TEXTURE0);
-	sprite.Bind();
+	sprite->Bind();
 	spriteShader.use();
 
 	//Set uniforms
 	spriteShader.uniformMat4("ModelMatrix", ModelMatrix);
 	spriteShader.uniformMat4("projection" , projection);
 
-	glBindVertexArray(sprite.getVAO());
+	glBindVertexArray(sprite->getVAO());
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
-void exstar::Graphics::drawSprite(exstar::Sprite sprite, exstar::Point pos){
+void exstar::Graphics::drawSprite(exstar::Sprite* sprite, exstar::Point pos){
 	drawSprite(sprite, pos.x, pos.y);
 }
 

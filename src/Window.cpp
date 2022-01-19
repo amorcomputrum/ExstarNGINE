@@ -49,6 +49,10 @@ void exstar::Window::close(){
 	exit(1);
 }
 
+void exstar::Window::setBufferCount(int count){
+	glfwSwapInterval(count);
+}
+
 void exstar::Window::setFramerate(int frameRate){
 	this->frameRate = frameRate;
 }
