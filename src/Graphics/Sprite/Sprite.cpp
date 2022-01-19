@@ -1,5 +1,6 @@
 #include "Exstar/exstarglad/gl.h"
 
+#include "Exstar/Graphics/Sprite/HandlerToSprite.h"
 #include "Exstar/Graphics/Sprite/Image_Handler.h"
 
 #include "Exstar/Graphics/Sprite/Sprite.h"
@@ -8,24 +9,24 @@ exstar::Sprite::Sprite(){}
 
 exstar::Sprite::Sprite(const char* FILE){
 	this->FILE    = FILE;
-	int* feedback = exstar::addImage(FILE);
-	fileIndex     = feedback[0];
-	size          = exstar::Dimension{feedback[1], feedback[2]};
-	cutSize       = exstar::Dimension{feedback[1], feedback[2]};
-	textureSize   = exstar::Dimension{feedback[1], feedback[2]};
-	type          = feedback[3];
+	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
+	fileIndex     = feedback.index;
+	size          = exstar::Dimension{feedback.width, feedback.height};
+	cutSize       = exstar::Dimension{feedback.width, feedback.height};
+	textureSize   = exstar::Dimension{feedback.width, feedback.height};
+	type          = feedback.type;
 	Pos           = exstar::Point{0,0};
 	loadShader();
 }
 
 exstar::Sprite::Sprite(const char* FILE, int x, int y, int w, int h){
 	this->FILE    = FILE;
-	int* feedback = exstar::addImage(FILE);
-	fileIndex     = feedback[0];
+	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
+	fileIndex     = feedback.index;
 	size          = exstar::Dimension{w, h};
 	cutSize       = exstar::Dimension{w, h};
-	textureSize   = exstar::Dimension{feedback[1], feedback[2]};
-	type          = feedback[3];
+	textureSize   = exstar::Dimension{feedback.width, feedback.height};
+	type          = feedback.type;
 	Pos           = exstar::Point{x,y};
 	loadShader();
 }
