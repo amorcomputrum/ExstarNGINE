@@ -44,7 +44,7 @@ void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){
 	projection  = glm::ortho((int)pos->x + 0.0f, (float)size->width + (int)pos->x, (float)size->height + (int)pos->y,0.0f + (int)pos->y, -1.0f, 1.0f);
 	glm::mat4 ModelMatrix(1.0f);
 	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x, y, 0.0f));
-	ModelMatrix = glm::scale(ModelMatrix,     glm::vec3(sprite->getWidth(), sprite->getHeight(), 1.0f));
+	ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(sprite->getWidth(), sprite->getHeight(), 1.0f));
 
 	//Draw Sprite and cleanup
 	glActiveTexture(GL_TEXTURE0);

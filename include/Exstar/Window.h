@@ -85,6 +85,10 @@ namespace exstar{
 		 * closes the window and stops the program
 		*/ 
 		void close();
+
+		void setBufferCount(int count);
+
+
 		/**
 		 * Sets the framerate of the program
 		 * 
