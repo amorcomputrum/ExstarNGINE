@@ -16,8 +16,9 @@ namespace exstar{
 			int mass;
 			int layer = 0;
 			float inv_mass;
-			float staticFriction = 1;
+			float staticFriction  = 1;
 			float dynamicFriction = 1;
+			bool enabled = true;
 			exstar::physics::TestCollider testCollider;
 			exstar::Vector2d* position;
 			exstar::Vector2d* velocity;
@@ -34,6 +35,9 @@ namespace exstar{
 			void applyImpulse(exstar::Vector2d impulse);
 			void applyImpulse(int x, int y);
 			void updateCollider();
+			void toggle();
+			void setState(bool enabled);
+			bool getEnabled();
 		private:
 			bool hasGravity;
 		};

@@ -34,88 +34,92 @@ void exstar::physics::Engine::Update(double deltaTime){
 		//update body
 		bodies->get(a)->Update(deltaTime);
 		exstar::physics::Body* current = bodies->get(a);
-		//Check Broadphase Collision
-		for(int b = 0; b < bodies->size; b++){
-			exstar::physics::Body* looking = bodies->get(b);
-			if(a != b && current->layer == looking->layer && !(current->inv_mass == 0.0 && looking->inv_mass == 0.0)){
-				if(exstar::physics::TestCollider::CheckCollision(&current->testCollider, &looking->testCollider)){
-					//Possible Collision
-					collision = exstar::physics::PCollision{current, looking};
-					switch(current->shape->id){
-						case exstar::physics::Shape::ID::AABB:
-							switch(looking->shape->id){
+		if(current->enabled){
+			//Check Broadphase Collision
+			for(int b = 0; b < bodies->size; b++){
+				exstar::physics::Body* looking = bodies->get(b);
+				if(looking->enabled){
+					if(a != b && current->layer == looking->layer && !(current->inv_mass == 0.0 && looking->inv_mass == 0.0)){
+						if(exstar::physics::TestCollider::CheckCollision(&current->testCollider, &looking->testCollider)){
+							//Possible Collision
+							collision = exstar::physics::PCollision{current, looking};
+							switch(current->shape->id){
 								case exstar::physics::Shape::ID::AABB:
-									//AABBvsAABB
-									if(exstar::physics::EngineCollision::AABBvsAABB(&collision)){
-										HandleCollision(&collision);
+									switch(looking->shape->id){
+										case exstar::physics::Shape::ID::AABB:
+											//AABBvsAABB
+											if(exstar::physics::EngineCollision::AABBvsAABB(&collision)){
+												HandleCollision(&collision);
+											}
+											break;
+										case exstar::physics::Shape::ID::Circle:
+											//AABBvsCircle
+											if(exstar::physics::EngineCollision::AABBvsCircle(&collision)){
+												HandleCollision(&collision);
+											}
+											break;
+										case exstar::physics::Shape::ID::Polygon:
+											//AABBvsPolygon
+											if(exstar::physics::EngineCollision::PolygonvsPolygon(&collision)){
+												HandleCollision(&collision);
+											}
+											break;
 									}
 									break;
 								case exstar::physics::Shape::ID::Circle:
-									//AABBvsCircle
-									if(exstar::physics::EngineCollision::AABBvsCircle(&collision)){
-										HandleCollision(&collision);
-									}
+									switch(looking->shape->id){
+											case exstar::physics::Shape::ID::AABB:
+												//CirclevsAABB
+												if(exstar::physics::EngineCollision::AABBvsCircle(&collision)){
+													collision.normal *= -1;
+													HandleCollision(&collision);
+												}
+												break;
+											case exstar::physics::Shape::ID::Circle:
+												//CirclevsCircle
+												if(exstar::physics::EngineCollision::CirclevsCircle(&collision)){
+													HandleCollision(&collision);
+												}
+												break;
+											case exstar::physics::Shape::ID::Polygon:
+												//CirclevsPolygon
+												if(exstar::physics::EngineCollision::CirclevsPolygon(&collision)){
+													collision.normal *= -1;
+													HandleCollision(&collision);
+												}
+												break;
+										}
 									break;
+								
 								case exstar::physics::Shape::ID::Polygon:
-									//AABBvsPolygon
-									if(exstar::physics::EngineCollision::PolygonvsPolygon(&collision)){
-										HandleCollision(&collision);
-									}
+									switch(looking->shape->id){
+											case exstar::physics::Shape::ID::AABB:
+												//PolygonvsAABB
+												if(exstar::physics::EngineCollision::PolygonvsPolygon(&collision)){
+													HandleCollision(&collision);
+												}
+												break;
+											case exstar::physics::Shape::ID::Circle:
+												//PolygonvsCircle
+												if(exstar::physics::EngineCollision::CirclevsPolygon(&collision)){
+													HandleCollision(&collision);
+												}
+												break;
+											case exstar::physics::Shape::ID::Polygon:
+												//PolygonvsPolygon
+												if(exstar::physics::EngineCollision::PolygonvsPolygon(&collision)){
+													HandleCollision(&collision);
+												}
+												break;
+										}
 									break;
 							}
-							break;
-						case exstar::physics::Shape::ID::Circle:
-							switch(looking->shape->id){
-									case exstar::physics::Shape::ID::AABB:
-										//CirclevsAABB
-										if(exstar::physics::EngineCollision::AABBvsCircle(&collision)){
-											collision.normal *= -1;
-											HandleCollision(&collision);
-										}
-										break;
-									case exstar::physics::Shape::ID::Circle:
-										//CirclevsCircle
-										if(exstar::physics::EngineCollision::CirclevsCircle(&collision)){
-											HandleCollision(&collision);
-										}
-										break;
-									case exstar::physics::Shape::ID::Polygon:
-										//CirclevsPolygon
-										if(exstar::physics::EngineCollision::CirclevsPolygon(&collision)){
-											collision.normal *= -1;
-											HandleCollision(&collision);
-										}
-										break;
-								}
-							break;
-						
-						case exstar::physics::Shape::ID::Polygon:
-							switch(looking->shape->id){
-									case exstar::physics::Shape::ID::AABB:
-										//PolygonvsAABB
-										if(exstar::physics::EngineCollision::PolygonvsPolygon(&collision)){
-											HandleCollision(&collision);
-										}
-										break;
-									case exstar::physics::Shape::ID::Circle:
-										//PolygonvsCircle
-										if(exstar::physics::EngineCollision::CirclevsPolygon(&collision)){
-											HandleCollision(&collision);
-										}
-										break;
-									case exstar::physics::Shape::ID::Polygon:
-										//PolygonvsPolygon
-										if(exstar::physics::EngineCollision::PolygonvsPolygon(&collision)){
-											HandleCollision(&collision);
-										}
-										break;
-								}
-							break;
+						}
 					}
 				}
 			}
+			current->force->set(0, 0);
 		}
-		current->force->set(0, 0);
 	}
 }
 

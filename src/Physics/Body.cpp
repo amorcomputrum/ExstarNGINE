@@ -119,3 +119,15 @@ void exstar::physics::Body::updateCollider(){
 			break;
 	}
 }
+
+void exstar::physics::Body::toggle(){
+	enabled = !enabled;
+}
+
+void exstar::physics::Body::setState(bool enabled){
+	this->enabled = enabled;
+}
+
+bool exstar::physics::Body::getEnabled(){
+	return enabled;
+}
