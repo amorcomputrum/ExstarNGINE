@@ -2,6 +2,9 @@
 	<img src="Exstar.png" alt="Geno" width="80" height="80" style="border-radius: 15px"><h1 align="center">Exstar alpha 2.0</h1><p align="center"><a href="https://discord.gg/WacprUHpUF" style="text-decoration: none;color: rgb(150,150,255);">Discord</a></p>
 </p>
 
+<p align="center">Exstar's built-in physics engine is still not fully functional</p>
+<p align="center">There will be an option to build with box2d integration in the future</p>
+<hr noshade>
 <h3 align="center">Building</h3>
 <h4 align="center" style="font-weight: 400;">
 	When building on linux run "sh INSTALL.sh"<br><br>
