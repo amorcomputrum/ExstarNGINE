@@ -60,16 +60,11 @@ exstar::physics::Body::Body(exstar::Vector2d position, exstar::Vector2d velocity
 }
 
 void exstar::physics::Body::Update(double deltaTime){
-	float grav = 0;
 	if(hasGravity){
-		//*gravitationalForce += (exstar::physics::Engine::GRAVITY);
-		grav = 9.82;
+	*velocity += *force * (exstar::physics::Engine::GRAVITY+inv_mass);
+	}else{
+		*velocity += *force * inv_mass;
 	}
-	//*position += *gravitationalForce*deltaTime;
-	
-	//*position += *force*deltaTime;
-
-	*velocity += *force * (exstar::Vector2d(0,grav)+inv_mass);
 	*position += *velocity*deltaTime;
 	updateCollider();
 }
