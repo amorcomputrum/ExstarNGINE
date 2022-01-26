@@ -61,7 +61,7 @@ exstar::physics::Body::Body(exstar::Vector2d position, exstar::Vector2d velocity
 
 void exstar::physics::Body::Update(double deltaTime){
 	if(hasGravity){
-	*velocity += *force * (exstar::physics::Engine::GRAVITY+inv_mass);
+	*velocity += (*force + exstar::physics::Engine::GRAVITY) +inv_mass;
 	}else{
 		*velocity += *force * inv_mass;
 	}
