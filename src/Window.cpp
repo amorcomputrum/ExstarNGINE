@@ -134,6 +134,18 @@ void exstar::Window::setCamera(exstar::Point pos){
 	g->set(pos.x, pos.y);
 }
 
+void exstar::Window::setCameraCenter(int x, int y){
+	g->set(x - size.width/2, y - size.height/2);
+}
+
+void exstar::Window::setCameraCenter(exstar::Point pos){
+	setCameraCenter(pos.x, pos.y);
+}
+
+void exstar::Window::setCameraCenter(exstar::Vector2d pos){
+	setCameraCenter(pos.x, pos.y);
+}
+
 std::string exstar::Window::getTitle(){
 	return title;
 }

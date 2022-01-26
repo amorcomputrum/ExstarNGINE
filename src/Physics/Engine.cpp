@@ -30,10 +30,13 @@ void exstar::physics::Engine::removeById(std::string id){
 }
 
 void exstar::physics::Engine::Update(double deltaTime){
+	//for(int a = 0; a < bodies->size; a++){
+		//exstar::physics::Body* current = bodies->get(a);
+		//current->Update(deltaTime);
+	//}
 	for(int a = 0; a < bodies->size; a++){
-		//update body
-		bodies->get(a)->Update(deltaTime);
 		exstar::physics::Body* current = bodies->get(a);
+		current->Update(deltaTime);
 		if(current->enabled){
 			//Check Broadphase Collision
 			for(int b = 0; b < bodies->size; b++){
@@ -118,7 +121,7 @@ void exstar::physics::Engine::Update(double deltaTime){
 					}
 				}
 			}
-			current->force->set(0, 0);
+			current->force->set(1, 1);
 		}
 	}
 }
@@ -131,17 +134,17 @@ void exstar::physics::Engine::HandleCollision(exstar::physics::PCollision* colli
 void exstar::physics::Engine::Impulse(exstar::physics::PCollision* collision){
 	exstar::physics::Body* A = collision->A;
 	exstar::physics::Body* B = collision->B;
-	float penetration        = collision->penetration;
-	exstar::Vector2d normal  = exstar::Vector2d((float)collision->normal.x, (float)collision->normal.y);
+	float penetration = collision->penetration;
+	exstar::Vector2d normal = exstar::Vector2d((float)collision->normal.x,(float)collision->normal.y);
 	if(std::isnan(normal.x)){
 		normal.x = 0;
 	}
 	if(std::isnan(normal.y)){
 		normal.y = 0;
 	}
-	exstar::Vector2d rv  = (*B->velocity + *B->force) - (*A->velocity + *A->force);
+	exstar::Vector2d rv = (*B->velocity+*B->force) - (*A->velocity+*A->force);
 
-	float velAlongNormal = exstar::Vector2d::dot(rv, normal);
+	float velAlongNormal = exstar::Vector2d::dot(rv,normal);
 
 	if(velAlongNormal > 0){
 		return;
@@ -152,42 +155,20 @@ void exstar::physics::Engine::Impulse(exstar::physics::PCollision* collision){
 	float j = -(1.0 + e)*velAlongNormal;
 	j /= A->inv_mass + B->inv_mass;
 	exstar::Vector2d impulse = normal*j;
-
-	exstar::Vector2d tangent = rv - normal*exstar::Vector2d::dot(rv,normal);
-	tangent = exstar::Vector2d::normalize(tangent);
-
-	float jt = exstar::Vector2d::dot(rv,tangent) * -1;
-	jt /= A->inv_mass + B->inv_mass;
-
-	float mu = sqrt(pow(A->staticFriction,2) + pow(B->staticFriction,2));
-
-	exstar::Vector2d frictionImpulse;
-
-	if(abs(jt) < j*mu){
-		frictionImpulse = tangent*jt;
-	}else{
-		float df = sqrt(pow(A->dynamicFriction,2) + pow(B->dynamicFriction,2));
-		frictionImpulse = tangent*-jt*df;
-	}
-
 	float sum_mass = A->mass + B->mass;
-	float ratio    = A->mass/sum_mass;
+	float ratio = A->mass / sum_mass;
 	if(std::isnan(ratio)){
 		ratio = 1.0;
 	}
 	if(A->inv_mass != 0){
 		*A->velocity -= (impulse*A->inv_mass)*ratio;
 	}
-
-	*A->velocity -= frictionImpulse*A->inv_mass;
-	*B->velocity += frictionImpulse*B->inv_mass;
-
-	ratio = B->mass/sum_mass;
-
+	ratio = B->mass / sum_mass;
 	if(B->inv_mass != 0){
 		*B->velocity += (impulse*B->inv_mass)*ratio;
 	}
 }
+
 
 void exstar::physics::Engine::PositionalCorrection(exstar::physics::PCollision* collision){
 	exstar::physics::Body* A = collision->A;

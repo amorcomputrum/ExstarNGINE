@@ -15,9 +15,9 @@ namespace exstar{
 			exstar::physics::Body* getById(std::string id);
 			void removeById(std::string id);
 			void Update(double deltaTime);
-			static void HandleCollision(exstar::physics::PCollision* collision);
-			static void Impulse(exstar::physics::PCollision* collision);
-			static void PositionalCorrection(exstar::physics::PCollision* collision);
+			void HandleCollision(exstar::physics::PCollision* collision);
+			void Impulse(exstar::physics::PCollision* collision);
+			void PositionalCorrection(exstar::physics::PCollision* collision);
 		};
 	}
 }
