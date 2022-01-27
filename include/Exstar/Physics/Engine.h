@@ -14,7 +14,6 @@ namespace exstar{
 			int frameRate = 0;
 			ArrayList<exstar::physics::Body*>* bodies = new ArrayList<exstar::physics::Body*>();;
 			exstar::physics::PCollision collision;
-			//Engine();
 			Engine(int frameRate);
 			void add(exstar::physics::Body* body);
 			exstar::physics::Body* getById(std::string id);
