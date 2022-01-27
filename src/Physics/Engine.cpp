@@ -10,6 +10,7 @@ float exstar::physics::Engine::CORRECTION_ALLOWANCE    = 0.01 ;
 
 exstar::physics::Engine::Engine(int frameRate){
 	this->frameRate = frameRate;
+	std::cout << "Warning - PolygonvsPolygon collisions are NOT working right now" << std::endl;
 }
 
 void exstar::physics::Engine::add(exstar::physics::Body* body){
@@ -209,6 +210,27 @@ void exstar::physics::Engine::Impulse(exstar::physics::PCollision* collision){
 	if(B->inv_mass != 0){
 		*B->velocity += (impulse*B->inv_mass)*ratio;
 	}
+
+	//FRICTION
+	rv = *B->velocity - *A->velocity;
+
+	exstar::Vector2d tangent = rv - (normal * exstar::Vector2d::dot(rv,normal));
+	tangent = exstar::Vector2d::normalize(tangent);
+
+	float jt = exstar::Vector2d::dot(rv,tangent) *-1;
+	jt /= A->inv_mass + B->inv_mass;
+
+	float mu = sqrt(pow(A->staticFriction,2) + pow(B->staticFriction,2));
+
+	exstar::Vector2d frictionImpulse;
+	if(abs(jt) < j * mu){
+		frictionImpulse = tangent*jt;
+	}else{
+		float dynamicFriction = sqrt(pow(A->dynamicFriction,2) + pow(B->dynamicFriction,2));
+		frictionImpulse = tangent * -j * dynamicFriction;
+	}
+	*A->velocity -= frictionImpulse * A->inv_mass;
+	*B->velocity += frictionImpulse * B->inv_mass;
 }
 
 
