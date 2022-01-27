@@ -9,6 +9,7 @@ namespace exstar{
 		public:
 			static exstar::Vector2d GRAVITY;
 			static bool PERFORMANCE_MODE;
+			static bool VERTICAL_FRICTION;
 			static float CORRECTION_PERCENT;
 			static float CORRECTION_ALLOWANCE;
 			int frameRate = 0;

@@ -5,6 +5,7 @@
 
 exstar::Vector2d exstar::physics::Engine::GRAVITY      = exstar::Vector2d(0,9.81);
 bool  exstar::physics::Engine::PERFORMANCE_MODE        = true ;
+bool  exstar::physics::Engine::VERTICAL_FRICTION       = false ;
 float exstar::physics::Engine::CORRECTION_PERCENT      = 0.045;
 float exstar::physics::Engine::CORRECTION_ALLOWANCE    = 0.01 ;
 
@@ -228,6 +229,9 @@ void exstar::physics::Engine::Impulse(exstar::physics::PCollision* collision){
 	}else{
 		float dynamicFriction = sqrt(pow(A->dynamicFriction,2) + pow(B->dynamicFriction,2));
 		frictionImpulse = tangent * -j * dynamicFriction;
+	}
+	if(!exstar::physics::Engine::VERTICAL_FRICTION){
+		frictionImpulse.y = 0;
 	}
 	*A->velocity -= frictionImpulse * A->inv_mass;
 	*B->velocity += frictionImpulse * B->inv_mass;
