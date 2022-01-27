@@ -183,6 +183,25 @@ namespace exstar{
 		*/
 		void setCamera(exstar::Point pos);
 		/**
+		 * Sets the Center Position of the Camera
+		 * 
+		 * @param x The x position to set the Camera to
+		 * @param y The y position to set the Camera to
+		*/
+		void setCameraCenter(int x, int y);
+		/**
+		 * Sets the Center Position of the Camera
+		 * 
+		 * @param pos The postion to set the Camera to
+		*/
+		void setCameraCenter(exstar::Point pos);
+		/**
+		 * Sets the Center Position of the Camera
+		 * 
+		 * @param pos The postion to set the Camera to
+		*/
+		void setCameraCenter(exstar::Vector2d pos);
+		/**
 		 * Returns the Title of the window
 		 * 
 		 * @return title of the window

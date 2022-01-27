@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.09)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-project(EXSTAR VERSION 0.2.0)
+project(EXSTAR VERSION 0.2.2)
 
 include(GNUInstallDirs)
 

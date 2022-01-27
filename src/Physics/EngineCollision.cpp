@@ -10,34 +10,37 @@ bool exstar::physics::EngineCollision::AABBvsAABB(exstar::physics::PCollision* c
 	exstar::physics::Body* A = collision->A;
 	exstar::physics::Body* B = collision->B;
 
-	exstar::Vector2d n = *collision->B->position - *collision->A->position;
+	exstar::Vector2d n = (*collision->B->position + exstar::Vector2d(B->shape->w/2,B->shape->h/2))- (*collision->A->position+ exstar::Vector2d(A->shape->w/2,A->shape->h/2));
 
-	float a_extent = ((A->position->x + A->shape->w) - A->position->x)/2;
-	float b_extent = ((B->position->x + B->shape->w) - B->position->x)/2;
+	float a_extent = A->shape->w/2;
+	float b_extent = B->shape->w/2;
 
 	float x_overlap = a_extent + b_extent - abs(n.x);
-	if(x_overlap > 0){
-		a_extent = ((A->position->y + A->shape->h) - A->position->y)/2;
-		a_extent = ((B->position->y + B->shape->h) - B->position->y)/2;
+	if(x_overlap >= 0){
+		a_extent = A->shape->h/2;
+		b_extent = B->shape->h/2;
 
 		float y_overlap = a_extent + b_extent - abs(n.y);
-		if(x_overlap > y_overlap){
-			if(n.x < 0){
-				collision->normal.set(-1, 0);
+		if(y_overlap >= 0){
+			if(x_overlap < y_overlap){
+				if(n.x < 0){
+					collision->normal.set(-1, 0);
+				}else{
+					collision->normal.set(0, 0 );
+				}
+				collision->penetration = x_overlap;
+				return true;
 			}else{
-				collision->normal.set(0, 0 );
+				if(n.y < 0){
+					collision->normal.set(0, -1);
+				}else{
+					collision->normal.set(0, 1 );
+				}
+				collision->penetration = y_overlap;
+				return true;
 			}
-			collision->penetration = x_overlap;
-			return true;
-		}else{
-			if(n.y < 0){
-				collision->normal.set(0, -1);
-			}else{
-				collision->normal.set(0, 1 );
-			}
-			collision->penetration = y_overlap;
-			return true;
 		}
+		
 	}
 	return false;
 }
@@ -237,7 +240,6 @@ bool exstar::physics::EngineCollision::PolygonvsPolygon(exstar::physics::PCollis
 	}
 	return false;
 }
-
 float exstar::physics::EngineCollision::IntervalDistance(exstar::Vector2d a, exstar::Vector2d b){
 	if(a.x < b.x){
 		return b.x - a.y;

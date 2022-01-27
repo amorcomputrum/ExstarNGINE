@@ -26,7 +26,7 @@ exstar::sprite::HandlerToSprite exstar::addImage(const char* FILE){
 		}
 	}
 
-	exstar::images->add(data);
+	exstar::images-> add(data);
 	exstar::numUses->add(1);
 
 	return exstar::sprite::HandlerToSprite{exstar::images->size - 1, w, h, type};

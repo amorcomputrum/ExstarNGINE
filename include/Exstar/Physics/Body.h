@@ -12,6 +12,7 @@ namespace exstar{
 		class Body{
 		public:
 			exstar::physics::Shape* shape;
+			bool hasGravity;
 			float restitution;
 			int mass;
 			int layer = 0;
@@ -23,6 +24,7 @@ namespace exstar{
 			exstar::Vector2d* position;
 			exstar::Vector2d* velocity;
 			exstar::Vector2d* force;
+			exstar::Vector2d* gravitationalForce;
 			std::string id;
 			Body();
 			Body(exstar::Vector2d position, float restitution, int mass, exstar::physics::Shape* shape, std::string id, bool hasGravity);
@@ -39,7 +41,7 @@ namespace exstar{
 			void setState(bool enabled);
 			bool getEnabled();
 		private:
-			bool hasGravity;
+			
 		};
 	}
 }

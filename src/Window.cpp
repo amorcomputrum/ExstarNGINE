@@ -35,6 +35,8 @@ void exstar::Window::run(){
 	glfwWindowHint(GLFW_SAMPLES              , 2                       );
 
 	glEnable(GL_MULTISAMPLE); 
+	glEnable(GL_BLEND); 
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
 	//create clock
 	clock = new exstar::Clock(); 
 	//begin loop
@@ -130,6 +132,18 @@ void exstar::Window::setCamera(int x, int y){
 
 void exstar::Window::setCamera(exstar::Point pos){
 	g->set(pos.x, pos.y);
+}
+
+void exstar::Window::setCameraCenter(int x, int y){
+	g->set(x - size.width/2, y - size.height/2);
+}
+
+void exstar::Window::setCameraCenter(exstar::Point pos){
+	setCameraCenter(pos.x, pos.y);
+}
+
+void exstar::Window::setCameraCenter(exstar::Vector2d pos){
+	setCameraCenter(pos.x, pos.y);
 }
 
 std::string exstar::Window::getTitle(){
@@ -231,9 +245,9 @@ void exstar::Window::update(){
 		glfwSwapBuffers(window);
 		while(glfwGetTime() < lastTime + 1.0/frameRate){
 			#if defined(__WIN32) || defined(_WIN64)
-				sleep(1000);
+				sleep( (lastTime + 1.0/frameRate) - glfwGetTime());
 			#else
-				usleep(1000);
+				usleep((lastTime + 1.0/frameRate) - glfwGetTime());
 			#endif
 		}
 		lastTime += 1.0/frameRate;
@@ -325,10 +339,11 @@ void exstar::Window::resizeEvent(int width, int height){
 		g->move(diffx/2, diffy/2);
 		g->resize(width, height);
 	}
-	//Update size
-	size = exstar::Dimension{width, height   };
 	//call onResize event
 	onResize(exstar::Dimension{width, height});
+	//Update size
+	size = exstar::Dimension{width, height   };
+	
 }
 
 //Static
