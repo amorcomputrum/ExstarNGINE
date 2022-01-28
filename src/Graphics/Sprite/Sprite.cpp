@@ -7,7 +7,7 @@
 
 exstar::Sprite::Sprite(){}
 
-exstar::Sprite::Sprite(const char* FILE){
+exstar::Sprite::Sprite(std::string FILE){
 	this->FILE    = FILE;
 	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
 	fileIndex     = feedback.index;
@@ -19,7 +19,7 @@ exstar::Sprite::Sprite(const char* FILE){
 	loadShader();
 }
 
-exstar::Sprite::Sprite(const char* FILE, int x, int y, int w, int h){
+exstar::Sprite::Sprite(std::string FILE, int x, int y, int w, int h){
 	this->FILE    = FILE;
 	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
 	fileIndex     = feedback.index;

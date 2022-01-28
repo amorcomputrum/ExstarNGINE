@@ -19,7 +19,7 @@ namespace exstar{
 	 * 
 	 * @return The index,width, and height of the File
 	*/
-	exstar::sprite::HandlerToSprite addImage(const char* FILE);
+	exstar::sprite::HandlerToSprite addImage(std::string FILE);
 	/**
 	 * Removes an image from the images ArrayList
 	 * 

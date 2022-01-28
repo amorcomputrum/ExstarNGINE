@@ -9,11 +9,11 @@
 exstar::ArrayList<unsigned char *>* exstar::images  = new exstar::ArrayList<unsigned char *>();
 exstar::ArrayList<int>*             exstar::numUses = new exstar::ArrayList<int>();
 
-exstar::sprite::HandlerToSprite exstar::addImage(const char* FILE){
+exstar::sprite::HandlerToSprite exstar::addImage(std::string FILE){
 	//load data
 	int w,h,type;
 
-	unsigned char* data = stbi_load(FILE, &w, &h, &type, 0);
+	unsigned char* data = stbi_load(FILE.c_str(), &w, &h, &type, 0);
 	if(!data){
 		throw exstar::exception("exstar::addImage - Image failed to load");
 	}
