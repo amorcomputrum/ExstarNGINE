@@ -15,7 +15,7 @@ exstar::Sprite::Sprite(std::string FILE){
 	cutSize       = exstar::Dimension{feedback.width, feedback.height};
 	textureSize   = exstar::Dimension{feedback.width, feedback.height};
 	type          = feedback.type;
-	Pos           = exstar::Point{0,0};
+	Pos           = exstar::Point{1,1};
 	loadShader();
 }
 

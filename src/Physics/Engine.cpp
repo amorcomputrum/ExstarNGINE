@@ -5,12 +5,13 @@
 
 exstar::Vector2d exstar::physics::Engine::GRAVITY      = exstar::Vector2d(0,9.81);
 bool  exstar::physics::Engine::PERFORMANCE_MODE        = true ;
-bool  exstar::physics::Engine::VERTICAL_FRICTION       = false ;
-float exstar::physics::Engine::CORRECTION_PERCENT      = 0.5;
+bool  exstar::physics::Engine::VERTICAL_FRICTION       = false;
+float exstar::physics::Engine::CORRECTION_PERCENT      = 0.5  ;
 float exstar::physics::Engine::CORRECTION_ALLOWANCE    = 0.00 ;
+int   exstar::physics::Engine::FRAMERATE               = 0    ;
 
 exstar::physics::Engine::Engine(int frameRate){
-	this->frameRate = frameRate;
+	exstar::physics::Engine::FRAMERATE = frameRate;
 	std::cout << "===================================================================" << std::endl;
 	std::cout << "= Warning - PolygonvsPolygon collisions are NOT working right now =" << std::endl;
 	std::cout << "===================================================================" << std::endl << std::endl;
@@ -39,7 +40,7 @@ void exstar::physics::Engine::removeById(std::string id){
 }
 
 void exstar::physics::Engine::Update(){
-	float deltaTime = 1.0/frameRate;
+	float deltaTime = 1.0/exstar::physics::Engine::FRAMERATE;
 	//Check if in Performance Mode
 	if(!exstar::physics::Engine::PERFORMANCE_MODE){
 		//Performance Mode is disabled
