@@ -12,7 +12,7 @@ namespace exstar{
 			static bool VERTICAL_FRICTION;
 			static float CORRECTION_PERCENT;
 			static float CORRECTION_ALLOWANCE;
-			int frameRate = 0;
+			static int FRAMERATE;
 			ArrayList<exstar::physics::Body*>* bodies = new ArrayList<exstar::physics::Body*>();;
 			exstar::physics::PCollision collision;
 			Engine(int frameRate);

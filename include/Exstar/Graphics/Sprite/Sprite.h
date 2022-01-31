@@ -14,7 +14,7 @@ namespace exstar{
 		 * 
 		 * @param FILE The location of the sprite to load
 		*/
-		Sprite(const char* FILE);
+		Sprite(std::string FILE);
 		/**
 		 * Initialize the Sprite
 		 * 
@@ -24,7 +24,7 @@ namespace exstar{
 		 * @param w The width of the area to render from the FILE
 		 * @param h The height of the area to render from the FILE
 		*/
-		Sprite(const char* FILE, int x, int y, int w, int h);
+		Sprite(std::string FILE, int x, int y, int w, int h);
 		/**
 		 * Destruct the Inialized Sprite
 		*/
@@ -76,7 +76,7 @@ namespace exstar{
 		/**
 		 * The location of the sprite to load
 		*/
-		const char* FILE;
+		std::string FILE;
 		/**
 		 * The native size of the Sprite
 		*/

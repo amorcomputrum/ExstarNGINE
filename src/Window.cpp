@@ -135,7 +135,7 @@ void exstar::Window::setCamera(exstar::Point pos){
 }
 
 void exstar::Window::setCameraCenter(int x, int y){
-	g->set(x - size.width/2, y - size.height/2);
+	g->set(x - g->getWidth()/2, y - g->getHeight()/2);
 }
 
 void exstar::Window::setCameraCenter(exstar::Point pos){

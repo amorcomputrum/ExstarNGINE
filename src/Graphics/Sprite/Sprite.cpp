@@ -7,7 +7,7 @@
 
 exstar::Sprite::Sprite(){}
 
-exstar::Sprite::Sprite(const char* FILE){
+exstar::Sprite::Sprite(std::string FILE){
 	this->FILE    = FILE;
 	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
 	fileIndex     = feedback.index;
@@ -19,7 +19,7 @@ exstar::Sprite::Sprite(const char* FILE){
 	loadShader();
 }
 
-exstar::Sprite::Sprite(const char* FILE, int x, int y, int w, int h){
+exstar::Sprite::Sprite(std::string FILE, int x, int y, int w, int h){
 	this->FILE    = FILE;
 	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
 	fileIndex     = feedback.index;
@@ -107,8 +107,10 @@ void exstar::Sprite::loadShader(){
 	glBindTexture(GL_TEXTURE_2D, texture);
 
     // set texture filtering parameters
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_LINEAR              );
+	//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	//glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER, GL_LINEAR              );
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);	
+	glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); 
 
     //Load Sprite according to its type(RGB,RGBA)
 	if(type == 3){
