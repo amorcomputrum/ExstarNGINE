@@ -41,8 +41,10 @@ void exstar::Graphics::setColor(exstar::Color color){
 void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){
     //Transformations
 	glm::mat4 projection;
-	projection  = glm::ortho((int)pos->x + 0.0f, (float)size->width + (int)pos->x, (float)size->height + (int)pos->y,0.0f + (int)pos->y, -1.0f, 1.0f);
+	projection  = glm::ortho(pos->x, (size->width + pos->x)-1, (size->height + pos->y)-1,pos->y);
 	glm::mat4 ModelMatrix(1.0f);
+	//HEHERHEHRHEHR
+	//ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(1.50, 1.50, 1.0f));
 	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x, y, 0.0f));
 	ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(sprite->getWidth(), sprite->getHeight(), 1.0f));
 
