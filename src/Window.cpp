@@ -259,71 +259,78 @@ void exstar::Window::update(){
 		if(w != size.width || h != size.height){
 			resizeEvent(w, h);
 		}
-		//check if a key pressed
-		for(int kp = 0; kp < keysPressed->size; kp++){
-			bool found  = false;
-			for(int kpc = 0; kpc < keysPressedCopy->size; kpc++){
-				if(keysPressedCopy->get(kpc) == keysPressed->get(kp)){
-					//key was pressed
-					found = true;
+		int eventsSize = std::max(std::max(keysPressed->size, keysPressedCopy->size), std::max(mouseEvents->size, mouseEventsCopy->size));
+		for(int i = 0; i < eventsSize; i++){
+			//Check if key was pressed
+			if(keysPressed->size != keysPressedCopy->size){
+				if(i < keysPressed->size){
+					bool found = false;
+					for(int a = 0; a < keysPressedCopy->size; a++){
+						if(keysPressed->get(i) == keysPressedCopy->get(a)){
+							//key was not pressed
+							found = true;
+						}
+					}
+					if(!found){
+						//add key to copy
+						keysPressedCopy->add(keysPressed->get(i));
+						//call keyPressed event
+						keyPressed(keysPressed->get(i));
+					}
+				}
+				//Check if key was released
+				if(i < keysPressedCopy->size){
+					bool found = false;
+					for(int a = 0; a < keysPressed->size; a++){
+						if(keysPressedCopy->get(i) == keysPressed->get(a)){
+							//key exists already
+							found = true;
+						}
+					}
+					if(!found){
+						//call keyReleased event
+						keyReleased(keysPressedCopy->get(i));
+						//remove key from copy
+						keysPressedCopy->remove(i);
+					}
 				}
 			}
-			if(!found){
-				//add key to copy
-				keysPressedCopy->add(keysPressed->get(kp));
-				//call keyPressed event
-				keyPressed(keysPressed->get(kp));
-			}
-		}
-		//check if a key released
-		for(int kpc = 0; kpc < keysPressedCopy->size; kpc++){
-			bool found = false;
-			for(int kp = 0; kp < keysPressed->size; kp++){
-				if(keysPressedCopy->get(kpc) == keysPressed->get(kp)){
-					//key exists already
-					found = true;
+			
+			if(mouseEvents->size != mouseEventsCopy->size){
+				if(i < mouseEvents->size){
+					bool found = false;
+					for(int a = 0; a < mouseEventsCopy->size; a++){
+						if(mouseEventsCopy->get(a) == mouseEvents->get(i)){
+							//Mouse was pressed
+							found = true;
+						}
+					}
+					if(!found){
+						//add mouseEvent to copy
+						mouseEventsCopy->add(mouseEvents->get(i));
+						//call mousePressed event
+						mouseEvents->get(i)->pos.x += g->getX();
+						mouseEvents->get(i)->pos.y += g->getY();
+						mousePressed(mouseEvents->get(i));
+					}
+				}
+				if(i < mouseEventsCopy->size){
+					bool found = false;
+					for(int a = 0; a < mouseEvents->size; a++){
+						if(mouseEventsCopy->get(i) == mouseEvents->get(a)){
+							//mouseEvent exists already
+							found = true;
+						}
+					}
+					if(!found){
+						//call mouseReleased event
+						mouseReleased(mouseEventsCopy->get(i));
+						//remove mouseEvent from copy
+						mouseEventsCopy->remove(i);
+					}
 				}
 			}
-			if(!found){
-				//call keyReleased event
-				keyReleased(keysPressedCopy->get(kpc));
-				//remove key from copy
-				keysPressedCopy->remove(kpc);
-			}
-		}
-		//check if a Mouse pressed
-		for(int mp = 0; mp < mouseEvents->size; mp++){
-			bool found  = false;
-			for(int mpc = 0; mpc < mouseEventsCopy->size; mpc++){
-				if(mouseEventsCopy->get(mpc) == mouseEvents->get(mp)){
-					//Mouse was pressed
-					found = true;
-				}
-			}
-			if(!found){
-				//add mouseEvent to copy
-				mouseEventsCopy->add(mouseEvents->get(mp));
-				//call mousePressed event
-				mouseEvents->get(mp)->pos.x += g->getX();
-				mouseEvents->get(mp)->pos.y += g->getY();
-				mousePressed(mouseEvents->get(mp));
-			}
-		}
-		//check if a Mouse released
-		for(int mpc = 0; mpc < mouseEventsCopy->size; mpc++){
-			bool found = false;
-			for(int mp = 0; mp < mouseEvents->size; mp++){
-				if(mouseEventsCopy->get(mpc) == mouseEvents->get(mp)){
-					//mouseEvent exists already
-					found = true;
-				}
-			}
-			if(!found){
-				//call mouseReleased event
-				mouseReleased(mouseEventsCopy->get(mpc));
-				//remove mouseEvent from copy
-				mouseEventsCopy->remove(mpc);
-			}
+			
 		}
 		//get all events
 		glfwPollEvents();
