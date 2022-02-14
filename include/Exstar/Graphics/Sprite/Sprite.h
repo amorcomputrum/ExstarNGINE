@@ -8,7 +8,6 @@ namespace exstar{
 	class Sprite
 	{
 	public:
-		bool wasRendered = false;
 		Sprite();
 		/**
 		 * Initialize the Sprite
@@ -63,7 +62,6 @@ namespace exstar{
 		exstar::Dimension getSize();
 		unsigned int getVAO();
 		void Bind();
-		void preRender();
 	private:
 		/**
 		 * The location of the image in the Image_Handler.h
