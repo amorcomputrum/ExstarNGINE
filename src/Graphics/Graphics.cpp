@@ -39,6 +39,7 @@ void exstar::Graphics::setColor(exstar::Color color){
 
 //-----------------------------DRAW SPRITE-----------------------------
 void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){
+	if(!sprite->wasRendered) throw exstar::exception("exstar::Graphics::drawSprite - Sprite has not called Sprite.preRender()");
     //Transformations
 	glm::mat4 projection;
 	projection  = glm::ortho(pos->x, (size->width + pos->x)-1, (size->height + pos->y)-1,pos->y);

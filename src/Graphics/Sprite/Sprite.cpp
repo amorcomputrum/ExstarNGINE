@@ -16,7 +16,6 @@ exstar::Sprite::Sprite(std::string FILE){
 	textureSize   = exstar::Dimension{feedback.width, feedback.height};
 	type          = feedback.type;
 	Pos           = exstar::Point{0,0};
-	loadShader();
 }
 
 exstar::Sprite::Sprite(std::string FILE, int x, int y, int w, int h){
@@ -28,7 +27,6 @@ exstar::Sprite::Sprite(std::string FILE, int x, int y, int w, int h){
 	textureSize   = exstar::Dimension{feedback.width, feedback.height};
 	type          = feedback.type;
 	Pos           = exstar::Point{x,y};
-	loadShader();
 }
 
 exstar::Sprite::~Sprite(){
@@ -61,6 +59,11 @@ unsigned int exstar::Sprite::getVAO(){
 
 void exstar::Sprite::Bind(){
 	glBindTexture(GL_TEXTURE_2D, texture);
+}
+
+void exstar::Sprite::preRender(){
+	loadShader();
+	this->wasRendered = true;
 }
 
 void exstar::Sprite::loadShader(){
