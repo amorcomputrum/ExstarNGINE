@@ -18,6 +18,7 @@ set(EXSTAR_SOURCE_FILES
 		Physics/Engine.cpp
 		Physics/EngineCollision.cpp
 		Physics/TestCollider.cpp
+		System/File.cpp
 		Utils/Exception.cpp
 		Utils/Math.cpp
 		Utils/Matrix2.cpp

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Exstar/Graphics/Sprite/HandlerToSprite.h"
+#include "Exstar/System/File.h"
 #include "Exstar/Utils/ArrayList.h"
 
 namespace exstar{
@@ -20,6 +21,9 @@ namespace exstar{
 	 * @return The index,width, and height of the File
 	*/
 	exstar::sprite::HandlerToSprite addImage(std::string FILE);
+
+	exstar::sprite::HandlerToSprite addImage(exstar::File FILE);
+
 	/**
 	 * Removes an image from the images ArrayList
 	 * 
