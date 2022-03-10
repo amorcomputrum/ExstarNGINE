@@ -46,7 +46,7 @@ void exstar::File::setLine(unsigned int line, std::string data){
 void exstar::File::writeLine(std::string data){
 	//output.seekp(std::ios_base::cur,std::ios_base::end);
 	if(output.tellp() != 0) output << std::endl << to_bytes(data);
-	else output << to_bytes(data) << std::endl;
+	else output << to_bytes(data);
 }
 
 void exstar::File::open(){
