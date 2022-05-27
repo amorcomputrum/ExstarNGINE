@@ -135,7 +135,7 @@ void exstar::physics::Engine::checkCollision(exstar::physics::Body* current, exs
 								case exstar::physics::Shape::ID::Polygon:
 									//CirclevsPolygon
 									if(exstar::physics::EngineCollision::CirclevsPolygon(&collision)){
-										collision.normal *= -1;
+										
 										HandleCollision(&collision);
 									}
 									break;

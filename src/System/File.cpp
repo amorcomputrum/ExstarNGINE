@@ -1,5 +1,7 @@
 #include "Exstar/System/File.h"
 #include <cstddef>
+#include <sstream>
+#include <iostream>
 
 exstar::File::File(std::string filename){
 	fileLoc = filename;
@@ -15,9 +17,18 @@ exstar::File::~File(){
 std::string exstar::File::getLine(unsigned int line){
 	std::string text;
 	for(int i = 0; i < line; i++){
+		text = "";
 		std::getline(this->input,text);
 	}
-	return text;
+	std::string result = "";
+	std::istringstream iss(text);
+	int word;
+	while(iss >> std::hex >> word){
+		result += char(word);
+	}
+	input.seekg(0);
+	output.flush();
+	return result;
 }
 
 std::string exstar::File::getFileLocation(){
@@ -25,28 +36,40 @@ std::string exstar::File::getFileLocation(){
 }
 
 void exstar::File::setLine(unsigned int line, std::string data){
-	int start = 0;
-	for(int i = 0; i < line; i++){
-		start += getLine(i).size();
+	std::ofstream newFile;
+	newFile.open("replacementFileForTemp.rmfp",std::ios::app);
+	int lineNum = 0;
+	std::string lineData;
+	while(std::getline(this->input,lineData)){
+		lineNum++;
+		if(lineNum != line){
+			newFile << lineData << std::endl;
+		}else{
+			newFile << to_bytes(data) << std::endl;
+		}
+		
 	}
-	int lineSize = getLine(line).size();
-	//flush text
-	std::string clearLine;
-	for(int i = 0; i < lineSize; i++){
-		clearLine += "\b";
-	}
-	//go to end of line
-	output.seekp(start+lineSize);
-	//clear line and write
-	output << clearLine+data;
-
-	//output.seekp(std::ios_base::cur,std::ios_base::end);
+	newFile.close();
+	input.close();
+	output.close();
+	std::remove(fileLoc.c_str());
+	std::rename("replacementFileForTemp.rmfp",fileLoc.c_str());
+	input.open(fileLoc);
+	output.open(fileLoc,std::ios::app);
+	output.flush();
 }
 
 void exstar::File::writeLine(std::string data){
 	//output.seekp(std::ios_base::cur,std::ios_base::end);
-	if(output.tellp() != 0) output << std::endl << to_bytes(data);
-	else output << to_bytes(data);
+	if(output.tellp() != 0){
+		output << std::endl;
+		output << to_bytes(data);
+	} 
+	else {
+
+		output << to_bytes(data);
+	}
+	output.flush();
 }
 
 void exstar::File::open(){
@@ -65,29 +88,14 @@ void exstar::File::close(){
 
 exstar::File exstar::File::operator<<(std::string param){
 	output << to_bytes(param);
+	output.flush();
 }
 
 std::string exstar::File::to_bytes(std::string data){
-	std::byte bytes[data.size()];
-	std::string val = "";
+	std::stringstream val;
 	for(size_t i = 0; i < data.size(); i++){
-		std::string temp;
-		bytes[i] = std::byte(data[i]);
-		temp += std::to_string(std::to_integer<int>(bytes[i]));
-		int count = 1;
-		bool doneCompressing = false;
-		while(!doneCompressing){
-			if(std::to_string(std::to_integer<int>(std::byte(data[i+count]))) == temp && count < 26){
-				count++;
-			}else{
-				val += ABC[count-1];
-				val += temp;
-				i+= count-1;
-				doneCompressing = true;
-			}
-		}
-		val += " ";
-		
+		val << std::hex << int(data[i]);
+		val << " ";
 	}
-	return val;
+	return val.str();
 }
