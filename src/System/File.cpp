@@ -36,6 +36,7 @@ std::string exstar::File::getFileLocation(){
 }
 
 void exstar::File::setLine(unsigned int line, std::string data){
+	input.seekg(0);
 	std::ofstream newFile;
 	newFile.open("replacementFileForTemp.rmfp",std::ios::app);
 	int lineNum = 0;
@@ -56,7 +57,6 @@ void exstar::File::setLine(unsigned int line, std::string data){
 	std::rename("replacementFileForTemp.rmfp",fileLoc.c_str());
 	input.open(fileLoc);
 	output.open(fileLoc,std::ios::app);
-	output.flush();
 }
 
 void exstar::File::writeLine(std::string data){

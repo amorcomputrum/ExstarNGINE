@@ -45,8 +45,42 @@ void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){
 	glm::mat4 ModelMatrix(1.0f);
 	//HEHERHEHRHEHR
 	//ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(1.50, 1.50, 1.0f));
-	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x, y, 0.0f));
+	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x, y*1.0f, 0.0f));
 	ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(sprite->getWidth(), sprite->getHeight(), 1.0f));
+
+	//Draw Sprite and cleanup
+	glActiveTexture(GL_TEXTURE0);
+	sprite->Bind();
+	spriteShader.use();
+
+	//Set uniforms
+	spriteShader.uniformMat4("ModelMatrix", ModelMatrix);
+	spriteShader.uniformMat4("projection" , projection);
+
+	glBindVertexArray(sprite->getVAO());
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+
+void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y,double angle){
+    //Transformations
+	glm::mat4 projection;
+	projection  = glm::ortho(pos->x, (size->width + pos->x)-1, (size->height + pos->y)-1,pos->y);
+	glm::mat4 ModelMatrix(1.0f);
+	//HEHERHEHRHEHR
+	//ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(1.50, 1.50, 1.0f));
+	
+	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x, y, 0.0f));
+
+	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(0.5f,0.5f,0.0f));
+	ModelMatrix = glm::rotate(ModelMatrix, (float)angle, glm::vec3(0.0f,0.0f,1.0f));
+	ModelMatrix = glm::translate(ModelMatrix,glm::vec3(-0.5f,-0.5f,0.0f));
+
+	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(-sprite->getWidth()/2, -sprite->getHeight()/2, 0.0f));
+
+	ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(sprite->getWidth(), sprite->getHeight(), 1.0f));
+
+
 
 	//Draw Sprite and cleanup
 	glActiveTexture(GL_TEXTURE0);

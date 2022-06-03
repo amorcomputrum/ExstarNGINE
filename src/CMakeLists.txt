@@ -24,7 +24,12 @@ set(EXSTAR_SOURCE_FILES
 		Utils/Matrix2.cpp
 		Utils/Vector2d.cpp)
 
-add_library(Exstar SHARED ${EXSTAR_SOURCE_FILES})
+if (BUILD_STATIC)
+	add_library(Exstar STATIC ${EXSTAR_SOURCE_FILES})
+else()
+	add_library(Exstar SHARED ${EXSTAR_SOURCE_FILES})
+endif()
+
 
 target_include_directories(Exstar
 	PUBLIC

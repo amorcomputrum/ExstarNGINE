@@ -36,7 +36,8 @@ void exstar::Window::run(){
 
 	glEnable(GL_MULTISAMPLE); 
 	glEnable(GL_BLEND); 
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+	glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);
+	glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
 	//create clock
 	clock = new exstar::Clock(); 
 	//begin loop
