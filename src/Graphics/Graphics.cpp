@@ -38,19 +38,16 @@ void exstar::Graphics::setColor(exstar::Color color){
 }
 
 //-----------------------------DRAW SPRITE-----------------------------
-void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){
+void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){  
     //Transformations
 	glm::mat4 projection;
-	projection  = glm::ortho(pos->x, (size->width + pos->x)-1, (size->height + pos->y)-1,pos->y);
+	projection  = glm::ortho(pos->x*1.0f, (size->width*1.0f + pos->x*1.0f)-1.0f, (size->height*1.0f + pos->y*1.0f)-1.0f,pos->y*1.0f);
 	glm::mat4 ModelMatrix(1.0f);
-	//HEHERHEHRHEHR
-	//ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(1.50, 1.50, 1.0f));
-	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x, y*1.0f, 0.0f));
-	ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(sprite->getWidth(), sprite->getHeight(), 1.0f));
-
-	//Draw Sprite and cleanup
-	glActiveTexture(GL_TEXTURE0);
+	ModelMatrix = glm::translate(ModelMatrix, glm::vec3(x*1.0f, y*1.0f, 0.0f));
+	ModelMatrix = glm::scale(ModelMatrix    , glm::vec3(sprite->getWidth()*1.0f, sprite->getHeight()*1.0f, 1.0f));
+	
 	sprite->Bind();
+	glEnable(GL_TEXTURE_2D); 
 	spriteShader.use();
 
 	//Set uniforms
@@ -58,8 +55,9 @@ void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y){
 	spriteShader.uniformMat4("projection" , projection);
 
 	glBindVertexArray(sprite->getVAO());
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
+	glDisable(GL_TEXTURE_2D);   
 }
 
 void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y,double angle){

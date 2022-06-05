@@ -15,6 +15,7 @@ namespace exstar{
 		void writeLine(std::string data);
 		void open();
 		void close();
+		void rename(std::string newName);
 		exstar::File operator<<(std::string param);
 	private:
 		char ABC[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};

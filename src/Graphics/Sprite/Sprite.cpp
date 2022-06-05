@@ -60,6 +60,7 @@ unsigned int exstar::Sprite::getVAO(){
 }
 
 void exstar::Sprite::Bind(){
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
 }
 
@@ -67,19 +68,22 @@ void exstar::Sprite::loadShader(){
 	
 	//Define the sides of the sprite to load
 	float lx,ty,rx,by;
-	lx =  Pos.x/textureSize.width ;
-	ty =  Pos.y/textureSize.height;
-	rx = (Pos.x + cutSize.width)/textureSize.width  ;
-	by = (Pos.y + cutSize.height)/textureSize.height;
+	lx =  (Pos.x + 0.5)/(textureSize.width*1.0f) ;
+	ty =  (Pos.y + 0.5)/(textureSize.height*1.0f);
+	rx = (Pos.x + cutSize.width*1.0f)/(textureSize.width*1.0f)  ;
+	by = (Pos.y + cutSize.height*1.0f)/(textureSize.height*1.0f);
 
 	float vertices[] = {
-		1.0f, 1.0f, rx, by,
+		0.0f, 1.0f, lx, by,
 		1.0f, 0.0f, rx, ty,
 		0.0f, 0.0f, lx, ty,
-		0.0f, 1.0f, lx, by
+
+		0.0f, 1.0f, lx, by,
+		1.0f, 1.0f, rx, by,
+		1.0f, 0.0f, rx, ty
 	};
 
-	unsigned int indices[] = {0, 1, 3, 1, 2, 3};
+	//unsigned int indices[] = {0, 1, 3, 1, 2, 3};
 	//Prepare Buffers
 	glGenVertexArrays(1, &this->VAO);
 
@@ -89,10 +93,10 @@ void exstar::Sprite::loadShader(){
 	glBindVertexArray(this->VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // position attribute
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)0);
@@ -107,13 +111,14 @@ void exstar::Sprite::loadShader(){
 	glBindTexture(GL_TEXTURE_2D, texture);
 
     // set texture filtering parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_GENERATE_MIPMAP, GL_TRUE                    );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE            );	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE            ); 
+    
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE            );	
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE            ); 
 
-	glEnable(GL_TEXTURE_2D);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST              );
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST              );
 
     //Load Sprite according to its type(RGB,RGBA)
 	if(type == 3){
@@ -123,4 +128,7 @@ void exstar::Sprite::loadShader(){
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize.width, textureSize.height, 0, GL_RGBA,GL_UNSIGNED_BYTE, exstar::images->get(fileIndex));
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

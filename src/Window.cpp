@@ -27,17 +27,8 @@ void exstar::Window::mouseReleased(MouseEvent* event){}
 void exstar::Window::run(){
 	//show window
 	glfwShowWindow(window);
-	//set interval for buffer
-	glfwSwapInterval(1);
-	//allow Forward compatability with opengl
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE                 );
-	glfwWindowHint(GLFW_OPENGL_PROFILE       , GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_SAMPLES              , 2                       );
 
-	glEnable(GL_MULTISAMPLE); 
-	glEnable(GL_BLEND); 
-	glBlendEquationSeparate(GL_FUNC_ADD,GL_FUNC_ADD);
-	glBlendFuncSeparate(GL_ONE,GL_ONE_MINUS_SRC_ALPHA,GL_ONE,GL_ONE_MINUS_SRC_ALPHA);
+
 	//create clock
 	clock = new exstar::Clock(); 
 	//begin loop
@@ -212,14 +203,17 @@ void exstar::Window::initGL(){
 	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+
 	//init window
 	window = glfwCreateWindow(size.width, size.height, title.c_str(), NULL, NULL);
 	if(!window){
 		throw exstar::exception("GLFW WindowINIT ERROR: Well that failed too soon");
 	}
+
 	//setCallbacks for window
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetMouseButtonCallback(window, mouse_callback);
+	glfwSetWindowRefreshCallback(window, window_refresh_callback);
 	//seed random
 	srand(time(NULL));
 	//Set WindowBackground Color
@@ -227,6 +221,19 @@ void exstar::Window::initGL(){
 
 	glfwMakeContextCurrent(window);
 	gladLoadGL(glfwGetProcAddress);
+
+	//set interval for buffer
+	glfwSwapInterval(1);
+	//allow Forward compatability with opengl
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE                 );
+	glfwWindowHint(GLFW_OPENGL_PROFILE       , GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES              , 2                       );
+
+	glEnable(GL_MULTISAMPLE); 
+	glEnable(GL_BLEND); 
+	glDisable(GL_DEPTH_TEST);
+	glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
 	glfwHideWindow(window);
 }
 
@@ -237,6 +244,7 @@ void exstar::Window::update(){
 	    //Just keep on Swimming
 		clock->start();
 	    //clear frame
+	    
 		glViewport(0, 0, size.width, size.height);
 		glClearColor((float)backgroundColor[0], (float)backgroundColor[1], (float)backgroundColor[2], (float)backgroundColor[3]);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -412,4 +420,9 @@ void exstar::Window::key_callback(GLFWwindow* window, int key, int scancode, int
 			}
 		}
 	}
+}
+
+void exstar::Window::window_refresh_callback(GLFWwindow* window)
+{
+    glfwSwapBuffers(window);
 }

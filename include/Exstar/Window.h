@@ -354,6 +354,8 @@ namespace exstar{
 		 * Used when OpenGL has a key event
 		*/
 		static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+		static void window_refresh_callback(GLFWwindow* window);
 	};
 
 }
