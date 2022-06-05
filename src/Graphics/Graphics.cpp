@@ -90,7 +90,7 @@ void exstar::Graphics::drawSprite(exstar::Sprite* sprite, int x, int y,double an
 	spriteShader.uniformMat4("projection" , projection);
 
 	glBindVertexArray(sprite->getVAO());
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
 }
 
