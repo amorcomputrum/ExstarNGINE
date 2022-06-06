@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Exstar/Graphics/Shaders/GLSL.h"
-#include "Exstar/System/CompressedAsset.h"
 #include "Exstar/Utils/Dimension.h"
 #include "Exstar/Utils/Point.h"
 
@@ -26,22 +25,6 @@ namespace exstar{
 		 * @param h The height of the area to render from the FILE
 		*/
 		Sprite(std::string FILE, int x, int y, int w, int h);
-		/**
-		 * Initialize the Sprite
-		 * 
-		 * @param FILE the file to load sprite
-		*/
-		Sprite(exstar::CompressedAsset FILE);
-		/**
-		 * Initialize the Sprite
-		 * 
-		 * @param FILE the file to load sprite
-		 * @param x The x location of the sprite to render(This is for rendering only part of a sprite from the file)
-		 * @param y The y location of the sprite to render(This is for rendering only part of a sprite from the file)
-		 * @param w The width of the area to render from the FILE
-		 * @param h The height of the area to render from the FILE
-		*/
-		Sprite(exstar::CompressedAsset FILE, int x, int y, int w, int h);
 		/**
 		 * Destruct the Inialized Sprite
 		*/
@@ -85,7 +68,7 @@ namespace exstar{
 		*/
 		exstar::Dimension size;
 
-		unsigned int texture,VAO,VBO,EBO;
+		unsigned int texture,VAO,VBO;
 		void loadShader(int x,int y,int width, int height,int imageW, int imageH,int type,unsigned char* data);
 
 	};

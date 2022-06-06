@@ -3,7 +3,7 @@
 #include "Exstar/Graphics/Color.h"
 #include "Exstar/Graphics/Shape.h"
 #include "Exstar/Graphics/Shaders/GLSL.h"
-#include "Exstar/Graphics/Sprite/Sprite.h"
+#include "Exstar/Graphics/Sprite.h"
 #include "Exstar/Utils/ArrayList.h"
 #include "Exstar/Utils/Point.h"
 #include "Exstar/Utils/Vector2d.h"

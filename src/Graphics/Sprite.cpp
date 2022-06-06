@@ -1,13 +1,13 @@
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "Exstar/Graphics/Sprite/stb_image.h"
+#include "Exstar/Graphics/stb_image.h"
 
 #include "Exstar/exstarglad/gl.h"
 
 #include "Exstar/Graphics/Sprite/HandlerToSprite.h"
 #include "Exstar/Graphics/Sprite/Image_Handler.h"
 
-#include "Exstar/Graphics/Sprite/Sprite.h"
+#include "Exstar/Graphics/Sprite.h"
 
 exstar::Sprite::Sprite(){}
 
@@ -79,20 +79,15 @@ void exstar::Sprite::loadShader(int x,int y,int width, int height,int imageW, in
 		1.0f, 0.0f, rx, ty
 	};
 
-	//unsigned int indices[] = {0, 1, 3, 1, 2, 3};
 	//Prepare Buffers
 	glGenVertexArrays(1, &this->VAO);
 
 	glGenBuffers(1, &this->VBO);
-	glGenBuffers(1, &this->EBO);
 
 	glBindVertexArray(this->VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, this->VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     // position attribute
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)0);
@@ -106,25 +101,15 @@ void exstar::Sprite::loadShader(int x,int y,int width, int height,int imageW, in
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-    // set texture filtering parameters
-    
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE            );	
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE            ); 
-
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST              );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST              );
 
     //Load Sprite according to its type(RGB,RGBA)
 	if(type == 3){
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB , textureSize.width, textureSize.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
 	}else{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize.width, textureSize.height, 0, GL_RGBA,GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
 	}
 	stbi_image_free(data);
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
