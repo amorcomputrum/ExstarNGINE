@@ -81,38 +81,12 @@ namespace exstar{
 		void Bind();
 	private:
 		/**
-		 * The location of the image in the Image_Handler.h
-		*/
-		int fileIndex;
-		/**
-		 * The type for the image
-		 * 3=RGB
-		 * 4=RGBA
-		*/
-		int type;
-		/**
-		 * The location of the sprite to load
-		*/
-		std::string FILE;
-		/**
-		 * The native size of the Sprite
-		*/
-		exstar::Dimension textureSize;
-		/**
-		 * The edited size of the Sprite
-		 * When only loading part of the sprite
-		*/
-		exstar::Dimension cutSize;
-		/**
 		 * The rendered size of the Sprite
 		*/
 		exstar::Dimension size;
-		/**
-		 * The x,y on the Sprite
-		*/
-		exstar::Point Pos;
+
 		unsigned int texture,VAO,VBO,EBO;
-		void loadShader();
+		void loadShader(int x,int y,int width, int height,int imageW, int imageH,int type,unsigned char* data);
 
 	};
 };

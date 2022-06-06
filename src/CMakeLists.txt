@@ -8,7 +8,6 @@ set(EXSTAR_SOURCE_FILES
 		Graphics/Shape.cpp
 		Graphics/Shaders/GLSL.cpp
 		Graphics/Color.cpp
-		Graphics/Sprite/Image_Handler.cpp
 		Graphics/Sprite/Sprite.cpp
 		Physics/Body.cpp
 		Physics/Box.cpp

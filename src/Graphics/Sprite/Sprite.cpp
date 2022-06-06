@@ -1,3 +1,7 @@
+#define STB_IMAGE_IMPLEMENTATION
+
+#include "Exstar/Graphics/Sprite/stb_image.h"
+
 #include "Exstar/exstarglad/gl.h"
 
 #include "Exstar/Graphics/Sprite/HandlerToSprite.h"
@@ -8,31 +12,18 @@
 exstar::Sprite::Sprite(){}
 
 exstar::Sprite::Sprite(std::string FILE){
-	this->FILE    = FILE;
-	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
-	fileIndex     = feedback.index;
-	size          = exstar::Dimension{feedback.width, feedback.height};
-	cutSize       = exstar::Dimension{feedback.width, feedback.height};
-	textureSize   = exstar::Dimension{feedback.width, feedback.height};
-	type          = feedback.type;
-	Pos           = exstar::Point{0,0};
-	loadShader();
+	int w,h,type;
+	unsigned char* data = stbi_load(FILE.c_str(), &w, &h, &type, 0);
+	loadShader(0,0,w,h,w,h,type,data);
 }
 
-exstar::Sprite::Sprite(std::string FILE, int x, int y, int w, int h){
-	this->FILE    = FILE;
-	exstar::sprite::HandlerToSprite feedback = exstar::addImage(FILE);
-	fileIndex     = feedback.index;
-	size          = exstar::Dimension{w, h};
-	cutSize       = exstar::Dimension{w, h};
-	textureSize   = exstar::Dimension{feedback.width, feedback.height};
-	type          = feedback.type;
-	Pos           = exstar::Point{x,y};
-	loadShader();
+exstar::Sprite::Sprite(std::string FILE, int x, int y, int width, int height){
+	int w,h,type;
+	unsigned char* data = stbi_load(FILE.c_str(), &w, &h, &type, 0);
+	loadShader(x,y,width,height,w,h,type,data);
 }
 
 exstar::Sprite::~Sprite(){
-	removeImage(fileIndex);
 }
 
 void exstar::Sprite::resize(int width, int height){
@@ -64,14 +55,19 @@ void exstar::Sprite::Bind(){
 	glBindTexture(GL_TEXTURE_2D, texture);
 }
 
-void exstar::Sprite::loadShader(){
+void exstar::Sprite::loadShader(int x,int y,int width, int height,int imageW, int imageH,int type,unsigned char* data){
 	
+
+	size = exstar::Dimension{width,height};
+	exstar::Point Pos = exstar::Point{x,y};
+	exstar::Dimension textureSize = exstar::Dimension{imageW, imageH};
+
 	//Define the sides of the sprite to load
 	float lx,ty,rx,by;
 	lx =  (Pos.x + 0.5)/(textureSize.width*1.0f) ;
 	ty =  (Pos.y + 0.5)/(textureSize.height*1.0f);
-	rx = (Pos.x + cutSize.width*1.0f)/(textureSize.width*1.0f)  ;
-	by = (Pos.y + cutSize.height*1.0f)/(textureSize.height*1.0f);
+	rx = (Pos.x + size.width*1.0f)/(textureSize.width*1.0f)  ;
+	by = (Pos.y + size.height*1.0f)/(textureSize.height*1.0f);
 
 	float vertices[] = {
 		0.0f, 1.0f, lx, by,
@@ -122,13 +118,13 @@ void exstar::Sprite::loadShader(){
 
     //Load Sprite according to its type(RGB,RGBA)
 	if(type == 3){
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB , textureSize.width, textureSize.height, 0, GL_RGB, GL_UNSIGNED_BYTE, exstar::images->get(fileIndex));
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB , textureSize.width, textureSize.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}else{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize.width, textureSize.height, 0, GL_RGBA,GL_UNSIGNED_BYTE, exstar::images->get(fileIndex));
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize.width, textureSize.height, 0, GL_RGBA,GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 	}
-
+	stbi_image_free(data);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
