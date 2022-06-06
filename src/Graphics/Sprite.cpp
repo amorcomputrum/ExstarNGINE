@@ -1,26 +1,25 @@
-#define STB_IMAGE_IMPLEMENTATION
-
-#include "Exstar/Graphics/stb_image.h"
-
 #include "Exstar/exstarglad/gl.h"
 
-#include "Exstar/Graphics/Sprite/HandlerToSprite.h"
-#include "Exstar/Graphics/Sprite/Image_Handler.h"
+#include "Exstar/Graphics/TextureHandler.h"
 
 #include "Exstar/Graphics/Sprite.h"
 
 exstar::Sprite::Sprite(){}
 
 exstar::Sprite::Sprite(std::string FILE){
-	int w,h,type;
-	unsigned char* data = stbi_load(FILE.c_str(), &w, &h, &type, 0);
-	loadShader(0,0,w,h,w,h,type,data);
+	this->FILE = FILE;
+	txHandler::generateTexture(FILE);
+	txHandler::Texture tex = txHandler::getTexture(FILE);
+	this->size = exstar::Dimension{tex.w,tex.h};
+	loadShader(0,0,tex.w,tex.h,tex.w,tex.h);
 }
 
 exstar::Sprite::Sprite(std::string FILE, int x, int y, int width, int height){
-	int w,h,type;
-	unsigned char* data = stbi_load(FILE.c_str(), &w, &h, &type, 0);
-	loadShader(x,y,width,height,w,h,type,data);
+	this->FILE = FILE;
+	txHandler::generateTexture(FILE);
+	txHandler::Texture tex = txHandler::getTexture(FILE);
+	this->size = exstar::Dimension{width,height};
+	loadShader(x,y,width,height,tex.w,tex.h);
 }
 
 exstar::Sprite::~Sprite(){
@@ -52,13 +51,11 @@ unsigned int exstar::Sprite::getVAO(){
 
 void exstar::Sprite::Bind(){
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	txHandler::Texture tex = txHandler::getTexture(this->FILE);
+	glBindTexture(GL_TEXTURE_2D, tex.texture);
 }
 
-void exstar::Sprite::loadShader(int x,int y,int width, int height,int imageW, int imageH,int type,unsigned char* data){
-	
-
-	size = exstar::Dimension{width,height};
+void exstar::Sprite::loadShader(int x,int y,int width, int height,int imageW, int imageH){
 	exstar::Point Pos = exstar::Point{x,y};
 	exstar::Dimension textureSize = exstar::Dimension{imageW, imageH};
 
@@ -97,19 +94,4 @@ void exstar::Sprite::loadShader(int x,int y,int width, int height,int imageW, in
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4*sizeof(float), (void*)(2*sizeof(float)));
 	glEnableVertexAttribArray(1);
 
-	//Load Texture
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST              );
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST              );
-
-    //Load Sprite according to its type(RGB,RGBA)
-	if(type == 3){
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB , textureSize.width, textureSize.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	}else{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize.width, textureSize.height, 0, GL_RGBA,GL_UNSIGNED_BYTE, data);
-	}
-	stbi_image_free(data);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }

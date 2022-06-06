@@ -68,8 +68,10 @@ namespace exstar{
 		*/
 		exstar::Dimension size;
 
-		unsigned int texture,VAO,VBO;
-		void loadShader(int x,int y,int width, int height,int imageW, int imageH,int type,unsigned char* data);
+		std::string FILE;
+
+		unsigned int VAO,VBO;
+		void loadShader(int x,int y,int width, int height,int imageW, int imageH);
 
 	};
 };
